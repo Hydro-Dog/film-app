@@ -7,7 +7,7 @@ import * as jwt from 'jsonwebtoken'
 
 // ???
 @Injectable()
-export class UserServide {
+export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>
   ) {}
@@ -27,7 +27,6 @@ export class UserServide {
       )
     }
     user.token = this.getToken(user.id)
-    console.log('user=======================', user)
     await this.userRepository.update(user.id, user)
 
     return user.toResponseObject(true)

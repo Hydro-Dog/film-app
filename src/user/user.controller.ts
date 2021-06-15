@@ -7,11 +7,11 @@ import {
   ValidationPipe,
 } from '@nestjs/common'
 import { UserDTO } from './user.dto'
-import { UserServide } from './user.service'
+import { UserService } from './user.service'
 
 @Controller()
 export class UserController {
-  constructor(private userServide: UserServide) {}
+  constructor(private userServide: UserService) {}
 
   @Get('api/users')
   getAll() {
