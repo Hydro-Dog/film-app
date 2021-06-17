@@ -15,7 +15,7 @@ export class FilmController {
   @Get('api/getmovies')
   getMovies(@Body() data: ApiDTO) {
     console.log('data: ', data)
-    if (data.filmCategory && data.filters) {
+    if (data.filmCategory && data.filterParams) {
       throw new HttpException(
         'Both filters and categories are provided',
         HttpStatus.BAD_REQUEST
@@ -29,6 +29,9 @@ export class FilmController {
       )
     }
 
-    return this.filmService.getFilmsByFilters(data.pageNumbers, data.filters)
+    return this.filmService.getFilmsByFilters(
+      data.pageNumbers,
+      data.filterParams
+    )
   }
 }

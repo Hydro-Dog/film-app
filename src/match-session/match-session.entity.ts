@@ -13,33 +13,59 @@ export class MatchSession {
   @CreateDateColumn()
   created: Date
 
-  //связь между таблицами
-  @Column()
-  userOneId: string
+  @Column() hostId: string
+  @Column() guestId: string
+  @Column() hostSequenceCounter?: number
+  @Column() guestSequenceCounter?: number
+  @Column('text', { array: true }) hostLikedFilms?: string[]
+  @Column('text', { array: true }) guestLikedFilms?: string[]
+  @Column('text', { array: true }) matchedFilms?: string[]
+  @Column() matchesLimit: number
+  @Column('text', { array: true }) filmsIdsSequence?: string[]
+  @Column({ nullable: true }) category?: string
+  @Column({ nullable: true }) filterParams?: string
 
-  //связь между таблицами
-  @Column()
-  userTwoId: string
+  // @PrimaryGeneratedColumn()
+  // id: string
 
-  //индекс, по которому будет браться айдишник фильма из filmsIdsSequence
-  //если этот counter === filmsIdsSequence.length, то запушить в filmsIdsSequence
-  //следующие 50 рандомных айдишников
-  @Column()
-  userOneSequenceCounter: number
+  // @CreateDateColumn()
+  // created: Date
 
-  @Column()
-  userTwoSequenceCounter: number
+  // //связь между таблицами
+  // @Column()
+  // hostId: string
 
-  @Column()
-  filmsIdsSequence: string
+  // //связь между таблицами
+  // @Column()
+  // guestId: string
 
-  @Column('text', { array: true })
-  matches: string[]
+  // //индекс, по которому будет браться айдишник фильма из filmsIdsSequence
+  // //если этот counter === filmsIdsSequence.length, то запушить в filmsIdsSequence
+  // //следующие 50 рандомных айдишников
+  // @Column()
+  // hostSequenceCounter: number
 
-  //query params к запросу на  tmdb
-  @Column()
-  filterParams: string
+  // @Column()
+  // guestSequenceCounter: number
 
-  @Column()
-  matchesLimit: number
+  // @Column('text', { array: true })
+  // hostLikedFilms: string[]
+
+  // @Column('text', { array: true })
+  // guestLikedFilms: string[]
+
+  // @Column('text', { array: true })
+  // matchedFilms: string[]
+
+  // @Column()
+  // matchesLimit: number
+
+  // @Column()
+  // filmsIdsSequence: string
+
+  // @Column()
+  // category: string
+  // //query params к запросу на  tmdb
+  // @Column()
+  // filterParams: string
 }

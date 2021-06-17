@@ -4,6 +4,7 @@ import {
   getAPIDiscoverUrl,
   getAPIReqCategoryUrl,
 } from 'src/helpers/url-for-tmdb-generator.helper'
+import { SimpleConsoleLogger } from 'typeorm'
 import { FilmCategories } from './film.models'
 
 // Get Popular     https://api.themoviedb.org/3/movie/popular?api_key=<;<api_key>>&language=en-US&page=1
@@ -49,22 +50,24 @@ export class FilmService {
     return allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))
   }
 
-  async getFilmsByFilters(pageNumbers: string, filters: object) {
-    console.log('getFilmsByFilters: ', pageNumbers, filters)
+  async getFilmsByFilters(pageNumbers: string, filterParams: object) {
+    console.log('getFilmsByFilters: ', pageNumbers, filterParams)
     const pageNumbersArr = pageNumbers.split(',')
+
     const requestsArr = pageNumbersArr.map((page) => {
       return this.httpService
         .get(
           getAPIDiscoverUrl(
             process.env.API_BASE_URL,
             process.env.API_KEY,
-            objectToQueryString(filters),
+            objectToQueryString(filterParams),
             page as unknown as number,
             'ru-RU'
           )
         )
         .toPromise()
     })
+
     const allRequests = await Promise.all(requestsArr)
 
     return allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))

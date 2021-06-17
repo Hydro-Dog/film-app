@@ -6,5 +6,6 @@ import { FilmService } from './film.service'
   imports: [HttpModule],
   controllers: [FilmController],
   providers: [FilmService],
+  exports: [FilmService],
 })
 export class FilmModule {}

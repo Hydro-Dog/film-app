@@ -3,11 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
 import * as bcrypt from 'bcrypt'
-import * as jwt from 'jsonwebtoken'
 import { UserRO } from './user.dto'
 
 @Entity()
@@ -39,6 +39,15 @@ export class User {
 
   @Column({ nullable: true })
   token: string
+
+  @Column('text', { array: true, nullable: true })
+  activeSessions: string[]
+
+  @Column('text', { array: true, nullable: true })
+  sessionsInvite: string[]
+
+  @Column('text', { array: true, nullable: true })
+  favoriteFilms: string[]
 
   @BeforeInsert()
   async hashPassword() {

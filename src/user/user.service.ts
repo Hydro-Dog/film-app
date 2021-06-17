@@ -45,6 +45,8 @@ export class UserService {
     }
 
     user = await this.userRepository.create(data)
+    user.sessionsInvite = []
+    user.activeSessions = []
     await this.userRepository.save(user)
     return user.toResponseObject()
   }
