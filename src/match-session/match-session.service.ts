@@ -103,6 +103,11 @@ export class MatchSessionService {
       isMatched = matchSession.hostLikedFilms.includes(data.filmId)
     }
 
+    //update matchedFilms array
+    if (isMatched) {
+      matchSession.matchedFilms.push(data.filmId)
+    }
+
     let completed =
       matchSession.matchedFilms.length >= matchSession.matchesLimit
 
@@ -113,12 +118,16 @@ export class MatchSessionService {
       guestSequenceCounter,
       hostLikedFilms,
       guestLikedFilms,
+      matchedFilms,
+      matchesLimit,
     } = await this.matchSessionRepository.save(matchSession)
 
     return {
       id,
       completed,
       isMatched,
+      matchedFilms,
+      matchesLimit,
       hostSequenceCounter,
       guestSequenceCounter,
       hostLikedFilms,
