@@ -49,12 +49,15 @@ export class User {
   @Column('text', { array: true, nullable: true })
   favoriteFilms: string[]
 
+  @Column('text', { array: true, nullable: true })
+  sessionHistory: string[]
+
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10)
   }
 
-  toResponseObject(showToken: boolean = false): UserRO {
+  toResponseObject(showToken = false): UserRO {
     const { id, created, firstName, lastName, email, phoneNumber, token } = this
     const responseObject: UserRO = {
       id,

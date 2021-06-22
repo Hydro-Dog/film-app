@@ -4,7 +4,10 @@ import { FilmService } from 'src/film/film.service'
 import { User } from 'src/user/user.entity'
 import { Repository } from 'typeorm'
 import { threadId } from 'worker_threads'
-import { MatchSessionDTO } from './match-session.dto'
+import {
+  CreateMatchSessionDTO,
+  UpdateMatchSessionDTO,
+} from './match-session.dto'
 import { MatchSession } from './match-session.entity'
 
 @Injectable()
@@ -17,7 +20,7 @@ export class MatchSessionService {
     private filmService: FilmService
   ) {}
 
-  async create(data: MatchSessionDTO) {
+  async create(data: CreateMatchSessionDTO) {
     //generates filmsIdsSequence
     let filmsIdsSequence: string[]
     if (data.category) {
@@ -49,6 +52,7 @@ export class MatchSessionService {
       matchedFilms,
       matchesLimit,
       filmsIdsSequence,
+      completed: false,
       category: data.category,
       filterParams: JSON.stringify(data.filterParams),
     }
@@ -60,15 +64,12 @@ export class MatchSessionService {
     await this.matchSessionRepository.save(matchSession)
 
     //update participants tables
-
     const host = await this.userRepository.findOne({
       where: { id: data.hostId },
     })
     const guest = await this.userRepository.findOne({
       where: { id: data.guestId },
     })
-
-    console.log('host: ', host)
 
     host.activeSessions = [...host.activeSessions, matchSession.id]
     guest.sessionsInvite = [...guest.sessionsInvite, matchSession.id]
@@ -77,5 +78,51 @@ export class MatchSessionService {
     await this.userRepository.save({ id: guest.id, ...guest })
 
     return matchSession
+  }
+
+  async approveFilm(data: UpdateMatchSessionDTO) {
+    const matchSession = await this.matchSessionRepository.findOne({
+      where: { id: data.matchSessionId },
+    })
+
+    //increment users counter
+    if (data.userId === matchSession.hostId) {
+      matchSession.hostSequenceCounter++
+    } else {
+      matchSession.guestSequenceCounter++
+    }
+
+    let isMatched = false
+    if (data.userId === matchSession.hostId && data.filmApproved) {
+      //if film was liked by user, push new id to liked films array
+      matchSession.hostLikedFilms.push(data.filmId)
+      //check for matches isMatched: true?
+      isMatched = matchSession.guestLikedFilms.includes(data.filmId)
+    } else if (data.userId !== matchSession.hostId && data.filmApproved) {
+      matchSession.guestLikedFilms.push(data.filmId)
+      isMatched = matchSession.hostLikedFilms.includes(data.filmId)
+    }
+
+    let completed =
+      matchSession.matchedFilms.length >= matchSession.matchesLimit
+
+    //update matchSession
+    const {
+      id,
+      hostSequenceCounter,
+      guestSequenceCounter,
+      hostLikedFilms,
+      guestLikedFilms,
+    } = await this.matchSessionRepository.save(matchSession)
+
+    return {
+      id,
+      completed,
+      isMatched,
+      hostSequenceCounter,
+      guestSequenceCounter,
+      hostLikedFilms,
+      guestLikedFilms,
+    }
   }
 }

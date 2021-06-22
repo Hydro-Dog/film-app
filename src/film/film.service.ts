@@ -50,7 +50,10 @@ export class FilmService {
     return allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))
   }
 
-  async getFilmsByFilters(pageNumbers: string, filterParams: object) {
+  async getFilmsByFilters(
+    pageNumbers: string,
+    filterParams: Record<string, unknown>
+  ) {
     console.log('getFilmsByFilters: ', pageNumbers, filterParams)
     const pageNumbersArr = pageNumbers.split(',')
 
