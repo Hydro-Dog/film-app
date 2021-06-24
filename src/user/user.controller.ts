@@ -1,31 +1,14 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common'
-import { UserDTO } from './user.dto'
+import { Controller, Get, UseGuards } from '@nestjs/common'
 import { UserService } from './user.service'
+import { AuthGuard } from '@nestjs/passport'
 
 @Controller()
 export class UserController {
-  constructor(private userServide: UserService) {}
+  constructor(private userService: UserService) {}
 
   @Get('api/users')
+  @UseGuards(AuthGuard('jwt'))
   getAll() {
-    return this.userServide.getAll()
-  }
-
-  @Post('login')
-  login(@Body() data: Pick<UserDTO, 'email' | 'password'>) {
-    return this.userServide.login(data)
-  }
-
-  @Post('register')
-  register(@Body() data: UserDTO) {
-    console.log('controller data: ----------------', data)
-    return this.userServide.register(data)
+    return this.userService.getAll()
   }
 }

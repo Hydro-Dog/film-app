@@ -16,6 +16,5 @@ export const getAPIDiscoverUrl = (
   page: number,
   lang: string
 ) => {
-  console.log('filters: ', apiBaseUrl, apiKey, filters, page, lang)
   return `${apiBaseUrl}/discover/movie/?api_key=${apiKey}&page=${page}&language=${lang}${filters}`
 }

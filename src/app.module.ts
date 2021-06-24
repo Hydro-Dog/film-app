@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { basename, dirname, join } from 'path'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { AuthModule } from './auth/auth.module'
 import { FilmModule } from './film/film.module'
 import { MatchSessionModule } from './match-session/match-session.module'
 import { HttpErrorFilter } from './shared/http-error.filter'
@@ -16,7 +17,13 @@ const password = process.env.DB_PASSWORD
 const database = process.env.DB_NAME
 
 @Module({
-  imports: [getTypeOrmConfig(), UserModule, MatchSessionModule, FilmModule],
+  imports: [
+    getTypeOrmConfig(),
+    UserModule,
+    MatchSessionModule,
+    FilmModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

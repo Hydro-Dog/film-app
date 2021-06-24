@@ -32,7 +32,7 @@ export class User {
   @Column({
     unique: true,
   })
-  phoneNumber: string
+  userName: string
 
   @Column()
   password: string
@@ -52,22 +52,22 @@ export class User {
   @Column('text', { array: true, nullable: true })
   sessionHistory: string[]
 
-  @BeforeInsert()
-  async hashPassword() {
-    this.password = await bcrypt.hash(this.password, 10)
-  }
+  // @BeforeInsert()
+  // async hashPassword() {
+  //   this.password = await bcrypt.hash(this.password, 10)
+  // }
 
-  toResponseObject(showToken = false): UserRO {
-    const { id, created, firstName, lastName, email, phoneNumber, token } = this
+  sanitizeUser(hideToken = true): UserRO {
+    const { id, created, firstName, lastName, email, userName, token } = this
     const responseObject: UserRO = {
       id,
       created,
       firstName,
       lastName,
       email,
-      phoneNumber,
+      userName,
     }
-    if (showToken) {
+    if (!hideToken) {
       responseObject.token = token
     }
     return responseObject
@@ -76,9 +76,4 @@ export class User {
   async comparePassword(attempt: string) {
     return await bcrypt.compare(attempt, this.password)
   }
-
-  // private get token() {
-  //   const { id } = this
-  //   return jwt.sign(id, process.env.SECRET)
-  // }
 }

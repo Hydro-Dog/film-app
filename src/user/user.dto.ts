@@ -14,7 +14,7 @@ export class UserDTO {
   lastName: string
 
   @IsNotEmpty()
-  phoneNumber: string
+  userName: string
 }
 
 export class UserRO {
@@ -23,6 +23,6 @@ export class UserRO {
   email: string
   firstName: string
   lastName: string
-  phoneNumber: string
+  userName: string
   token?: string
 }

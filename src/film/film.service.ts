@@ -30,7 +30,6 @@ export class FilmService {
     filmCategory: FilmCategories
   ): Promise<string[]> {
     const pageNumbersArr = pageNumbers.split(',')
-    console.log('getFilmsByCategory: ', pageNumbers, filmCategory)
     const requestsArr = pageNumbersArr.map((page) => {
       return this.httpService
         .get(
@@ -54,9 +53,7 @@ export class FilmService {
     pageNumbers: string,
     filterParams: Record<string, unknown>
   ) {
-    console.log('getFilmsByFilters: ', pageNumbers, filterParams)
     const pageNumbersArr = pageNumbers.split(',')
-
     const requestsArr = pageNumbersArr.map((page) => {
       return this.httpService
         .get(

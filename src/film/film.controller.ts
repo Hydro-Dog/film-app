@@ -14,7 +14,6 @@ export class FilmController {
 
   @Get('api/getmovies')
   getMovies(@Body() data: ApiDTO) {
-    console.log('data: ', data)
     if (data.filmCategory && data.filterParams) {
       throw new HttpException(
         'Both filters and categories are provided',
