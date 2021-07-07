@@ -52,6 +52,9 @@ export class User {
   @Column('text', { array: true, nullable: true })
   sessionHistory: string[]
 
+  @Column()
+  emailConfirmed: boolean
+
   // @BeforeInsert()
   // async hashPassword() {
   //   this.password = await bcrypt.hash(this.password, 10)

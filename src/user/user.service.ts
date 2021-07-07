@@ -20,6 +20,32 @@ export class UserService {
     return users.map((user) => user.sanitizeUser())
   }
 
+  async findByUserName(payload: Pick<UserDTO, 'userName'>, res) {
+    const { userName } = payload
+    const user = await this.userRepository.findOne({
+      where: [{ userName }],
+    })
+    if (user) {
+      throw new HttpException(
+        'Username is already taken',
+        HttpStatus.BAD_REQUEST
+      )
+    }
+    return res.status(HttpStatus.OK).json({ isAvailable: true })
+  }
+
+  async findByEmail(payload: Pick<UserDTO, 'email'>, res) {
+    const { email } = payload
+    const user = await this.userRepository.findOne({
+      where: [{ email }],
+    })
+    console.log('user: ', user)
+    if (user) {
+      throw new HttpException('Email are already taken', HttpStatus.BAD_REQUEST)
+    }
+    return res.status(HttpStatus.OK).json({ isAvailable: true })
+  }
+
   // async login(data: Pick<UserDTO, 'email' | 'password'>) {
   //   const { email, password } = data
   //   const user = await this.userRepository.findOne({ where: { email } })
