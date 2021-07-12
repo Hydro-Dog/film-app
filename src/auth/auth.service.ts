@@ -18,6 +18,19 @@ export class AuthService {
     private mailerService: MailerService
   ) {}
 
+  async confirm(token: string, userName: string) {
+    const isValid = await bcrypt.compare(userName + process.env.SECRET, token)
+    console.log('isValid: ', isValid)
+    if (isValid) {
+      const user = await this.userRepository.findOne({ where: { userName } })
+      user.emailConfirmed = true
+      this.userRepository.save(user)
+      return 'Account confirmed'
+    } else {
+      throw new HttpException('Error', HttpStatus.BAD_REQUEST)
+    }
+  }
+
   async signPayload(payload: any) {
     return sign(payload, process.env.SECRET, { expiresIn: '12h' })
   }
@@ -73,8 +86,8 @@ export class AuthService {
     user.sessionsInvite = []
     user.activeSessions = []
     user.emailConfirmed = false
+    console.log('user.userName: ', user.userName)
     const token = await bcrypt.hash(user.userName + process.env.SECRET, 10)
-    console.log('token: ', token)
     await this.sendUserConfirmation(user, token)
     await this.userRepository.save(user)
 
@@ -87,8 +100,6 @@ export class AuthService {
   }
 
   async sendUserConfirmation(user: User, token: string) {
-    const url = `example.com/auth/confirm?token=${token}`
-
     await this.mailerService.sendMail({
       to: user.email,
       // from: '"Support Team" <support@example.com>', // override default from
@@ -97,7 +108,8 @@ export class AuthService {
       context: {
         // ✏️ filling curly brackets with content
         name: user.firstName,
-        url,
+        userName: user.userName,
+        token,
       },
     })
 
