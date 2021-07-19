@@ -12,15 +12,16 @@ import { MailerService } from '@nestjs-modules/mailer'
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UserService,
     @InjectRepository(User) private userRepository: Repository<User>,
     private jwtService: JwtService,
     private mailerService: MailerService
   ) {}
 
-  async confirm(token: string, userName: string) {
-    const isValid = await bcrypt.compare(userName + process.env.SECRET, token)
-    console.log('isValid: ', isValid)
+  async confirmUser(token: string, userName: string) {
+    const isValid = await bcrypt.compare(
+      userName + process.env.CONFIRMATION_SECRET,
+      token
+    )
     if (isValid) {
       const user = await this.userRepository.findOne({ where: { userName } })
       user.emailConfirmed = true
@@ -31,19 +32,33 @@ export class AuthService {
     }
   }
 
-  async signPayload(payload: any) {
-    return sign(payload, process.env.SECRET, { expiresIn: '12h' })
-  }
-
-  async validateUser(payload: any) {
-    return await this.userService.findByPayload(payload)
-  }
-
-  async getToken(user: any) {
-    const payload = { username: user.username, sub: user.userId }
-    return {
-      access_token: this.jwtService.sign(payload),
+  async refresh(headers: any, refresh: string) {
+    console.log('refresh: ', refresh)
+    try {
+      this.jwtService.verify(refresh, { secret: process.env.JWT_SECRET })
+    } catch (error) {
+      throw new HttpException('Refresh expired', HttpStatus.BAD_REQUEST)
     }
+
+    console.log('headers: ', headers)
+    const payload = this.jwtService.decode(
+      headers.authorization.split(' ')[1]
+    ) as { [key: string]: any }
+    console.log('payload: ', payload)
+
+    const user = await this.userRepository.findOne({
+      where: { id: payload.id },
+    })
+
+    const { accessToken, refreshToken } = await this.getTokens(user.id)
+
+    user.accessToken = accessToken
+    user.refreshToken = refreshToken
+
+    await this.userRepository.update(user.id, user)
+    const responseUser = user.sanitizeUser()
+
+    return { user: responseUser, refreshToken, accessToken }
   }
 
   async login(data: Pick<UserDTO, 'userName' | 'password'>) {
@@ -55,17 +70,16 @@ export class AuthService {
         HttpStatus.BAD_REQUEST
       )
     }
-    const payload = {
-      userName: user.userName,
-      id: user.id,
-    }
 
-    const token = await this.signPayload(payload)
-    user.token = token
+    const { accessToken, refreshToken } = await this.getTokens(user.id)
+
+    user.accessToken = accessToken
+    user.refreshToken = refreshToken
+
     await this.userRepository.update(user.id, user)
     const responseUser = user.sanitizeUser()
 
-    return { user: responseUser, token }
+    return { user: responseUser, refreshToken, accessToken }
   }
 
   async register(data: UserDTO) {
@@ -86,15 +100,12 @@ export class AuthService {
     user.sessionsInvite = []
     user.activeSessions = []
     user.emailConfirmed = false
-    console.log('user.userName: ', user.userName)
-    const token = await bcrypt.hash(user.userName + process.env.SECRET, 10)
+    const token = await bcrypt.hash(
+      user.userName + process.env.CONFIRMATION_SECRET,
+      10
+    )
     await this.sendUserConfirmation(user, token)
     await this.userRepository.save(user)
-
-    const payload = {
-      userName: user.userName,
-      id: user.id,
-    }
 
     return { id: user.id }
   }
@@ -102,21 +113,33 @@ export class AuthService {
   async sendUserConfirmation(user: User, token: string) {
     await this.mailerService.sendMail({
       to: user.email,
-      // from: '"Support Team" <support@example.com>', // override default from
       subject: 'Welcome to Nice App! Confirm your Email',
-      template: './registration-confirmation', // `.hbs` extension is appended automatically
+      template: './registration-confirmation',
       context: {
-        // ✏️ filling curly brackets with content
         name: user.firstName,
         userName: user.userName,
         token,
       },
     })
-
-    console.log('sent!!')
   }
 
   async hashPassword(password: string) {
     return await bcrypt.hash(password, 10)
+  }
+
+  async getTokens(id: string) {
+    const payload = {
+      id,
+    }
+    const accessToken = await this.jwtService.sign(payload, {
+      expiresIn: '2m',
+      secret: process.env.JWT_SECRET,
+    })
+    const refreshToken = await this.jwtService.sign(payload, {
+      expiresIn: '10m',
+      secret: process.env.JWT_SECRET,
+    })
+
+    return { accessToken, refreshToken }
   }
 }

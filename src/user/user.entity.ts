@@ -38,7 +38,10 @@ export class User {
   password: string
 
   @Column({ nullable: true })
-  token: string
+  accessToken: string
+
+  @Column({ nullable: true })
+  refreshToken: string
 
   @Column('text', { array: true, nullable: true })
   activeSessions: string[]
@@ -61,7 +64,8 @@ export class User {
   // }
 
   sanitizeUser(hideToken = true): UserRO {
-    const { id, created, firstName, lastName, email, userName, token } = this
+    const { id, created, firstName, lastName, email, userName, accessToken } =
+      this
     const responseObject: UserRO = {
       id,
       created,
@@ -69,10 +73,11 @@ export class User {
       lastName,
       email,
       userName,
+      accessToken,
     }
-    if (!hideToken) {
-      responseObject.token = token
-    }
+    // if (!hideToken) {
+    //   responseObject.accessToken = accessToken
+    // }
     return responseObject
   }
 

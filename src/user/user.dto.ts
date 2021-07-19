@@ -24,5 +24,5 @@ export class UserRO {
   firstName: string
   lastName: string
   userName: string
-  token?: string
+  accessToken?: string
 }

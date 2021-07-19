@@ -11,7 +11,7 @@ import { HttpErrorFilter } from './shared/http-error.filter'
 import { LoggerInterceptor } from './shared/logger.interceptor'
 import { TimeoutInterceptor } from './shared/timeout.interceptor'
 import { UserModule } from './user/user.module'
-import { MailModule } from './mail/mail.module';
+import { MailModule } from './mail/mail.module'
 
 const username = process.env.DB_USER
 const password = process.env.DB_PASSWORD

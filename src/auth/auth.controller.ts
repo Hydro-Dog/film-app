@@ -1,4 +1,4 @@
-import { Get, Post, Query } from '@nestjs/common'
+import { Get, Post, Query, Headers } from '@nestjs/common'
 import { Body } from '@nestjs/common'
 import { Controller } from '@nestjs/common'
 import { UserDTO } from 'src/user/user.dto'
@@ -21,6 +21,11 @@ export class AuthController {
 
   @Get('confirm')
   confirm(@Query() { token, userName }) {
-    return this.authService.confirm(token, userName)
+    return this.authService.confirmUser(token, userName)
+  }
+
+  @Post('refresh')
+  refresh(@Headers() headers, @Body() { refreshToken }) {
+    return this.authService.refresh(headers, refreshToken)
   }
 }

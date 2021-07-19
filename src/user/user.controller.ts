@@ -1,14 +1,15 @@
 import { Controller, Get, Query, UseGuards, Response } from '@nestjs/common'
 import { UserService } from './user.service'
-import { AuthGuard } from '@nestjs/passport'
+// import { AuthGuard } from '@nestjs/passport'
 import { UserDTO } from './user.dto'
+import { AuthGuard } from 'src/auth/auth.guard'
 
 @Controller()
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Get('api/users')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard)
   getAll() {
     return this.userService.getAll()
   }
