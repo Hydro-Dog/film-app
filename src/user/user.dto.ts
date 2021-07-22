@@ -25,4 +25,5 @@ export class UserRO {
   lastName: string
   userName: string
   accessToken?: string
+  refreshToken?: string
 }

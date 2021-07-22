@@ -3,8 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { User } from 'src/user/user.entity'
 import { Repository } from 'typeorm'
 import { JwtService } from '@nestjs/jwt'
-import { UserService } from 'src/user/user.service'
-import { sign } from 'jsonwebtoken'
 import { UserDTO } from 'src/user/user.dto'
 import * as bcrypt from 'bcrypt'
 import { MailerService } from '@nestjs-modules/mailer'
@@ -73,13 +71,12 @@ export class AuthService {
 
     const { accessToken, refreshToken } = await this.getTokens(user.id)
 
-    user.accessToken = accessToken
-    user.refreshToken = refreshToken
-
     await this.userRepository.update(user.id, user)
     const responseUser = user.sanitizeUser()
+    responseUser.refreshToken = refreshToken
+    responseUser.accessToken = accessToken
 
-    return { user: responseUser, refreshToken, accessToken }
+    return responseUser
   }
 
   async register(data: UserDTO) {
