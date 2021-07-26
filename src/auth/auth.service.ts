@@ -48,15 +48,16 @@ export class AuthService {
       where: { id: payload.id },
     })
 
-    const { accessToken, refreshToken } = await this.getTokens(user.id)
+    const { accessToken } = await this.getAccessToken(user.id)
+    // const { accessToken, refreshToken } = await this.getTokens(user.id)
 
     user.accessToken = accessToken
-    user.refreshToken = refreshToken
+    // user.refreshToken = refreshToken
 
     await this.userRepository.update(user.id, user)
     const responseUser = user.sanitizeUser()
 
-    return { user: responseUser, refreshToken, accessToken }
+    return responseUser
   }
 
   async login(data: Pick<UserDTO, 'userName' | 'password'>) {
@@ -69,7 +70,10 @@ export class AuthService {
       )
     }
 
-    const { accessToken, refreshToken } = await this.getTokens(user.id)
+    const [{ accessToken }, { refreshToken }] = await Promise.all([
+      this.getAccessToken(user.id),
+      this.getRefreshToken(user.id),
+    ])
 
     await this.userRepository.update(user.id, user)
     const responseUser = user.sanitizeUser()
@@ -124,19 +128,43 @@ export class AuthService {
     return await bcrypt.hash(password, 10)
   }
 
-  async getTokens(id: string) {
+  // async getTokens(id: string) {
+  //   const payload = {
+  //     id,
+  //   }
+  //   const accessToken = await this.jwtService.sign(payload, {
+  //     expiresIn: '1m',
+  //     secret: process.env.JWT_SECRET,
+  //   })
+  //   const refreshToken = await this.jwtService.sign(payload, {
+  //     expiresIn: '10m',
+  //     secret: process.env.JWT_SECRET,
+  //   })
+
+  //   return { accessToken, refreshToken }
+  // }
+
+  async getAccessToken(id: string) {
     const payload = {
       id,
     }
     const accessToken = await this.jwtService.sign(payload, {
-      expiresIn: '2m',
-      secret: process.env.JWT_SECRET,
-    })
-    const refreshToken = await this.jwtService.sign(payload, {
-      expiresIn: '10m',
+      expiresIn: '10s',
       secret: process.env.JWT_SECRET,
     })
 
-    return { accessToken, refreshToken }
+    return { accessToken }
+  }
+
+  async getRefreshToken(id: string) {
+    const payload = {
+      id,
+    }
+    const refreshToken = await this.jwtService.sign(payload, {
+      expiresIn: '5m',
+      secret: process.env.JWT_SECRET,
+    })
+
+    return { refreshToken }
   }
 }
