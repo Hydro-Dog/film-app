@@ -58,14 +58,20 @@ export class User {
   @Column()
   emailConfirmed: boolean
 
-  // @BeforeInsert()
-  // async hashPassword() {
-  //   this.password = await bcrypt.hash(this.password, 10)
-  // }
+  @Column('text', { nullable: true })
+  phoneNumber: string
 
   sanitizeUser(hideToken = true): UserRO {
-    const { id, created, firstName, lastName, email, userName, accessToken } =
-      this
+    const {
+      id,
+      created,
+      firstName,
+      lastName,
+      email,
+      userName,
+      accessToken,
+      phoneNumber,
+    } = this
     const responseObject: UserRO = {
       id,
       created,
@@ -74,6 +80,7 @@ export class User {
       email,
       userName,
       accessToken,
+      phoneNumber,
     }
     // if (!hideToken) {
     //   responseObject.accessToken = accessToken

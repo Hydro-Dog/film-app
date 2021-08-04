@@ -49,10 +49,8 @@ export class AuthService {
     })
 
     const { accessToken } = await this.getAccessToken(user.id)
-    // const { accessToken, refreshToken } = await this.getTokens(user.id)
 
     user.accessToken = accessToken
-    // user.refreshToken = refreshToken
 
     await this.userRepository.update(user.id, user)
     const responseUser = user.sanitizeUser()
@@ -128,28 +126,12 @@ export class AuthService {
     return await bcrypt.hash(password, 10)
   }
 
-  // async getTokens(id: string) {
-  //   const payload = {
-  //     id,
-  //   }
-  //   const accessToken = await this.jwtService.sign(payload, {
-  //     expiresIn: '1m',
-  //     secret: process.env.JWT_SECRET,
-  //   })
-  //   const refreshToken = await this.jwtService.sign(payload, {
-  //     expiresIn: '10m',
-  //     secret: process.env.JWT_SECRET,
-  //   })
-
-  //   return { accessToken, refreshToken }
-  // }
-
   async getAccessToken(id: string) {
     const payload = {
       id,
     }
     const accessToken = await this.jwtService.sign(payload, {
-      expiresIn: '10s',
+      expiresIn: '10m',
       secret: process.env.JWT_SECRET,
     })
 
@@ -161,7 +143,7 @@ export class AuthService {
       id,
     }
     const refreshToken = await this.jwtService.sign(payload, {
-      expiresIn: '5m',
+      expiresIn: '30m',
       secret: process.env.JWT_SECRET,
     })
 

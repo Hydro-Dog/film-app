@@ -15,6 +15,9 @@ export class UserDTO {
 
   @IsNotEmpty()
   userName: string
+
+  @IsNotEmpty()
+  phoneNumber: string
 }
 
 export class UserRO {
@@ -26,4 +29,5 @@ export class UserRO {
   userName: string
   accessToken?: string
   refreshToken?: string
+  phoneNumber: string
 }
