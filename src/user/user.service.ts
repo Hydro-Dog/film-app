@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { throwError } from 'rxjs'
 import { Repository } from 'typeorm'
 import { UserDTO, UserRO } from './user.dto'
 import { User } from './user.entity'
@@ -10,13 +11,26 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>
   ) {}
 
+  async updateUser(id: number, payload: Partial<UserDTO>): Promise<UserRO> {
+    console.log('idididid: ', id)
+    const user = await this.userRepository.findOne({ where: [{ id }] })
+    if (user) {
+      await this.userRepository.update(id, {
+        ...user,
+        ...payload,
+      })
+      const userUpdated = await this.userRepository.findOne({ where: [{ id }] })
+      return userUpdated.sanitizeUser()
+    }
+    throw new HttpException('User not found', HttpStatus.BAD_REQUEST)
+  }
+
   async getAll(): Promise<UserRO[]> {
     const users = await this.userRepository.find()
     return users.map((user) => user.sanitizeUser())
   }
 
   async getUser(id: number) {
-    console.log('getUser: ', id)
     const user = await this.userRepository.findOne({
       where: [{ id }],
     })
@@ -59,7 +73,7 @@ export class UserService {
     })
     if (user) {
       throw new HttpException(
-        'Phone number Is already taken',
+        'Phone number is already taken',
         HttpStatus.BAD_REQUEST
       )
     }
