@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { throwError } from 'rxjs'
 import { Repository } from 'typeorm'
 import { UserDTO, UserRO } from './user.dto'
 import { User } from './user.entity'
@@ -12,7 +11,6 @@ export class UserService {
   ) {}
 
   async updateUser(id: number, payload: Partial<UserDTO>): Promise<UserRO> {
-    console.log('idididid: ', id)
     const user = await this.userRepository.findOne({ where: [{ id }] })
     if (user) {
       await this.userRepository.update(id, {
@@ -40,19 +38,14 @@ export class UserService {
     return user.sanitizeUser()
   }
 
-  async findByUserName(payload: Pick<UserDTO, 'userName'>, res) {
-    const { userName } = payload
-    const users = await this.userRepository.find()
+  async findByUserName(userPayload: Partial<UserDTO>, res) {
+    const { userName } = userPayload
     const user = await this.userRepository.findOne({
       where: [{ userName }],
     })
-    if (user) {
-      throw new HttpException(
-        'Username is already taken',
-        HttpStatus.BAD_REQUEST
-      )
-    }
-    return res.status(HttpStatus.OK).json({ isAvailable: true })
+    return user
+      ? res.status(HttpStatus.OK).json({ user: user.sanitizeUser() })
+      : res.status(HttpStatus.OK).json({ user: null })
   }
 
   async findByEmail(payload: Pick<UserDTO, 'email'>, res) {
@@ -72,6 +65,34 @@ export class UserService {
       where: [{ phoneNumber }],
     })
     if (user) {
+      throw new HttpException(
+        'Phone number is already taken',
+        HttpStatus.BAD_REQUEST
+      )
+    }
+    return res.status(HttpStatus.OK).json({ isAvailable: true })
+  }
+
+  async checkUserName(userPayload: Partial<UserDTO>, res) {
+    const { userName } = userPayload
+    const user = await this.userRepository.findOne({
+      where: [{ userName }],
+    })
+    if (user && user.id !== userPayload.id) {
+      throw new HttpException(
+        'Username is already taken',
+        HttpStatus.BAD_REQUEST
+      )
+    }
+    return res.status(HttpStatus.OK).json({ isAvailable: true })
+  }
+
+  async checkPhoneNumber(userPayload: Partial<UserDTO>, res) {
+    const { phoneNumber } = userPayload
+    const user = await this.userRepository.findOne({
+      where: [{ phoneNumber }],
+    })
+    if (user && user.id !== userPayload.id) {
       throw new HttpException(
         'Phone number is already taken',
         HttpStatus.BAD_REQUEST

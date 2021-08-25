@@ -18,6 +18,8 @@ export class UserDTO {
 
   @IsNotEmpty()
   phoneNumber: string
+
+  id: any
 }
 
 export class UserRO {

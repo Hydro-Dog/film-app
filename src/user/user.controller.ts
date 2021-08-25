@@ -4,23 +4,19 @@ import {
   Query,
   UseGuards,
   Response,
-  Param,
   Put,
-  Body,
-  Req,
+  Post,
 } from '@nestjs/common'
 import { UserService } from './user.service'
-// import { AuthGuard } from '@nestjs/passport'
 import { UserDTO } from './user.dto'
 import { AuthGuard } from 'src/auth/auth.guard'
 import { User } from 'src/shared/user-id.decorator'
-import { SlowBuffer } from 'buffer'
 
 @Controller()
-@UseGuards(AuthGuard)
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @UseGuards(AuthGuard)
   @Get('api/users')
   getAll() {
     return this.userService.getAll()
@@ -28,14 +24,25 @@ export class UserController {
 
   @Get('api/users/userId')
   getUser(@Query() userId: { id: number }) {
-    console.log('getUser: ', userId)
     return this.userService.getUser(userId.id)
   }
 
+  @UseGuards(AuthGuard)
   @Put('api/users')
   updateUser(@User() user) {
-    console.log('useruseruser: ', user)
     return this.userService.updateUser(user.id, user)
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('api/users/checkUserName')
+  checkByUserName(@User() user: Partial<UserDTO>, @Response() res: any) {
+    return this.userService.checkUserName(user, res)
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('api/users/checkPhoneNumber')
+  checkByPhoneNumber(@User() user: Partial<UserDTO>, @Response() res: any) {
+    return this.userService.checkPhoneNumber(user, res)
   }
 
   @Get('api/users/username')
@@ -43,13 +50,11 @@ export class UserController {
     @Query() userName: Pick<UserDTO, 'userName'>,
     @Response() res: any
   ) {
-    console.log('getByUserName: ', userName)
     return this.userService.findByUserName(userName, res)
   }
 
   @Get('api/users/email')
   getByEmail(@Query() email: Pick<UserDTO, 'email'>, @Response() res: any) {
-    console.log('getByEmail: ', email)
     return this.userService.findByEmail(email, res)
   }
 
@@ -58,7 +63,6 @@ export class UserController {
     @Query() phoneNumber: Pick<UserDTO, 'phoneNumber'>,
     @Response() res: any
   ) {
-    console.log('getByPhoneNumber: ', phoneNumber)
     return this.userService.findByPhoneNumber(phoneNumber, res)
   }
 }
