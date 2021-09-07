@@ -1,10 +1,10 @@
 import { HttpService, Injectable } from '@nestjs/common'
+import { map } from 'rxjs/operators'
 import { objectToQueryString } from 'src/helpers/object-to-query-string.helper'
 import {
   getAPIDiscoverUrl,
   getAPIReqCategoryUrl,
 } from 'src/helpers/url-for-tmdb-generator.helper'
-import { SimpleConsoleLogger } from 'typeorm'
 import { FilmCategories } from './film.models'
 
 // Get Popular     https://api.themoviedb.org/3/movie/popular?api_key=<;<api_key>>&language=en-US&page=1
@@ -24,6 +24,19 @@ const apiReqUrl = `${process.env.API_BASE_URL}/${category}?page=${pageNumber}${f
 @Injectable()
 export class FilmService {
   constructor(private httpService: HttpService) {}
+
+  async getAvailableRegions(): Promise<any> {
+    console.log(
+      'get!!!! ',
+      `${process.env.API_BASE_URL}/watch/providers/regions?api_key=${process.env.API_KEY}`
+    )
+    return this.httpService
+      .get(
+        `${process.env.API_BASE_URL}/watch/providers/regions?api_key=${process.env.API_KEY}`
+      )
+      .pipe(map((x) => x.data.results))
+      .toPromise()
+  }
 
   async getFilmsByCategory(
     pageNumbers: string,

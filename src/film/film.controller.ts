@@ -4,15 +4,23 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common'
+import { AuthGuard } from 'src/auth/auth.guard'
 import { ApiDTO } from './film.dto'
 import { FilmService } from './film.service'
 
+@UseGuards(AuthGuard)
 @Controller()
 export class FilmController {
   constructor(private filmService: FilmService) {}
 
-  @Get('api/getmovies')
+  @Get('api/regions')
+  getAvailableRegions() {
+    return this.filmService.getAvailableRegions()
+  }
+
+  @Get('api/movies')
   getMovies(@Body() data: ApiDTO) {
     if (data.filmCategory && data.filterParams) {
       throw new HttpException(
