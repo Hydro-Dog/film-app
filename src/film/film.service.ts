@@ -26,10 +26,6 @@ export class FilmService {
   constructor(private httpService: HttpService) {}
 
   async getAvailableRegions(): Promise<any> {
-    console.log(
-      'get!!!! ',
-      `${process.env.API_BASE_URL}/watch/providers/regions?api_key=${process.env.API_KEY}`
-    )
     return this.httpService
       .get(
         `${process.env.API_BASE_URL}/watch/providers/regions?api_key=${process.env.API_KEY}`

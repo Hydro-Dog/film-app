@@ -12,6 +12,7 @@ import { LoggerInterceptor } from './shared/logger.interceptor'
 import { TimeoutInterceptor } from './shared/timeout.interceptor'
 import { UserModule } from './user/user.module'
 import { MailModule } from './mail/mail.module'
+import { GameModeModule } from './regions/game-mode.module'
 
 const username = process.env.DB_USER
 const password = process.env.DB_PASSWORD
@@ -23,6 +24,7 @@ const database = process.env.DB_NAME
     UserModule,
     MatchSessionModule,
     FilmModule,
+    GameModeModule,
     AuthModule,
     MailModule,
   ],
