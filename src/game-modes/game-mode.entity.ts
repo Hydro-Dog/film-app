@@ -6,5 +6,5 @@ export class GameMode {
   id: string
 
   @Column()
-  name: string
+  value: string
 }

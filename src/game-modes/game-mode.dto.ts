@@ -5,5 +5,5 @@ export class GameModeDTO {
   id: any
 
   @IsNotEmpty()
-  name: string
+  value: string
 }

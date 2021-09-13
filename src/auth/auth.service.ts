@@ -83,9 +83,11 @@ export class AuthService {
 
   async register(data: UserDTO) {
     const { email, userName } = data
+    console.log('email: ', email, userName)
     let user = await this.userRepository.findOne({
       where: [{ email }, { userName }],
     })
+    console.log('user: ', user)
     if (user) {
       throw new HttpException(
         'User with such email or user name number already exist',
@@ -94,6 +96,7 @@ export class AuthService {
     }
 
     user = await this.userRepository.create(data)
+    console.log('user2: ', user)
 
     user.password = await this.hashPassword(data.password)
     user.sessionsInvite = []
@@ -103,7 +106,9 @@ export class AuthService {
       user.userName + process.env.CONFIRMATION_SECRET,
       10
     )
+    console.log('HERE')
     await this.sendUserConfirmation(user, token)
+    console.log('THERE')
     await this.userRepository.save(user)
 
     return { id: user.id }
