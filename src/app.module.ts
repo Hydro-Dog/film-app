@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { Logger, Module } from '@nestjs/common'
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { basename, dirname, join } from 'path'
@@ -13,6 +13,7 @@ import { TimeoutInterceptor } from './shared/timeout.interceptor'
 import { UserModule } from './user/user.module'
 import { MailModule } from './mail/mail.module'
 import { GameModeModule } from './game-modes/game-mode.module'
+import { AppGetaway } from './app-getaway/app-getaway'
 
 const username = process.env.DB_USER
 const password = process.env.DB_PASSWORD
@@ -31,6 +32,8 @@ const database = process.env.DB_NAME
   controllers: [AppController],
   providers: [
     AppService,
+    AppGetaway,
+    Logger,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,

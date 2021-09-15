@@ -9,9 +9,7 @@ export class GameModeService {
   constructor(
     @InjectRepository(GameMode)
     private gameModesRepository: Repository<GameMode>
-  ) {
-    console.log('heeeeeeeeeere')
-  }
+  ) {}
 
   async getGameModes(): Promise<GameModeDTO[]> {
     const gameModes = await this.gameModesRepository.find()
