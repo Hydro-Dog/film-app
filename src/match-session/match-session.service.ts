@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { Socket } from 'socket.io'
 import { FilmService } from 'src/film/film.service'
 import { User } from 'src/user/user.entity'
 import { Repository } from 'typeorm'
-import { threadId } from 'worker_threads'
 import {
   CreateMatchSessionDTO,
   UpdateMatchSessionDTO,
@@ -13,6 +13,7 @@ import { MatchSession } from './match-session.entity'
 @Injectable()
 export class MatchSessionService {
   constructor(
+    // private socket: Socket,
     @InjectRepository(MatchSession)
     private matchSessionRepository: Repository<MatchSession>,
     @InjectRepository(User)
@@ -21,36 +22,40 @@ export class MatchSessionService {
   ) {}
 
   async create(data: CreateMatchSessionDTO) {
+    console.log('data: ', data)
     //generates filmsIdsSequence
     let filmsIdsSequence: string[]
     if (data.category) {
       filmsIdsSequence = await this.filmService.getFilmsByCategory(
-        '1,2,3',
-        data.category
+        '1,2',
+        data.category,
+        data.lang
       )
-    } else {
-      filmsIdsSequence = await this.filmService.getFilmsByFilters(
-        '1,2,3',
-        data.filterParams
-      )
+      // } else {
+      //   filmsIdsSequence = await this.filmService.getFilmsByFilters(
+      //     '1,2',
+      //     data.filterParams
+      //   )
     }
+
+    console.log('filmsIdsSequence: ', filmsIdsSequence)
 
     const hostSequenceCounter = 0
     const guestSequenceCounter = 0
     const hostLikedFilms = []
     const guestLikedFilms = []
     const matchedFilms = []
-    const matchesLimit = data.matchesLimit
+    const matchesLimit = data.matchLimit
 
     const matchSessionObj: Partial<MatchSession> = {
-      hostId: data.hostId,
+      hostId: data.clientId,
       guestId: data.guestId,
       hostSequenceCounter,
       guestSequenceCounter,
       hostLikedFilms,
       guestLikedFilms,
       matchedFilms,
-      matchesLimit,
+      matchLimit: data.matchLimit,
       filmsIdsSequence,
       completed: false,
       category: data.category,
@@ -65,7 +70,7 @@ export class MatchSessionService {
 
     //update participants tables
     const host = await this.userRepository.findOne({
-      where: { id: data.hostId },
+      where: { id: data.clientId },
     })
     const guest = await this.userRepository.findOne({
       where: { id: data.guestId },
@@ -74,8 +79,13 @@ export class MatchSessionService {
     host.activeSessions = [...host.activeSessions, matchSession.id]
     guest.sessionsInvite = [...guest.sessionsInvite, matchSession.id]
 
+    console.log('host.activeSessions: ', host.id, host.activeSessions)
+    console.log('guest.activeSessions: ', guest.id, guest.activeSessions)
+
     await this.userRepository.save({ id: host.id, ...host })
     await this.userRepository.save({ id: guest.id, ...guest })
+
+    // this.socket.emit('invite', { id: matchSession.id })
 
     return matchSession
   }
@@ -108,8 +118,7 @@ export class MatchSessionService {
       matchSession.matchedFilms.push(data.filmId)
     }
 
-    let completed =
-      matchSession.matchedFilms.length >= matchSession.matchesLimit
+    let completed = matchSession.matchedFilms.length >= matchSession.matchLimit
 
     //update matchSession
     const {
@@ -119,7 +128,7 @@ export class MatchSessionService {
       hostLikedFilms,
       guestLikedFilms,
       matchedFilms,
-      matchesLimit,
+      matchLimit,
     } = await this.matchSessionRepository.save(matchSession)
 
     return {
@@ -127,7 +136,7 @@ export class MatchSessionService {
       completed,
       isMatched,
       matchedFilms,
-      matchesLimit,
+      matchLimit,
       hostSequenceCounter,
       guestSequenceCounter,
       hostLikedFilms,

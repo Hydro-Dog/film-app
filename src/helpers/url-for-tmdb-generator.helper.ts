@@ -4,7 +4,7 @@ export const getAPIReqCategoryUrl = (
   apiBaseUrl: string,
   apiKey: string,
   filmCategory: FilmCategories,
-  page: number,
+  page: string,
   lang: string
 ) =>
   `${apiBaseUrl}/movie/${filmCategory}?api_key=${apiKey}&page=${page}&language=${lang}`

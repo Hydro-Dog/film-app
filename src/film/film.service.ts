@@ -36,9 +36,11 @@ export class FilmService {
 
   async getFilmsByCategory(
     pageNumbers: string,
-    filmCategory: FilmCategories
+    filmCategory: FilmCategories,
+    lang: string
   ): Promise<string[]> {
     const pageNumbersArr = pageNumbers.split(',')
+    //(vbabaev) generate request for each page number
     const requestsArr = pageNumbersArr.map((page) => {
       return this.httpService
         .get(
@@ -46,8 +48,8 @@ export class FilmService {
             process.env.API_BASE_URL,
             process.env.API_KEY,
             filmCategory,
-            page as unknown as number,
-            'ru-RU'
+            page,
+            lang
           )
         )
         .toPromise()

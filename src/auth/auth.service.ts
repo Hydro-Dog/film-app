@@ -107,7 +107,12 @@ export class AuthService {
       10
     )
     console.log('HERE')
-    await this.sendUserConfirmation(user, token)
+    try {
+      await this.sendUserConfirmation(user, token)
+    } catch (e) {
+      console.log('error: ', e)
+    }
+
     console.log('THERE')
     await this.userRepository.save(user)
 

@@ -20,7 +20,7 @@ export class MatchSession {
   @Column('text', { array: true }) hostLikedFilms?: string[]
   @Column('text', { array: true }) guestLikedFilms?: string[]
   @Column('text', { array: true }) matchedFilms?: string[]
-  @Column() matchesLimit: number
+  @Column() matchLimit: number
   @Column('text', { array: true }) filmsIdsSequence?: string[]
   @Column({ nullable: true }) category?: string
   @Column({ nullable: true }) filterParams?: string

@@ -1,4 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common'
+import { User } from 'src/shared/user-id.decorator'
 import {
   CreateMatchSessionDTO,
   UpdateMatchSessionDTO,
@@ -10,7 +11,8 @@ export class MatchSessionController {
   constructor(private matchSessionService: MatchSessionService) {}
 
   @Post('api/matchsession')
-  create(@Body() data: CreateMatchSessionDTO) {
+  create(@User() data: CreateMatchSessionDTO) {
+    console.log('data: ', data)
     return this.matchSessionService.create(data)
   }
 

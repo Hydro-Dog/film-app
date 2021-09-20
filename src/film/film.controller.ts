@@ -20,25 +20,26 @@ export class FilmController {
     return this.filmService.getAvailableRegions()
   }
 
-  @Get('api/movies')
-  getMovies(@Body() data: ApiDTO) {
-    if (data.filmCategory && data.filterParams) {
-      throw new HttpException(
-        'Both filters and categories are provided',
-        HttpStatus.BAD_REQUEST
-      )
-    }
+  // @Get('api/movies')
+  // getMovies(@Body() data: ApiDTO) {
+  //   if (data.filmCategory && data.filterParams) {
+  //     throw new HttpException(
+  //       'Both filters and categories are provided',
+  //       HttpStatus.BAD_REQUEST
+  //     )
+  //   }
 
-    if (data.filmCategory) {
-      return this.filmService.getFilmsByCategory(
-        data.pageNumbers,
-        data.filmCategory
-      )
-    }
+  //   if (data.filmCategory) {
+  //     return this.filmService.getFilmsByCategory(
+  //       data.pageNumbers,
+  //       data.filmCategory,
+  //       data.lang
+  //     )
+  //   }
 
-    return this.filmService.getFilmsByFilters(
-      data.pageNumbers,
-      data.filterParams
-    )
-  }
+  //   return this.filmService.getFilmsByFilters(
+  //     data.pageNumbers,
+  //     data.filterParams
+  //   )
+  // }
 }
