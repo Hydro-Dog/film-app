@@ -3,12 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Socket } from 'socket.io'
 import { FilmService } from 'src/film/film.service'
 import { User } from 'src/user/user.entity'
+import { UserService } from 'src/user/user.service'
 import { Repository } from 'typeorm'
 import {
   CreateMatchSessionDTO,
   UpdateMatchSessionDTO,
 } from './match-session.dto'
 import { MatchSession } from './match-session.entity'
+import { SearchScopeMatchSession } from './match-session.model'
 
 @Injectable()
 export class MatchSessionService {
@@ -45,7 +47,15 @@ export class MatchSessionService {
     const hostLikedFilms = []
     const guestLikedFilms = []
     const matchedFilms = []
-    const matchesLimit = data.matchLimit
+    const matchLimit = data.matchLimit
+
+    //update participants tables
+    const host = await this.userRepository.findOne({
+      where: { id: data.clientId },
+    })
+    const guest = await this.userRepository.findOne({
+      where: { id: data.guestId },
+    })
 
     const matchSessionObj: Partial<MatchSession> = {
       hostId: data.clientId,
@@ -55,11 +65,12 @@ export class MatchSessionService {
       hostLikedFilms,
       guestLikedFilms,
       matchedFilms,
-      matchLimit: data.matchLimit,
+      matchLimit,
       filmsIdsSequence,
-      completed: false,
       category: data.category,
       filterParams: JSON.stringify(data.filterParams),
+      completed: false,
+      accepted: false,
     }
 
     //create matchSession
@@ -67,14 +78,6 @@ export class MatchSessionService {
       matchSessionObj
     )
     await this.matchSessionRepository.save(matchSession)
-
-    //update participants tables
-    const host = await this.userRepository.findOne({
-      where: { id: data.clientId },
-    })
-    const guest = await this.userRepository.findOne({
-      where: { id: data.guestId },
-    })
 
     host.activeSessions = [...host.activeSessions, matchSession.id]
     guest.sessionsInvite = [...guest.sessionsInvite, matchSession.id]
@@ -88,6 +91,23 @@ export class MatchSessionService {
     // this.socket.emit('invite', { id: matchSession.id })
 
     return matchSession
+  }
+
+  async getByUserId(id: number, scope: SearchScopeMatchSession) {
+    console.log('scope: ', scope, scope === 'all')
+    let query = this.matchSessionRepository.createQueryBuilder('match_session')
+
+    if (scope === 'all') {
+      console.log('here')
+      return await query
+        .where('match_session.guestId = :id', { id })
+        .orWhere('match_session.hostId = :id', { id })
+        .getMany()
+    } else if (scope === 'hosted') {
+      return await query.where('match_session.hostId = :id', { id }).getMany()
+    } else if (scope === 'invites') {
+      return await query.where('match_session.guestId = :id', { id }).getMany()
+    }
   }
 
   async approveFilm(data: UpdateMatchSessionDTO) {

@@ -2,11 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
 import * as bcrypt from 'bcrypt'
 import { UserRO } from './user.dto'
+import { MatchSession } from 'src/match-session/match-session.entity'
 
 @Entity()
 export class User {

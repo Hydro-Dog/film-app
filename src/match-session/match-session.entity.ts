@@ -1,7 +1,10 @@
+import { User } from 'src/user/user.entity'
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
@@ -25,4 +28,5 @@ export class MatchSession {
   @Column({ nullable: true }) category?: string
   @Column({ nullable: true }) filterParams?: string
   @Column({ nullable: true }) completed: boolean
+  @Column({ nullable: true }) accepted: boolean
 }
