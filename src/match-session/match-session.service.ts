@@ -59,7 +59,9 @@ export class MatchSessionService {
 
     const matchSessionObj: Partial<MatchSession> = {
       hostId: data.clientId,
+      hostName: host.userName,
       guestId: data.guestId,
+      guestName: guest.userName,
       hostSequenceCounter,
       guestSequenceCounter,
       hostLikedFilms,

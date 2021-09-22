@@ -17,7 +17,9 @@ export class MatchSession {
   created: Date
 
   @Column() hostId: string
+  @Column() hostName: string
   @Column() guestId: string
+  @Column() guestName: string
   @Column() hostSequenceCounter?: number
   @Column() guestSequenceCounter?: number
   @Column('text', { array: true }) hostLikedFilms?: string[]
