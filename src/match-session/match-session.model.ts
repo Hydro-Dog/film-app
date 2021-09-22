@@ -1,1 +1,1 @@
-export type SearchScopeMatchSession = 'all' | 'hosted' | 'invites'
+export type SearchMatchSessionUserStatus = 'all' | 'host' | 'guest'

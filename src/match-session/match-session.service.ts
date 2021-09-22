@@ -10,7 +10,7 @@ import {
   UpdateMatchSessionDTO,
 } from './match-session.dto'
 import { MatchSession } from './match-session.entity'
-import { SearchScopeMatchSession } from './match-session.model'
+import { SearchMatchSessionUserStatus } from './match-session.model'
 
 @Injectable()
 export class MatchSessionService {
@@ -93,22 +93,42 @@ export class MatchSessionService {
     return matchSession
   }
 
-  async getByUserId(id: number, scope: SearchScopeMatchSession) {
-    console.log('scope: ', scope, scope === 'all')
-    let query = this.matchSessionRepository.createQueryBuilder('match_session')
-
-    if (scope === 'all') {
-      console.log('here')
-      return await query
-        .where('match_session.guestId = :id', { id })
-        .orWhere('match_session.hostId = :id', { id })
-        .getMany()
-    } else if (scope === 'hosted') {
-      return await query.where('match_session.hostId = :id', { id }).getMany()
-    } else if (scope === 'invites') {
-      return await query.where('match_session.guestId = :id', { id }).getMany()
-    }
+  async getCurrentMatchSessionByUserId(id: any) {
+    return await this.matchSessionRepository
+      .createQueryBuilder('match_session')
+      .where('match_session.guestId = :id', { id })
+      .orWhere('match_session.hostId = :id', { id })
+      .getMany()
   }
+
+  async getInvitesMatchSessionByUserId(id: any) {
+    return await this.matchSessionRepository
+      .createQueryBuilder('match_session')
+      .where('match_session.guestId = :id', { id })
+      .andWhere('match_session.accepted = :flag', { flag: true })
+      .getMany()
+  }
+
+  // async getByUserId(
+  //   id: number,
+  //   userstatus: SearchMatchSessionUserStatus,
+  //   accepted: boolean
+  // ) {
+  //   console.log('userstatus: ', userstatus)
+  //   let query = this.matchSessionRepository.createQueryBuilder('match_session')
+
+  //   if (userstatus === 'all') {
+  //     console.log('here')
+  //     return await query
+  //       .where('match_session.guestId = :id', { id })
+  //       .orWhere('match_session.hostId = :id', { id })
+  //       .getMany()
+  //   } else if (userstatus === 'host') {
+  //     return await query.where('match_session.hostId = :id', { id }).getMany()
+  //   } else if (userstatus === 'guest') {
+  //     return await query.where('match_session.guestId = :id', { id }).getMany()
+  //   }
+  // }
 
   async approveFilm(data: UpdateMatchSessionDTO) {
     const matchSession = await this.matchSessionRepository.findOne({
