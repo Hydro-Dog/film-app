@@ -5,6 +5,7 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
@@ -16,10 +17,14 @@ export class MatchSession {
   @CreateDateColumn()
   created: Date
 
-  @Column() hostId: string
-  @Column() hostName: string
-  @Column() guestId: string
-  @Column() guestName: string
+  @ManyToOne((type) => User, (user) => user.id)
+  @Column()
+  hostId: string
+  // @Column() hostName: string
+  @ManyToOne((type) => User, (user) => user.id)
+  @Column()
+  guestId: string
+  // @Column() guestName: string
   @Column() hostSequenceCounter?: number
   @Column() guestSequenceCounter?: number
   @Column('text', { array: true }) hostLikedFilms?: string[]

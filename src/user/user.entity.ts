@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
@@ -46,8 +47,13 @@ export class User {
   @Column('text', { array: true, nullable: true })
   activeSessions: string[]
 
+  @OneToMany((type) => MatchSession, (matchSession) => matchSession.guestId)
   @Column('text', { array: true, nullable: true })
   sessionsInvite: string[]
+
+  @OneToMany((type) => MatchSession, (matchSession) => matchSession.hostId)
+  @Column('text', { array: true, nullable: true })
+  createdInvite: string[]
 
   @Column('text', { array: true, nullable: true })
   favoriteFilms: string[]

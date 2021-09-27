@@ -59,9 +59,9 @@ export class MatchSessionService {
 
     const matchSessionObj: Partial<MatchSession> = {
       hostId: data.clientId,
-      hostName: host.userName,
+      // hostName: host.userName,
       guestId: data.guestId,
-      guestName: guest.userName,
+      // guestName: guest.userName,
       hostSequenceCounter,
       guestSequenceCounter,
       hostLikedFilms,
@@ -98,6 +98,8 @@ export class MatchSessionService {
   async getCurrentMatchSessionByUserId(id: any) {
     return await this.matchSessionRepository
       .createQueryBuilder('match_session')
+      .leftJoinAndSelect('match_session.guestId', 'guestId')
+      .leftJoinAndSelect('match_session.hostId', 'hostId')
       .where('match_session.guestId = :id', { id })
       .orWhere('match_session.hostId = :id', { id })
       .getMany()
@@ -106,8 +108,11 @@ export class MatchSessionService {
   async getInvitesMatchSessionByUserId(id: any) {
     return await this.matchSessionRepository
       .createQueryBuilder('match_session')
+      .leftJoinAndSelect('match_session.guestId', 'guestId')
+      .leftJoinAndSelect('match_session.hostId', 'hostId')
       .where('match_session.guestId = :id', { id })
       .andWhere('match_session.accepted = :flag', { flag: true })
+
       .getMany()
   }
 
