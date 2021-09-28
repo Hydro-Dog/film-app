@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common'
+import { Logger, Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { AppGetaway } from 'src/app-getaway/app-getaway'
 import { FilmModule } from 'src/film/film.module'
 import { User } from 'src/user/user.entity'
 import { UserModule } from 'src/user/user.module'
@@ -16,6 +17,6 @@ import { MatchSessionService } from './match-session.service'
     JwtModule.register({}),
   ],
   controllers: [MatchSessionController],
-  providers: [MatchSessionService],
+  providers: [MatchSessionService, AppGetaway, Logger],
 })
 export class MatchSessionModule {}

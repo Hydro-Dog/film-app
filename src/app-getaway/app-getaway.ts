@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import {
   ConnectedSocket,
   MessageBody,
@@ -7,6 +7,7 @@ import {
   OnGatewayInit,
   SubscribeMessage,
   WebSocketGateway,
+  WebSocketServer,
   WsResponse,
 } from '@nestjs/websockets'
 import { Socket, Server } from 'socket.io'
@@ -15,7 +16,11 @@ import { Socket, Server } from 'socket.io'
 export class AppGetaway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
+  @WebSocketServer()
+  wss
+
   constructor(private logger: Logger) {}
+
   afterInit(server: Server) {
     this.logger.log('AppGetaway Instantiated', 'AppGetaway')
   }

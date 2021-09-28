@@ -6,6 +6,7 @@ import {
   getAPIReqCategoryUrl,
 } from 'src/helpers/url-for-tmdb-generator.helper'
 import { FilmCategories } from './film.models'
+import { shuffle } from 'lodash'
 
 // Get Popular     https://api.themoviedb.org/3/movie/popular?api_key=<;<api_key>>&language=en-US&page=1
 // Get Now Playing https://api.themoviedb.org/3/movie/now_playing?api_key=<;<api_key>>&language=en-US&page=1
@@ -57,7 +58,9 @@ export class FilmService {
 
     const allRequests = await Promise.all(requestsArr)
 
-    return allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))
+    return shuffle(
+      allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))
+    )
   }
 
   async getFilmsByFilters(

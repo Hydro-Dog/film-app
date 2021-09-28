@@ -32,7 +32,6 @@ const database = process.env.DB_NAME
   controllers: [AppController],
   providers: [
     AppService,
-    AppGetaway,
     Logger,
     {
       provide: APP_FILTER,

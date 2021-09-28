@@ -36,19 +36,28 @@ export class MatchSessionController {
    * Return all match session where the user is host or guest.
    * @param id - user id.
    */
-  @Get('api/activematchsession/:id')
-  getCurrentMatchSessionByUserId(@Param() { id }) {
-    return this.matchSessionService.getCurrentMatchSessionByUserId(id)
+  // @Get('api/activematchsession/:id')
+  // getCurrentMatchSessionByUserId(@Param() { id }) {
+  //   return this.matchSessionService.getCurrentMatchSessionByUserId(id)
+  // }
+
+  /**
+   * Return all match session where the user is host or guest.
+   * @param id - user id.
+   */
+  @Get('api/matchsessions/:id')
+  getMatchSessionByUserId(@Param() { id }) {
+    return this.matchSessionService.getMatchSessionByUserId(id)
   }
 
   /**
    * Return all unaccepted match session where the user is guest.
    * @param id - user id.
    */
-  @Get('api/invitesmatchsession/:id')
-  getInvitesMatchSessionByUserId(@Param() { id }) {
-    return this.matchSessionService.getInvitesMatchSessionByUserId(id)
-  }
+  // @Get('api/unapprovedmatchsession/:id')
+  // getInvitesMatchSessionByUserId(@Param() { id }) {
+  //   return this.matchSessionService.getInvitesMatchSessionByUserId(id)
+  // }
 
   @Post('api/approvefilm')
   approveFilm(@Body() data: UpdateMatchSessionDTO) {
