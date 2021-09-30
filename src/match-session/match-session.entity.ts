@@ -18,13 +18,9 @@ export class MatchSession {
   created: Date
 
   @ManyToOne((type) => User, (user) => user.id)
-  @Column()
-  hostId: string
-  // @Column() hostName: string
+  host: User
   @ManyToOne((type) => User, (user) => user.id)
-  @Column()
-  guestId: string
-  // @Column() guestName: string
+  guest: User
   @Column() hostSequenceCounter?: number
   @Column() guestSequenceCounter?: number
   @Column('text', { array: true }) hostLikedFilms?: string[]

@@ -13,6 +13,12 @@ import { MatchSession } from 'src/match-session/match-session.entity'
 
 @Entity()
 export class User {
+  constructor(data?: Partial<User>) {
+    if (data) {
+      Object.assign(this, data)
+    }
+  }
+
   @PrimaryGeneratedColumn()
   id: string
 
@@ -47,11 +53,11 @@ export class User {
   @Column('text', { array: true, nullable: true })
   activeSessions: string[]
 
-  @OneToMany((type) => MatchSession, (matchSession) => matchSession.guestId)
+  @OneToMany((type) => MatchSession, (matchSession) => matchSession.guest)
   @Column('text', { array: true, nullable: true })
   sessionsInvite: string[]
 
-  @OneToMany((type) => MatchSession, (matchSession) => matchSession.hostId)
+  @OneToMany((type) => MatchSession, (matchSession) => matchSession.host)
   @Column('text', { array: true, nullable: true })
   createdInvite: string[]
 

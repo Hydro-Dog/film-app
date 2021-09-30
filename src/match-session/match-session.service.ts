@@ -49,8 +49,8 @@ export class MatchSessionService {
     })
 
     const matchSessionObj: Partial<MatchSession> = {
-      hostId: data.clientId,
-      guestId: data.guestId,
+      host: new User({ id: data.clientId }),
+      guest: new User({ id: data.guestId }),
       hostSequenceCounter,
       guestSequenceCounter,
       hostLikedFilms,
@@ -64,38 +64,59 @@ export class MatchSessionService {
       accepted: false,
     }
 
-    console.log('matchSessionObj: ', matchSessionObj)
-
     //create matchSession
     const matchSession = await this.matchSessionRepository.create(
       matchSessionObj
     )
-
-    // console.log('matchSession: ', matchSession)
-
     await this.matchSessionRepository.save(matchSession)
 
     host.activeSessions = [...host.activeSessions, matchSession.id]
     guest.sessionsInvite = [...guest.sessionsInvite, matchSession.id]
 
-    console.log('host: ', host)
-    console.log('guest: ', guest)
-
     await this.userRepository.update({ id: host.id }, { ...host })
     await this.userRepository.update({ id: guest.id }, { ...guest })
 
-    // this.appGetaway.wss.emit('msgToClient', '!!!!!!new game created')
+    this.appGetaway.wss
+      .to(guest.id.toString())
+      .emit('socketOn', { matchSession })
 
     return matchSession
   }
 
+  //   .select([])
+  // ['hostId.id as "hostId" ']
+  // .select([
+  //         'cts.id as "ctsId"',
+  //         'cts.uuid as "ctsUuid"',
+  //         'ctsIns.id as "ctsInsId"',
+  //         'refDpInsScenarios.code as "refDpInsScenariosCode"',
+  //       ])
+  //       .leftJoin('ctsInsVers.cts', 'cts')
+
+  // async getMatchSessionByUserId(id: any) {
+  //   return await this.matchSessionRepository
+  //     .createQueryBuilder('match_session')
+  //     .leftJoinAndSelect('match_session.guest', 'guest')
+  //     .leftJoinAndSelect('match_session.host', 'host')
+  //     .where('match_session.guestId = :id', { id })
+  //     .orWhere('match_session.hostId = :id', { id })
+  //     .getMany()
+  // }
+
   async getMatchSessionByUserId(id: any) {
     return await this.matchSessionRepository
       .createQueryBuilder('match_session')
-      .leftJoinAndSelect('match_session.guestId', 'guestId')
-      .leftJoinAndSelect('match_session.hostId', 'host')
-      .where('match_session.guestId = :id', { id })
-      .orWhere('match_session.hostId = :id', { id })
+      .select([
+        'match_session',
+        'guest.id',
+        'guest.userName',
+        'host.id',
+        'host.userName',
+      ])
+      .leftJoin('match_session.guest', 'guest')
+      .leftJoin('match_session.host', 'host')
+      .where('match_session.guest.id = :id', { id })
+      .orWhere('match_session.host.id = :id', { id })
       .getMany()
   }
 
@@ -105,19 +126,19 @@ export class MatchSessionService {
     })
 
     //increment users counter
-    if (data.userId === matchSession.hostId) {
+    if (data.userId === matchSession.host.id) {
       matchSession.hostSequenceCounter++
     } else {
       matchSession.guestSequenceCounter++
     }
 
     let isMatched = false
-    if (data.userId === matchSession.hostId && data.filmApproved) {
+    if (data.userId === matchSession.host.id && data.filmApproved) {
       //if film was liked by user, push new id to liked films array
       matchSession.hostLikedFilms.push(data.filmId)
       //check for matches isMatched: true?
       isMatched = matchSession.guestLikedFilms.includes(data.filmId)
-    } else if (data.userId !== matchSession.hostId && data.filmApproved) {
+    } else if (data.userId !== matchSession.host.id && data.filmApproved) {
       matchSession.guestLikedFilms.push(data.filmId)
       isMatched = matchSession.hostLikedFilms.includes(data.filmId)
     }
