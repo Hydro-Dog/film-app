@@ -8,7 +8,7 @@ export const User = createParamDecorator(
       const jwt = request?.headers.authorization.split(' ')[1]
       const payload = JWT.decode(jwt) as { id: number }
 
-      return { ...request.body, clientId: payload.id }
+      return { ...request.body, id: payload.id }
     }
     return { ...request.body }
   }

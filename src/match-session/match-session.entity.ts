@@ -11,6 +11,36 @@ import {
 
 @Entity()
 export class MatchSession {
+  constructor(
+    host: User,
+    guest: User,
+    hostSequenceCounter: number,
+    guestSequenceCounter: number,
+    hostLikedFilms: string[],
+    guestLikedFilms: string[],
+    matchedFilms: string[],
+    matchLimit: number,
+    filmsIdsSequence: string[],
+    category: string,
+    filterParams: string,
+    completed: boolean,
+    accepted: boolean
+  ) {
+    this.host = host
+    this.guest = guest
+    this.hostSequenceCounter = hostSequenceCounter
+    this.guestSequenceCounter = guestSequenceCounter
+    this.hostLikedFilms = hostLikedFilms
+    this.guestLikedFilms = guestLikedFilms
+    this.matchedFilms = matchedFilms
+    this.matchLimit = matchLimit
+    this.filmsIdsSequence = filmsIdsSequence
+    this.category = category
+    this.filterParams = filterParams
+    this.completed = completed
+    this.accepted = accepted
+  }
+
   @PrimaryGeneratedColumn()
   id: string
 

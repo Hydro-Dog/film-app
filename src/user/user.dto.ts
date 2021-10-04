@@ -20,6 +20,8 @@ export class UserDTO {
   phoneNumber: string
 
   id: any
+
+  clientId: any
 }
 
 export class UserRO {

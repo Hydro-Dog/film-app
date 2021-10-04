@@ -52,6 +52,8 @@ export class AppGetaway
 
     return { event: 'msgToClient', data: 'request_user_match_sessions' }
   }
-}
 
-// emitToUser(id, event, message) {}
+  emitToClient(id: any, event: string, message: any) {
+    this.wss.to(id.toString()).emit(event, { message })
+  }
+}

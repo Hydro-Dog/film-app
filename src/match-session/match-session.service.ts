@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Socket } from 'socket.io'
+
 import { FilmService } from 'src/film/film.service'
 import { User } from 'src/user/user.entity'
-import { UserService } from 'src/user/user.service'
+
 import { Repository } from 'typeorm'
 import {
   CreateMatchSessionDTO,
@@ -11,6 +11,41 @@ import {
 } from './match-session.dto'
 import { MatchSession } from './match-session.entity'
 import { AppGetaway } from 'src/app-getaway/app-getaway'
+import { MatchSessionSocketEvents } from './match-session.model'
+
+const INITIAL_PAGES = '1,2'
+
+function matchSessionFactory({
+  host,
+  guest,
+  hostSequenceCounter,
+  guestSequenceCounter,
+  hostLikedFilms,
+  guestLikedFilms,
+  matchedFilms,
+  matchLimit,
+  filmsIdsSequence,
+  category,
+  filterParams,
+  completed,
+  accepted,
+}: Partial<MatchSession>) {
+  return new MatchSession(
+    host,
+    guest,
+    hostSequenceCounter,
+    guestSequenceCounter,
+    hostLikedFilms,
+    guestLikedFilms,
+    matchedFilms,
+    matchLimit,
+    filmsIdsSequence,
+    category,
+    filterParams,
+    completed,
+    accepted
+  )
+}
 
 @Injectable()
 export class MatchSessionService {
@@ -24,45 +59,27 @@ export class MatchSessionService {
   ) {}
 
   async create(data: CreateMatchSessionDTO) {
-    let filmsIdsSequence: string[]
-    if (data.category) {
-      filmsIdsSequence = await this.filmService.getFilmsByCategory(
-        '1,2',
-        data.category,
-        data.lang
-      )
-    }
+    const filmsIdsSequence = await this.filmService.getFilmsByCategory(
+      INITIAL_PAGES,
+      data.category,
+      data.lang
+    )
 
-    const hostSequenceCounter = 0
-    const guestSequenceCounter = 0
-    const hostLikedFilms = []
-    const guestLikedFilms = []
-    const matchedFilms = []
-    const matchLimit = data.matchLimit
-
-    //update participants tables
-    const host = await this.userRepository.findOne({
-      where: { id: data.clientId },
-    })
-    const guest = await this.userRepository.findOne({
-      where: { id: data.guestId },
-    })
-
-    const matchSessionObj: Partial<MatchSession> = {
-      host: new User({ id: data.clientId }),
+    const matchSessionObj = matchSessionFactory({
+      host: new User({ id: data.id }),
       guest: new User({ id: data.guestId }),
-      hostSequenceCounter,
-      guestSequenceCounter,
-      hostLikedFilms,
-      guestLikedFilms,
-      matchedFilms,
-      matchLimit,
+      hostSequenceCounter: 0,
+      guestSequenceCounter: 0,
+      hostLikedFilms: [],
+      guestLikedFilms: [],
+      matchedFilms: [],
+      matchLimit: data.matchLimit,
       filmsIdsSequence,
       category: data.category,
       filterParams: JSON.stringify(data.filterParams),
       completed: false,
       accepted: false,
-    }
+    })
 
     //create matchSession
     const matchSession = await this.matchSessionRepository.create(
@@ -70,38 +87,27 @@ export class MatchSessionService {
     )
     await this.matchSessionRepository.save(matchSession)
 
+    const host = await this.userRepository.findOne({
+      where: { id: data.id },
+    })
+    const guest = await this.userRepository.findOne({
+      where: { id: data.guestId },
+    })
+
     host.activeSessions = [...host.activeSessions, matchSession.id]
     guest.sessionsInvite = [...guest.sessionsInvite, matchSession.id]
 
     await this.userRepository.update({ id: host.id }, { ...host })
     await this.userRepository.update({ id: guest.id }, { ...guest })
 
-    this.appGetaway.wss
-      .to(guest.id.toString())
-      .emit('socketOn', { matchSession })
+    this.appGetaway.emitToClient(
+      guest.id.toString(),
+      MatchSessionSocketEvents.PushNewMatchSession,
+      matchSession
+    )
 
     return matchSession
   }
-
-  //   .select([])
-  // ['hostId.id as "hostId" ']
-  // .select([
-  //         'cts.id as "ctsId"',
-  //         'cts.uuid as "ctsUuid"',
-  //         'ctsIns.id as "ctsInsId"',
-  //         'refDpInsScenarios.code as "refDpInsScenariosCode"',
-  //       ])
-  //       .leftJoin('ctsInsVers.cts', 'cts')
-
-  // async getMatchSessionByUserId(id: any) {
-  //   return await this.matchSessionRepository
-  //     .createQueryBuilder('match_session')
-  //     .leftJoinAndSelect('match_session.guest', 'guest')
-  //     .leftJoinAndSelect('match_session.host', 'host')
-  //     .where('match_session.guestId = :id', { id })
-  //     .orWhere('match_session.hostId = :id', { id })
-  //     .getMany()
-  // }
 
   async getMatchSessionByUserId(id: any) {
     return await this.matchSessionRepository

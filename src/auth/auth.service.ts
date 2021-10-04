@@ -31,18 +31,15 @@ export class AuthService {
   }
 
   async refresh(headers: any, refresh: string) {
-    console.log('refresh: ', refresh)
     try {
       this.jwtService.verify(refresh, { secret: process.env.JWT_SECRET })
     } catch (error) {
       throw new HttpException('Refresh expired', HttpStatus.BAD_REQUEST)
     }
 
-    console.log('headers: ', headers)
     const payload = this.jwtService.decode(
       headers.authorization.split(' ')[1]
     ) as { [key: string]: any }
-    console.log('payload: ', payload)
 
     const user = await this.userRepository.findOne({
       where: { id: payload.id },

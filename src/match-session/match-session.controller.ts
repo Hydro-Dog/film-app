@@ -22,7 +22,6 @@ export class MatchSessionController {
 
   @Post('api/matchsession')
   create(@User() data: CreateMatchSessionDTO) {
-    console.log('data: ', data)
     return this.matchSessionService.create(data)
   }
 

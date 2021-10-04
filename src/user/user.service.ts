@@ -78,6 +78,7 @@ export class UserService {
     const user = await this.userRepository.findOne({
       where: [{ userName }],
     })
+    console.log('user: ', typeof user.id)
     if (user && user.id !== userPayload.id) {
       throw new HttpException(
         'Username is already taken',
