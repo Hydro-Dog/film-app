@@ -40,6 +40,7 @@ export class FilmService {
     filmCategory: FilmCategories,
     lang: string
   ): Promise<string[]> {
+    console.log('pageNumbers: ', pageNumbers)
     const pageNumbersArr = pageNumbers.split(',')
     //(vbabaev) generate request for each page number
     const requestsArr = pageNumbersArr.map((page) => {

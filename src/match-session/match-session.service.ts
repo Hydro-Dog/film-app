@@ -18,6 +18,8 @@ const INITIAL_PAGES = '1,2'
 function matchSessionFactory({
   host,
   guest,
+  region,
+  lang,
   hostSequenceCounter,
   guestSequenceCounter,
   hostLikedFilms,
@@ -33,6 +35,8 @@ function matchSessionFactory({
   return new MatchSession(
     host,
     guest,
+    region,
+    lang,
     hostSequenceCounter,
     guestSequenceCounter,
     hostLikedFilms,
@@ -68,6 +72,8 @@ export class MatchSessionService {
     const matchSessionObj = matchSessionFactory({
       host: new User({ id: data.id }),
       guest: new User({ id: data.guestId }),
+      region: data.region,
+      lang: data.lang,
       hostSequenceCounter: 0,
       guestSequenceCounter: 0,
       hostLikedFilms: [],

@@ -4,7 +4,8 @@ import { FilmCategories } from 'src/film/film.models'
 export class CreateMatchSessionDTO {
   @IsNotEmpty() clientId: string
   @IsNotEmpty() guestId: string
-  @IsNotEmpty() lang: string
+  @IsOptional() region: string
+  @IsOptional() lang: string
   @IsEmpty() hostSequenceCounter?: number
   @IsEmpty() guestSequenceCounter?: number
   @IsEmpty() hostLikedFilms?: string[]

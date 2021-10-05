@@ -14,6 +14,8 @@ export class MatchSession {
   constructor(
     host: User,
     guest: User,
+    region: string,
+    lang: string,
     hostSequenceCounter: number,
     guestSequenceCounter: number,
     hostLikedFilms: string[],
@@ -28,6 +30,8 @@ export class MatchSession {
   ) {
     this.host = host
     this.guest = guest
+    this.region = region
+    this.lang = lang
     this.hostSequenceCounter = hostSequenceCounter
     this.guestSequenceCounter = guestSequenceCounter
     this.hostLikedFilms = hostLikedFilms
@@ -51,6 +55,8 @@ export class MatchSession {
   host: User
   @ManyToOne((type) => User, (user) => user.id)
   guest: User
+  @Column() region?: string
+  @Column() lang?: string
   @Column() hostSequenceCounter?: number
   @Column() guestSequenceCounter?: number
   @Column('text', { array: true }) hostLikedFilms?: string[]
