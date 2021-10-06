@@ -49,11 +49,34 @@ export class AppGetaway
     //добавить комнату с id, полученным в аргументах
     //добавить в эту комнату этого клиента
     socket.join(content.id.toString())
+    console.log('getMatchSessionByUserId: ')
 
     return { event: 'msgToClient', data: 'request_user_match_sessions' }
   }
 
+  @SubscribeMessage('register_listener')
+  registerSocketListener(
+    @MessageBody() content: { id: number },
+    @ConnectedSocket() socket: Socket
+  ): WsResponse<any> {
+    socket.join(content.id.toString())
+    console.log('registerSocketListener', content.id)
+    return {
+      event: 'listener_registered',
+      data: `Listener with id ${content.id} registered`,
+    }
+  }
+
   emitToClient(id: any, event: string, message: any) {
+    console.log(
+      'emitToClient: ',
+      'id: ',
+      id,
+      'event: ',
+      event,
+      'message:  ',
+      message
+    )
     this.wss.to(id.toString()).emit(event, { message })
   }
 }

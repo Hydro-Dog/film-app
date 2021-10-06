@@ -12,6 +12,7 @@ import {
 import { MatchSession } from './match-session.entity'
 import { AppGetaway } from 'src/app-getaway/app-getaway'
 import { MatchSessionSocketEvents } from './match-session.model'
+import { AnyMxRecord } from 'dns'
 
 const INITIAL_PAGES = '1,2'
 
@@ -31,6 +32,7 @@ function matchSessionFactory({
   filterParams,
   completed,
   accepted,
+  declined,
 }: Partial<MatchSession>) {
   return new MatchSession(
     host,
@@ -47,7 +49,8 @@ function matchSessionFactory({
     category,
     filterParams,
     completed,
-    accepted
+    accepted,
+    declined
   )
 }
 
@@ -69,9 +72,16 @@ export class MatchSessionService {
       data.lang
     )
 
+    const host = await this.userRepository.findOne({
+      where: { id: data.id },
+    })
+    const guest = await this.userRepository.findOne({
+      where: { id: data.guestId },
+    })
+
     const matchSessionObj = matchSessionFactory({
-      host: new User({ id: data.id }),
-      guest: new User({ id: data.guestId }),
+      host: new User({ id: host.id, userName: host.userName }),
+      guest: new User({ id: guest.id, userName: guest.userName }),
       region: data.region,
       lang: data.lang,
       hostSequenceCounter: 0,
@@ -85,6 +95,7 @@ export class MatchSessionService {
       filterParams: JSON.stringify(data.filterParams),
       completed: false,
       accepted: false,
+      declined: false,
     })
 
     //create matchSession
@@ -92,13 +103,6 @@ export class MatchSessionService {
       matchSessionObj
     )
     await this.matchSessionRepository.save(matchSession)
-
-    const host = await this.userRepository.findOne({
-      where: { id: data.id },
-    })
-    const guest = await this.userRepository.findOne({
-      where: { id: data.guestId },
-    })
 
     host.activeSessions = [...host.activeSessions, matchSession.id]
     guest.sessionsInvite = [...guest.sessionsInvite, matchSession.id]
@@ -113,6 +117,39 @@ export class MatchSessionService {
     )
 
     return matchSession
+  }
+
+  async update(id: string, matchSession: MatchSession) {
+    await this.matchSessionRepository.update({ id }, { ...matchSession })
+
+    const updateMatchSession = await this.matchSessionRepository
+      .createQueryBuilder('match_session')
+      .select([
+        'match_session',
+        'guest.id',
+        'guest.userName',
+        'host.id',
+        'host.userName',
+      ])
+      .leftJoin('match_session.guest', 'guest')
+      .leftJoin('match_session.host', 'host')
+      .where('match_session.id = :id', { id: matchSession.id })
+      .getOne()
+
+    //Пушить сессию у которой поменялся статус, что бы у хоста обновился список активных игр
+    // this.appGetaway.emitToClient(
+    //   guest.id.toString(),
+    //   MatchSessionSocketEvents.PushNewMatchSession,
+    //   matchSession
+    // )
+
+    return updateMatchSession
+  }
+
+  async delete(id: string) {
+    await this.matchSessionRepository.delete({ id })
+
+    return id
   }
 
   async getMatchSessionByUserId(id: any) {

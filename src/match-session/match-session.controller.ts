@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common'
@@ -14,6 +16,7 @@ import {
 } from './match-session.dto'
 import { MatchSessionService } from './match-session.service'
 import { AuthGuard } from 'src/auth/auth.guard'
+import { MatchSession } from './match-session.entity'
 
 // @UseGuards(AuthGuard)
 @Controller()
@@ -44,7 +47,7 @@ export class MatchSessionController {
    * Return all match session where the user is host or guest.
    * @param id - user id.
    */
-  @Get('api/matchsessions/:id')
+  @Get('api/matchsession/:id')
   getMatchSessionByUserId(@Param() { id }) {
     return this.matchSessionService.getMatchSessionByUserId(id)
   }
@@ -61,5 +64,16 @@ export class MatchSessionController {
   @Post('api/approvefilm')
   approveFilm(@Body() data: UpdateMatchSessionDTO) {
     return this.matchSessionService.approveFilm(data)
+  }
+
+  @Put('api/matchsession/:id')
+  update(@Param() { id }, @Body() matchSession: MatchSession) {
+    console.log(' id: ', id, 'matchSession: ', matchSession)
+    return this.matchSessionService.update(id, matchSession)
+  }
+
+  @Delete('api/matchsession/:id')
+  delete(@Param() { id }, @Body() matchSession: MatchSession) {
+    return this.matchSessionService.delete(id)
   }
 }

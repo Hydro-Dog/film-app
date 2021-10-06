@@ -26,7 +26,8 @@ export class MatchSession {
     category: string,
     filterParams: string,
     completed: boolean,
-    accepted: boolean
+    accepted: boolean,
+    declined: boolean
   ) {
     this.host = host
     this.guest = guest
@@ -43,6 +44,7 @@ export class MatchSession {
     this.filterParams = filterParams
     this.completed = completed
     this.accepted = accepted
+    this.declined = declined
   }
 
   @PrimaryGeneratedColumn()
@@ -68,4 +70,5 @@ export class MatchSession {
   @Column({ nullable: true }) filterParams?: string
   @Column({ nullable: true }) completed: boolean
   @Column({ nullable: true }) accepted: boolean
+  @Column({ nullable: true }) declined: boolean
 }

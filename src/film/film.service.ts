@@ -40,28 +40,40 @@ export class FilmService {
     filmCategory: FilmCategories,
     lang: string
   ): Promise<string[]> {
-    console.log('pageNumbers: ', pageNumbers)
-    const pageNumbersArr = pageNumbers.split(',')
+    // console.log('pageNumbers: ', pageNumbers)
+    // const pageNumbersArr = pageNumbers.split(',')
     //(vbabaev) generate request for each page number
-    const requestsArr = pageNumbersArr.map((page) => {
-      return this.httpService
-        .get(
-          getAPIReqCategoryUrl(
-            process.env.API_BASE_URL,
-            process.env.API_KEY,
-            filmCategory,
-            page,
-            lang
-          )
+    //попробовать делать последовательные запросы
+    // const requestsArr = pageNumbersArr.map((page) => {
+    //   return this.httpService
+    //     .get(
+    //       getAPIReqCategoryUrl(
+    //         process.env.API_BASE_URL,
+    //         process.env.API_KEY,
+    //         filmCategory,
+    //         page,
+    //         lang
+    //       )
+    //     )
+    //     .toPromise()
+    // })
+
+    // const allRequests = await Promise.all(requestsArr)
+
+    const films = await this.httpService
+      .get(
+        getAPIReqCategoryUrl(
+          process.env.API_BASE_URL,
+          process.env.API_KEY,
+          filmCategory,
+          '1',
+          lang
         )
-        .toPromise()
-    })
-
-    const allRequests = await Promise.all(requestsArr)
-
-    return shuffle(
-      allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))
-    )
+      )
+      .toPromise()
+    console.log('films.data.results: ', films.data.results)
+    return shuffle(films.data.results.map((movie) => movie.id))
+    // return allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))
   }
 
   async getFilmsByFilters(
