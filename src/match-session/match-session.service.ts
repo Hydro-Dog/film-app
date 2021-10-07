@@ -11,7 +11,10 @@ import {
 } from './match-session.dto'
 import { MatchSession } from './match-session.entity'
 import { AppGetaway } from 'src/app-getaway/app-getaway'
-import { MatchSessionSocketEvents } from './match-session.model'
+import {
+  MatchSessionChangesEvents,
+  MatchSessionSocketEvents,
+} from './match-session.model'
 import { AnyMxRecord } from 'dns'
 
 const INITIAL_PAGES = '1,2'
@@ -112,8 +115,8 @@ export class MatchSessionService {
 
     this.appGetaway.emitToClient(
       guest.id.toString(),
-      MatchSessionSocketEvents.PushNewMatchSession,
-      matchSession
+      MatchSessionSocketEvents.MatchSessionChanges,
+      { matchSession, event: MatchSessionChangesEvents.Add }
     )
 
     return matchSession
@@ -142,6 +145,12 @@ export class MatchSessionService {
     //   MatchSessionSocketEvents.PushNewMatchSession,
     //   matchSession
     // )
+
+    this.appGetaway.emitToClient(
+      matchSession.host.id.toString(),
+      MatchSessionSocketEvents.MatchSessionChanges,
+      { matchSession, event: MatchSessionChangesEvents.ChangeStatus }
+    )
 
     return updateMatchSession
   }

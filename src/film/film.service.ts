@@ -1,4 +1,9 @@
-import { HttpService, Injectable } from '@nestjs/common'
+import {
+  HttpException,
+  HttpService,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common'
 import { map } from 'rxjs/operators'
 import { objectToQueryString } from 'src/helpers/object-to-query-string.helper'
 import {
@@ -59,7 +64,16 @@ export class FilmService {
     // })
 
     // const allRequests = await Promise.all(requestsArr)
-
+    console.log(
+      'URL: ',
+      getAPIReqCategoryUrl(
+        process.env.API_BASE_URL,
+        process.env.API_KEY,
+        filmCategory,
+        '1',
+        lang
+      )
+    )
     const films = await this.httpService
       .get(
         getAPIReqCategoryUrl(
@@ -72,6 +86,9 @@ export class FilmService {
       )
       .toPromise()
     console.log('films.data.results: ', films.data.results)
+    if (!films.data.results) {
+      throw new HttpException('Error from API', HttpStatus.I_AM_A_TEAPOT)
+    }
     return shuffle(films.data.results.map((movie) => movie.id))
     // return allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))
   }

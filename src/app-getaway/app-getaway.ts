@@ -68,15 +68,7 @@ export class AppGetaway
   }
 
   emitToClient(id: any, event: string, message: any) {
-    console.log(
-      'emitToClient: ',
-      'id: ',
-      id,
-      'event: ',
-      event,
-      'message:  ',
-      message
-    )
+    console.log('EMIT TO CLIENT', event, message)
     this.wss.to(id.toString()).emit(event, { message })
   }
 }
