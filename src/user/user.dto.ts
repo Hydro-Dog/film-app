@@ -34,4 +34,5 @@ export class UserRO {
   accessToken?: string
   refreshToken?: string
   phoneNumber: string
+  currentMatchSession: string
 }

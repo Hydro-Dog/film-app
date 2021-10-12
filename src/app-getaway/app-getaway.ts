@@ -29,10 +29,8 @@ export class AppGetaway
     this.logger.log(`Client ${client.id} connected`, 'AppGetaway')
   }
 
-  //Передавать в качесвте айдишника айдишник юзера из базы
-  //Создавать room с таким айдишником и добавлять в него этого клиента
-
   handleDisconnect(client: Socket) {
+    // SOCKET.LEAVE ПОКИДАТЬ И УДАЛЯТЬ КОМНАТУ ПО ДИСКОННЕКТУ КЛИЕНТА
     this.logger.log(`Client ${client.id} disconnected`, 'AppGetaway')
   }
 
@@ -46,10 +44,7 @@ export class AppGetaway
     @MessageBody() content: { id: number },
     @ConnectedSocket() socket: Socket
   ): WsResponse<any> {
-    //добавить комнату с id, полученным в аргументах
-    //добавить в эту комнату этого клиента
     socket.join(content.id.toString())
-    console.log('getMatchSessionByUserId: ')
 
     return { event: 'msgToClient', data: 'request_user_match_sessions' }
   }

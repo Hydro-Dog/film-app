@@ -97,7 +97,8 @@ export class AuthService {
 
     user.password = await this.hashPassword(data.password)
     user.sessionsInvite = []
-    user.activeSessions = []
+    // user.activeSessions = []
+    user.currentMatchSession = null
     user.emailConfirmed = false
     const token = await bcrypt.hash(
       user.userName + process.env.CONFIRMATION_SECRET,

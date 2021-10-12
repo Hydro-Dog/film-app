@@ -47,9 +47,13 @@ export class MatchSessionController {
    * Return all match session where the user is host or guest.
    * @param id - user id.
    */
-  @Get('api/matchsession/:id')
-  getMatchSessionByUserId(@Param() { id }) {
-    return this.matchSessionService.getMatchSessionByUserId(id)
+  @Get('api/matchsession')
+  getMatchSessionByUserId(@Query() { userId, matchSessionId }) {
+    if (userId) {
+      return this.matchSessionService.getMatchSessionByUserId(userId)
+    } else if (matchSessionId) {
+      return this.matchSessionService.getMatchSessionById(matchSessionId)
+    }
   }
 
   /**

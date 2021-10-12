@@ -50,8 +50,11 @@ export class User {
   @Column({ nullable: true })
   refreshToken: string
 
-  @Column('text', { array: true, nullable: true })
-  activeSessions: string[]
+  // @Column('text', { array: true, nullable: true })
+  // activeSessions: string[]
+
+  @Column('text', { nullable: true })
+  currentMatchSession: string
 
   @OneToMany((type) => MatchSession, (matchSession) => matchSession.guest)
   @Column('text', { array: true, nullable: true })
@@ -83,6 +86,7 @@ export class User {
       userName,
       accessToken,
       phoneNumber,
+      currentMatchSession,
     } = this
     const responseObject: UserRO = {
       id,
@@ -93,6 +97,7 @@ export class User {
       userName,
       accessToken,
       phoneNumber,
+      currentMatchSession,
     }
     // if (!hideToken) {
     //   responseObject.accessToken = accessToken

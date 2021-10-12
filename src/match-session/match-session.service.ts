@@ -30,7 +30,7 @@ function matchSessionFactory({
   guestLikedFilms,
   matchedFilms,
   matchLimit,
-  filmsIdsSequence,
+  filmsSequence,
   category,
   filterParams,
   completed,
@@ -48,7 +48,7 @@ function matchSessionFactory({
     guestLikedFilms,
     matchedFilms,
     matchLimit,
-    filmsIdsSequence,
+    filmsSequence,
     category,
     filterParams,
     completed,
@@ -69,7 +69,7 @@ export class MatchSessionService {
   ) {}
 
   async create(data: CreateMatchSessionDTO) {
-    const filmsIdsSequence = await this.filmService.getFilmsByCategory(
+    const filmsSequence = await this.filmService.getFilmsByCategory(
       INITIAL_PAGES,
       data.category,
       data.lang
@@ -93,7 +93,7 @@ export class MatchSessionService {
       guestLikedFilms: [],
       matchedFilms: [],
       matchLimit: data.matchLimit,
-      filmsIdsSequence,
+      filmsSequence,
       category: data.category,
       filterParams: JSON.stringify(data.filterParams),
       completed: false,
@@ -107,7 +107,7 @@ export class MatchSessionService {
     )
     await this.matchSessionRepository.save(matchSession)
 
-    host.activeSessions = [...host.activeSessions, matchSession.id]
+    // host.activeSessions = [...host.activeSessions, matchSession.id]
     guest.sessionsInvite = [...guest.sessionsInvite, matchSession.id]
 
     await this.userRepository.update({ id: host.id }, { ...host })
@@ -122,8 +122,26 @@ export class MatchSessionService {
     return matchSession
   }
 
-  async update(id: string, matchSession: MatchSession) {
-    await this.matchSessionRepository.update({ id }, { ...matchSession })
+  async update(id: string, matchSessionNew: MatchSession) {
+    console.log('updateupdateupdate')
+    const matchSessionCurrent = await this.matchSessionRepository.findOne({
+      where: { id },
+    })
+
+    await this.matchSessionRepository.update({ id }, { ...matchSessionNew })
+
+    if (matchSessionCurrent.accepted === false && matchSessionNew.accepted) {
+      const guest = await this.userRepository.findOne({
+        where: { id: matchSessionNew.guest.id },
+      })
+
+      console.log('---guest: ', guest.id, 'updated with', matchSessionNew.id)
+
+      await this.userRepository.update(
+        { id: guest.id },
+        { ...guest, currentMatchSession: matchSessionNew.id }
+      )
+    }
 
     const updateMatchSession = await this.matchSessionRepository
       .createQueryBuilder('match_session')
@@ -136,7 +154,7 @@ export class MatchSessionService {
       ])
       .leftJoin('match_session.guest', 'guest')
       .leftJoin('match_session.host', 'host')
-      .where('match_session.id = :id', { id: matchSession.id })
+      .where('match_session.id = :id', { id: matchSessionNew.id })
       .getOne()
 
     //Пушить сессию у которой поменялся статус, что бы у хоста обновился список активных игр
@@ -147,9 +165,12 @@ export class MatchSessionService {
     // )
 
     this.appGetaway.emitToClient(
-      matchSession.host.id.toString(),
+      matchSessionNew.host.id.toString(),
       MatchSessionSocketEvents.MatchSessionChanges,
-      { matchSession, event: MatchSessionChangesEvents.ChangeStatus }
+      {
+        matchSession: matchSessionNew,
+        event: MatchSessionChangesEvents.ChangeStatus,
+      }
     )
 
     return updateMatchSession
@@ -176,6 +197,22 @@ export class MatchSessionService {
       .where('match_session.guest.id = :id', { id })
       .orWhere('match_session.host.id = :id', { id })
       .getMany()
+  }
+
+  async getMatchSessionById(matchSessionId: any) {
+    return await this.matchSessionRepository
+      .createQueryBuilder('match_session')
+      .select([
+        'match_session',
+        'guest.id',
+        'guest.userName',
+        'host.id',
+        'host.userName',
+      ])
+      .leftJoin('match_session.guest', 'guest')
+      .leftJoin('match_session.host', 'host')
+      .where('match_session.id = :id', { id: matchSessionId })
+      .getOne()
   }
 
   async approveFilm(data: UpdateMatchSessionDTO) {

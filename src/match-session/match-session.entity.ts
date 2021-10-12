@@ -1,3 +1,4 @@
+import { Film } from 'src/film/film.models'
 import { User } from 'src/user/user.entity'
 import {
   Column,
@@ -22,7 +23,7 @@ export class MatchSession {
     guestLikedFilms: string[],
     matchedFilms: string[],
     matchLimit: number,
-    filmsIdsSequence: string[],
+    filmsSequence: Film[],
     category: string,
     filterParams: string,
     completed: boolean,
@@ -39,7 +40,7 @@ export class MatchSession {
     this.guestLikedFilms = guestLikedFilms
     this.matchedFilms = matchedFilms
     this.matchLimit = matchLimit
-    this.filmsIdsSequence = filmsIdsSequence
+    this.filmsSequence = filmsSequence
     this.category = category
     this.filterParams = filterParams
     this.completed = completed
@@ -65,7 +66,7 @@ export class MatchSession {
   @Column('text', { array: true }) guestLikedFilms?: string[]
   @Column('text', { array: true }) matchedFilms?: string[]
   @Column() matchLimit: number
-  @Column('text', { array: true }) filmsIdsSequence?: string[]
+  @Column('text', { array: true }) filmsSequence?: Film[]
   @Column({ nullable: true }) category?: string
   @Column({ nullable: true }) filterParams?: string
   @Column({ nullable: true }) completed: boolean

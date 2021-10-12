@@ -10,7 +10,7 @@ import {
   getAPIDiscoverUrl,
   getAPIReqCategoryUrl,
 } from 'src/helpers/url-for-tmdb-generator.helper'
-import { FilmCategories } from './film.models'
+import { Film, FilmCategories } from './film.models'
 import { shuffle } from 'lodash'
 
 // Get Popular     https://api.themoviedb.org/3/movie/popular?api_key=<;<api_key>>&language=en-US&page=1
@@ -44,7 +44,7 @@ export class FilmService {
     pageNumbers: string,
     filmCategory: FilmCategories,
     lang: string
-  ): Promise<string[]> {
+  ): Promise<Film[]> {
     // console.log('pageNumbers: ', pageNumbers)
     // const pageNumbersArr = pageNumbers.split(',')
     //(vbabaev) generate request for each page number
@@ -89,7 +89,7 @@ export class FilmService {
     if (!films.data.results) {
       throw new HttpException('Error from API', HttpStatus.I_AM_A_TEAPOT)
     }
-    return shuffle(films.data.results.map((movie) => movie.id))
+    return shuffle(films.data.results)
     // return allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))
   }
 
