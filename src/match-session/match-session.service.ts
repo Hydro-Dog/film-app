@@ -1,59 +1,51 @@
-import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { Repository } from 'typeorm'
 import { FilmService } from 'src/film/film.service'
 import { User } from 'src/user/user.entity'
 
-import { Repository } from 'typeorm'
-import {
-  CreateMatchSessionDTO,
-  UpdateMatchSessionDTO,
-} from './match-session.dto'
+import { CreateMatchSessionDTO } from './match-session.dto'
 import { MatchSession } from './match-session.entity'
 import { AppGetaway } from 'src/app-getaway/app-getaway'
 import {
   MatchSessionChangesEvents,
   MatchSessionSocketEvents,
 } from './match-session.model'
-import { AnyMxRecord } from 'dns'
+import { FilmCategories } from 'src/film/film.models'
+import { deprecate } from 'util'
 
-const INITIAL_PAGES = '1,2'
+const INITIAL_PAGES = '1'
+const FILMS_PAGE_SIZE = 10
 
-function matchSessionFactory({
-  host,
-  guest,
-  region,
-  lang,
-  hostSequenceCounter,
-  guestSequenceCounter,
-  hostLikedFilms,
-  guestLikedFilms,
-  matchedFilms,
+function matchSessionFactory(
+  hostId,
+  hostUserName,
+  guestId,
+  guestUserName,
   matchLimit,
-  filmsSequence,
   category,
   filterParams,
-  completed,
-  accepted,
-  declined,
-}: Partial<MatchSession>) {
+  filmsSequenceJson
+) {
   return new MatchSession(
-    host,
-    guest,
-    region,
-    lang,
-    hostSequenceCounter,
-    guestSequenceCounter,
-    hostLikedFilms,
-    guestLikedFilms,
-    matchedFilms,
+    new User({ id: hostId, userName: hostUserName }),
+    new User({ id: guestId, userName: guestUserName }),
+    'EN',
+    0,
+    0,
+    [],
+    [],
+    null,
+    null,
+    [],
     matchLimit,
-    filmsSequence,
+    false,
+    false,
+    false,
+    filmsSequenceJson,
     category,
     filterParams,
-    completed,
-    accepted,
-    declined
+    false
   )
 }
 
@@ -69,45 +61,36 @@ export class MatchSessionService {
   ) {}
 
   async create(data: CreateMatchSessionDTO) {
-    const filmsSequence = await this.filmService.getFilmsByCategory(
+    const filmsSequenceJson = await this.filmService.getFilmsByCategory(
       INITIAL_PAGES,
-      data.category,
-      data.lang
+      data.category
     )
 
     const host = await this.userRepository.findOne({
-      where: { id: data.id },
+      where: { id: data.userId },
     })
     const guest = await this.userRepository.findOne({
       where: { id: data.guestId },
     })
 
-    const matchSessionObj = matchSessionFactory({
-      host: new User({ id: host.id, userName: host.userName }),
-      guest: new User({ id: guest.id, userName: guest.userName }),
-      region: data.region,
-      lang: data.lang,
-      hostSequenceCounter: 0,
-      guestSequenceCounter: 0,
-      hostLikedFilms: [],
-      guestLikedFilms: [],
-      matchedFilms: [],
-      matchLimit: data.matchLimit,
-      filmsSequence,
-      category: data.category,
-      filterParams: JSON.stringify(data.filterParams),
-      completed: false,
-      accepted: false,
-      declined: false,
-    })
+    const matchSessionObj = matchSessionFactory(
+      host.id,
+      host.userName,
+      guest.id,
+      guest.userName,
+      data.matchLimit,
+      data.category,
+      data.filterParams,
+      filmsSequenceJson
+    )
 
     //create matchSession
     const matchSession = await this.matchSessionRepository.create(
       matchSessionObj
     )
+
     await this.matchSessionRepository.save(matchSession)
 
-    // host.activeSessions = [...host.activeSessions, matchSession.id]
     guest.sessionsInvite = [...guest.sessionsInvite, matchSession.id]
 
     await this.userRepository.update({ id: host.id }, { ...host })
@@ -122,8 +105,7 @@ export class MatchSessionService {
     return matchSession
   }
 
-  async update(id: string, matchSessionNew: MatchSession) {
-    console.log('updateupdateupdate')
+  async update(id: number, matchSessionNew: MatchSession) {
     const matchSessionCurrent = await this.matchSessionRepository.findOne({
       where: { id },
     })
@@ -134,8 +116,6 @@ export class MatchSessionService {
       const guest = await this.userRepository.findOne({
         where: { id: matchSessionNew.guest.id },
       })
-
-      console.log('---guest: ', guest.id, 'updated with', matchSessionNew.id)
 
       await this.userRepository.update(
         { id: guest.id },
@@ -157,13 +137,6 @@ export class MatchSessionService {
       .where('match_session.id = :id', { id: matchSessionNew.id })
       .getOne()
 
-    //Пушить сессию у которой поменялся статус, что бы у хоста обновился список активных игр
-    // this.appGetaway.emitToClient(
-    //   guest.id.toString(),
-    //   MatchSessionSocketEvents.PushNewMatchSession,
-    //   matchSession
-    // )
-
     this.appGetaway.emitToClient(
       matchSessionNew.host.id.toString(),
       MatchSessionSocketEvents.MatchSessionChanges,
@@ -176,7 +149,7 @@ export class MatchSessionService {
     return updateMatchSession
   }
 
-  async delete(id: string) {
+  async delete(id: number) {
     await this.matchSessionRepository.delete({ id })
 
     return id
@@ -215,57 +188,141 @@ export class MatchSessionService {
       .getOne()
   }
 
-  async approveFilm(data: UpdateMatchSessionDTO) {
-    const matchSession = await this.matchSessionRepository.findOne({
-      where: { id: data.matchSessionId },
-    })
+  async approveFilmV2(matchSessionId, filmId, userId) {
+    //выстреливает только на одобрение фильма, при свайпе влево - ничего не отправляем на бэк
 
-    //increment users counter
-    if (data.userId === matchSession.host.id) {
-      matchSession.hostSequenceCounter++
+    const currentMatchSession = await this.matchSessionRepository
+      .createQueryBuilder('match_session')
+      .select([
+        'match_session',
+        'guest.id',
+        'guest.userName',
+        'host.id',
+        'host.userName',
+      ])
+      .leftJoin('match_session.guest', 'guest')
+      .leftJoin('match_session.host', 'host')
+      .where('match_session.id = :id', { id: matchSessionId })
+      .getOne()
+
+    //increment users CurrentFilmIndex
+    if (userId === currentMatchSession.host.id) {
+      currentMatchSession.hostCurrentFilmIndex++
     } else {
-      matchSession.guestSequenceCounter++
+      currentMatchSession.guestCurrentFilmIndex++
     }
 
     let isMatched = false
-    if (data.userId === matchSession.host.id && data.filmApproved) {
+    if (userId === currentMatchSession.host.id) {
       //if film was liked by user, push new id to liked films array
-      matchSession.hostLikedFilms.push(data.filmId)
+      currentMatchSession.hostLikedFilms.push(filmId)
       //check for matches isMatched: true?
-      isMatched = matchSession.guestLikedFilms.includes(data.filmId)
-    } else if (data.userId !== matchSession.host.id && data.filmApproved) {
-      matchSession.guestLikedFilms.push(data.filmId)
-      isMatched = matchSession.hostLikedFilms.includes(data.filmId)
+      isMatched = currentMatchSession.guestLikedFilms.includes(filmId)
+      currentMatchSession.filmsMatchTookPlace = isMatched
+    } else if (userId !== currentMatchSession.guest.id) {
+      currentMatchSession.guestLikedFilms.push(filmId)
+      isMatched = currentMatchSession.hostLikedFilms.includes(filmId)
     }
+    currentMatchSession.filmsMatchTookPlace = isMatched
 
     //update matchedFilms array
     if (isMatched) {
-      matchSession.matchedFilms.push(data.filmId)
+      currentMatchSession.matchedMoviesIds.push(filmId)
     }
 
-    let completed = matchSession.matchedFilms.length >= matchSession.matchLimit
+    let completed =
+      currentMatchSession.matchedMoviesIds.length >=
+      currentMatchSession.matchLimit
 
-    //update matchSession
-    const {
-      id,
-      hostSequenceCounter,
-      guestSequenceCounter,
-      hostLikedFilms,
-      guestLikedFilms,
-      matchedFilms,
-      matchLimit,
-    } = await this.matchSessionRepository.save(matchSession)
+    return await this.matchSessionRepository.save(currentMatchSession)
+  }
 
-    return {
-      id,
-      completed,
-      isMatched,
-      matchedFilms,
-      matchLimit,
-      hostSequenceCounter,
-      guestSequenceCounter,
-      hostLikedFilms,
-      guestLikedFilms,
+  // deprecated
+  async updateMatchSessionLikes(matchSession: MatchSession, user: User) {
+    const currentMatchSession = await this.matchSessionRepository.findOne({
+      where: { id: matchSession.id },
+    })
+
+    //TODO:
+    //добавить поля hostLikedFILM, guestLikedFILM, wasMatched
+    //привести к консистентности интерфейсы на фронте и таблицы в базе
+
+    //lock row/table by id (type orm)
+
+    if (user.id === matchSession.host.id) {
+      // ЕСЛИ есть значение в guestCurrentlyLikedFilm
+      // И ЕСЛИ этого фильма нет в массиве matchedFilms
+      // И ЕСЛИ этот фильм есть в массиве hostLikedFilms
+      if (
+        matchSession.guestLikedFilmIndex &&
+        !currentMatchSession.matchedMoviesIds.includes(
+          matchSession.guestLikedFilmIndex
+        ) &&
+        !currentMatchSession.hostLikedFilms.includes(
+          matchSession.guestLikedFilmIndex
+        )
+      ) {
+        currentMatchSession.filmsMatchTookPlace = true
+        // currentMatchSession.matchedMoviesIds.push()
+      } else {
+        currentMatchSession.filmsMatchTookPlace = false
+      }
+
+      // if(счетчик юзера === последнему индексу массива фильмов) {
+      // докачать фильмы из АПИ
+      // }
+
+      if (
+        matchSession.hostCurrentFilmIndex ===
+        matchSession.filmsSequenceJson.length
+      ) {
+        const page =
+          (matchSession.filmsSequenceJson.length + 1) / FILMS_PAGE_SIZE
+        this.filmService.getFilmsByCategory(
+          page.toString(),
+          matchSession.category as FilmCategories
+        )
+      }
+
+      return await this.matchSessionRepository.save({
+        ...currentMatchSession,
+        hostLikedFilms: matchSession.hostLikedFilms,
+        hostCurrentFilmIndex: matchSession.hostCurrentFilmIndex,
+      })
+    } else if (user.id === matchSession.guest.id) {
+      if (
+        matchSession.hostLikedFilmIndex &&
+        !currentMatchSession.matchedMoviesIds.includes(
+          matchSession.hostLikedFilmIndex
+        ) &&
+        !currentMatchSession.guestLikedFilms.includes(
+          matchSession.hostLikedFilmIndex
+        )
+      ) {
+        currentMatchSession.filmsMatchTookPlace = true
+      } else {
+        currentMatchSession.filmsMatchTookPlace = false
+      }
+
+      if (
+        matchSession.guestCurrentFilmIndex ===
+        matchSession.filmsSequenceJson.length
+      ) {
+        const page =
+          (matchSession.filmsSequenceJson.length + 1) / FILMS_PAGE_SIZE
+        this.filmService.getFilmsByCategory(
+          page.toString(),
+          matchSession.category as FilmCategories
+        )
+      }
+
+      return await this.matchSessionRepository.save({
+        ...currentMatchSession,
+        hostLikedFilms: matchSession.guestLikedFilms,
+        guestSequenceCounter: matchSession.guestCurrentFilmIndex,
+      })
+    } else {
+      throw new HttpException('Jopa', HttpStatus.BAD_REQUEST)
     }
   }
 }

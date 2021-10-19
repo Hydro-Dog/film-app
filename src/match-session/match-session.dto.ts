@@ -4,7 +4,6 @@ import { FilmCategories } from 'src/film/film.models'
 export class CreateMatchSessionDTO {
   @IsNotEmpty() clientId: string
   @IsNotEmpty() guestId: string
-  @IsOptional() region: string
   @IsOptional() lang: string
   @IsEmpty() hostSequenceCounter?: number
   @IsEmpty() guestSequenceCounter?: number
@@ -15,12 +14,12 @@ export class CreateMatchSessionDTO {
   @IsEmpty() filmsIdsSequence?: string[]
   @IsOptional() category?: FilmCategories
   @IsOptional() filterParams?: Record<string, unknown>
-  @IsOptional() id?: string
+  @IsOptional() userId?: string
 }
 
 export class UpdateMatchSessionDTO {
   @IsNotEmpty() userId: string
   @IsNotEmpty() matchSessionId: string
-  @IsNotEmpty() filmId: string
+  @IsNotEmpty() filmId: number
   @IsNotEmpty() filmApproved: boolean
 }

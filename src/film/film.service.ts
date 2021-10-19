@@ -10,7 +10,7 @@ import {
   getAPIDiscoverUrl,
   getAPIReqCategoryUrl,
 } from 'src/helpers/url-for-tmdb-generator.helper'
-import { Film, FilmCategories } from './film.models'
+import { FilmCategories } from './film.models'
 import { shuffle } from 'lodash'
 
 // Get Popular     https://api.themoviedb.org/3/movie/popular?api_key=<;<api_key>>&language=en-US&page=1
@@ -42,9 +42,8 @@ export class FilmService {
 
   async getFilmsByCategory(
     pageNumbers: string,
-    filmCategory: FilmCategories,
-    lang: string
-  ): Promise<Film[]> {
+    filmCategory: FilmCategories
+  ): Promise<string[]> {
     // console.log('pageNumbers: ', pageNumbers)
     // const pageNumbersArr = pageNumbers.split(',')
     //(vbabaev) generate request for each page number
@@ -64,24 +63,14 @@ export class FilmService {
     // })
 
     // const allRequests = await Promise.all(requestsArr)
-    console.log(
-      'URL: ',
-      getAPIReqCategoryUrl(
-        process.env.API_BASE_URL,
-        process.env.API_KEY,
-        filmCategory,
-        '1',
-        lang
-      )
-    )
+
     const films = await this.httpService
       .get(
         getAPIReqCategoryUrl(
           process.env.API_BASE_URL,
           process.env.API_KEY,
           filmCategory,
-          '1',
-          lang
+          '1'
         )
       )
       .toPromise()

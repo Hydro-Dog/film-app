@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { AuthGuard } from 'src/auth/auth.guard'
-import { ApiDTO } from './film.dto'
+// import { ApiDTO } from './film.dto'
 import { FilmService } from './film.service'
 
 @UseGuards(AuthGuard)

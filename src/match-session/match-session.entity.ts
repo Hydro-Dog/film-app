@@ -1,11 +1,8 @@
-import { Film } from 'src/film/film.models'
 import { User } from 'src/user/user.entity'
 import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm'
@@ -15,61 +12,69 @@ export class MatchSession {
   constructor(
     host: User,
     guest: User,
-    region: string,
     lang: string,
-    hostSequenceCounter: number,
-    guestSequenceCounter: number,
-    hostLikedFilms: string[],
-    guestLikedFilms: string[],
-    matchedFilms: string[],
+    hostCurrentFilmIndex: number,
+    guestCurrentFilmIndex: number,
+    hostLikedFilms: number[],
+    guestLikedFilms: number[],
+    hostLikedFilmIndex: number,
+    guestLikedFilmIndex: number,
+    matchedMoviesIds: number[],
     matchLimit: number,
-    filmsSequence: Film[],
-    category: string,
-    filterParams: string,
     completed: boolean,
     accepted: boolean,
-    declined: boolean
+    declined: boolean,
+    filmsSequenceJson: string[],
+    category: string,
+    filterParams: string,
+    filmsMatchTookPlace: boolean
   ) {
     this.host = host
     this.guest = guest
-    this.region = region
     this.lang = lang
-    this.hostSequenceCounter = hostSequenceCounter
-    this.guestSequenceCounter = guestSequenceCounter
+    this.hostCurrentFilmIndex = hostCurrentFilmIndex
+    this.guestCurrentFilmIndex = guestCurrentFilmIndex
     this.hostLikedFilms = hostLikedFilms
     this.guestLikedFilms = guestLikedFilms
-    this.matchedFilms = matchedFilms
+    this.hostLikedFilmIndex = hostLikedFilmIndex
+    this.guestLikedFilmIndex = guestLikedFilmIndex
+    this.matchedMoviesIds = matchedMoviesIds
     this.matchLimit = matchLimit
-    this.filmsSequence = filmsSequence
-    this.category = category
-    this.filterParams = filterParams
     this.completed = completed
     this.accepted = accepted
     this.declined = declined
+    this.filmsSequenceJson = filmsSequenceJson
+    this.category = category
+    this.filterParams = filterParams
+    this.filmsMatchTookPlace = filmsMatchTookPlace
   }
 
   @PrimaryGeneratedColumn()
-  id: string
+  id: number
 
   @CreateDateColumn()
   created: Date
+
+  @Column({ nullable: true }) region?: string
+  @Column({ nullable: true }) category?: string
+  @Column('text', { array: true }) filmsSequenceJson?: string[]
 
   @ManyToOne((type) => User, (user) => user.id)
   host: User
   @ManyToOne((type) => User, (user) => user.id)
   guest: User
-  @Column() region?: string
-  @Column() lang?: string
-  @Column() hostSequenceCounter?: number
-  @Column() guestSequenceCounter?: number
-  @Column('text', { array: true }) hostLikedFilms?: string[]
-  @Column('text', { array: true }) guestLikedFilms?: string[]
-  @Column('text', { array: true }) matchedFilms?: string[]
-  @Column() matchLimit: number
-  @Column('text', { array: true }) filmsSequence?: Film[]
-  @Column({ nullable: true }) category?: string
+  @Column({ nullable: true }) lang?: string
+  @Column() hostCurrentFilmIndex?: number
+  @Column() guestCurrentFilmIndex?: number
+  @Column('text', { array: true }) hostLikedFilms?: number[]
+  @Column('text', { array: true }) guestLikedFilms?: number[]
+  @Column('text', { nullable: true }) hostLikedFilmIndex: number
+  @Column('text', { nullable: true }) guestLikedFilmIndex: number
   @Column({ nullable: true }) filterParams?: string
+  @Column('text', { array: true }) matchedMoviesIds?: number[]
+  @Column() matchLimit: number
   @Column({ nullable: true }) completed: boolean
   @Column({ nullable: true }) accepted: boolean
   @Column({ nullable: true }) declined: boolean
+  @Column({ nullable: true }) filmsMatchTookPlace: boolean
 }

@@ -66,8 +66,15 @@ export class MatchSessionController {
   // }
 
   @Post('api/approvefilm')
-  approveFilm(@Body() data: UpdateMatchSessionDTO) {
-    return this.matchSessionService.approveFilm(data)
+  approveFilm(
+    @User() data: { matchSessionId: number; filmId: number; userId: number }
+  ) {
+    console.log(' approveFilmV2 data: ', data)
+    return this.matchSessionService.approveFilmV2(
+      data.matchSessionId,
+      data.filmId,
+      data.userId
+    )
   }
 
   @Put('api/matchsession/:id')

@@ -54,11 +54,11 @@ export class User {
   // activeSessions: string[]
 
   @Column('text', { nullable: true })
-  currentMatchSession: string
+  currentMatchSession: number
 
   @OneToMany((type) => MatchSession, (matchSession) => matchSession.guest)
   @Column('text', { array: true, nullable: true })
-  sessionsInvite: string[]
+  sessionsInvite: number[]
 
   @OneToMany((type) => MatchSession, (matchSession) => matchSession.host)
   @Column('text', { array: true, nullable: true })
