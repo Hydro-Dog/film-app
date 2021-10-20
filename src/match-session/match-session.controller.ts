@@ -28,27 +28,13 @@ export class MatchSessionController {
     return this.matchSessionService.create(data)
   }
 
-  //untested
-  // @Get('api/matchsession/:id')
-  // getByUserId(@Param() { id }, @Query() { userstatus, accepted }) {
-  //   return this.matchSessionService.getByUserId(id, userstatus, accepted)
-  // }
-
   /**
    * Return all match session where the user is host or guest.
-   * @param id - user id.
-   */
-  // @Get('api/activematchsession/:id')
-  // getCurrentMatchSessionByUserId(@Param() { id }) {
-  //   return this.matchSessionService.getCurrentMatchSessionByUserId(id)
-  // }
-
-  /**
-   * Return all match session where the user is host or guest.
-   * @param id - user id.
+   * @param userId
+   * @param matchSessionId
    */
   @Get('api/matchsession')
-  getMatchSessionByUserId(@Query() { userId, matchSessionId }) {
+  getMatchSession(@Query() { userId, matchSessionId }) {
     if (userId) {
       return this.matchSessionService.getMatchSessionByUserId(userId)
     } else if (matchSessionId) {
@@ -56,30 +42,26 @@ export class MatchSessionController {
     }
   }
 
-  /**
-   * Return all unaccepted match session where the user is guest.
-   * @param id - user id.
-   */
-  // @Get('api/unapprovedmatchsession/:id')
-  // getInvitesMatchSessionByUserId(@Param() { id }) {
-  //   return this.matchSessionService.getInvitesMatchSessionByUserId(id)
-  // }
-
-  @Post('api/approvefilm')
-  approveFilm(
-    @User() data: { matchSessionId: number; filmId: number; userId: number }
+  @Post('api/swipefilm')
+  swipeFilm(
+    @User()
+    data: {
+      matchSessionId: number
+      filmId: number
+      userId: number
+      swipeDirection: 'left' | 'right'
+    }
   ) {
-    console.log(' approveFilmV2 data: ', data)
-    return this.matchSessionService.approveFilmV2(
+    return this.matchSessionService.swipe(
       data.matchSessionId,
       data.filmId,
-      data.userId
+      data.userId,
+      data.swipeDirection
     )
   }
 
   @Put('api/matchsession/:id')
   update(@Param() { id }, @Body() matchSession: MatchSession) {
-    console.log(' id: ', id, 'matchSession: ', matchSession)
     return this.matchSessionService.update(id, matchSession)
   }
 

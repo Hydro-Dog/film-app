@@ -15,11 +15,11 @@ export class MatchSession {
     lang: string,
     hostCurrentFilmIndex: number,
     guestCurrentFilmIndex: number,
-    hostLikedFilms: number[],
-    guestLikedFilms: number[],
+    hostLikedFilms: string[],
+    guestLikedFilms: string[],
     hostLikedFilmIndex: number,
     guestLikedFilmIndex: number,
-    matchedMoviesIds: number[],
+    matchedMoviesIds: string[],
     matchLimit: number,
     completed: boolean,
     accepted: boolean,
@@ -66,12 +66,12 @@ export class MatchSession {
   @Column({ nullable: true }) lang?: string
   @Column() hostCurrentFilmIndex?: number
   @Column() guestCurrentFilmIndex?: number
-  @Column('text', { array: true }) hostLikedFilms?: number[]
-  @Column('text', { array: true }) guestLikedFilms?: number[]
+  @Column('text', { array: true }) hostLikedFilms?: string[]
+  @Column('text', { array: true }) guestLikedFilms?: string[]
   @Column('text', { nullable: true }) hostLikedFilmIndex: number
   @Column('text', { nullable: true }) guestLikedFilmIndex: number
   @Column({ nullable: true }) filterParams?: string
-  @Column('text', { array: true }) matchedMoviesIds?: number[]
+  @Column('text', { array: true }) matchedMoviesIds?: string[]
   @Column() matchLimit: number
   @Column({ nullable: true }) completed: boolean
   @Column({ nullable: true }) accepted: boolean
