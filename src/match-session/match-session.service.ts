@@ -96,10 +96,28 @@ export class MatchSessionService {
     await this.userRepository.update({ id: host.id }, { ...host })
     await this.userRepository.update({ id: guest.id }, { ...guest })
 
+    // this.appGetaway.emitToClient(
+    //   guest.id.toString(),
+    //   MatchSessionSocketEvents.MatchSessionChanges,
+    //   { matchSession, event: MatchSessionChangesEvents.Add }
+    // )
+
     this.appGetaway.emitToClient(
       guest.id.toString(),
-      MatchSessionSocketEvents.MatchSessionChanges,
-      { matchSession, event: MatchSessionChangesEvents.Add }
+      MatchSessionSocketEvents.ServerMessage,
+      {
+        message: matchSession,
+        event: MatchSessionChangesEvents.Add,
+      }
+    )
+
+    this.appGetaway.emitToClient(
+      host.id.toString(),
+      MatchSessionSocketEvents.ServerMessage,
+      {
+        message: matchSession,
+        event: MatchSessionChangesEvents.Add,
+      }
     )
 
     return matchSession
@@ -139,12 +157,39 @@ export class MatchSessionService {
 
     this.appGetaway.emitToClient(
       matchSessionNew.host.id.toString(),
-      MatchSessionSocketEvents.MatchSessionChanges,
+      MatchSessionSocketEvents.ServerMessage,
       {
-        matchSession: matchSessionNew,
+        message: matchSessionNew,
         event: MatchSessionChangesEvents.ChangeStatus,
       }
     )
+
+    this.appGetaway.emitToClient(
+      matchSessionNew.guest.id.toString(),
+      MatchSessionSocketEvents.ServerMessage,
+      {
+        message: matchSessionNew,
+        event: MatchSessionChangesEvents.ChangeStatus,
+      }
+    )
+
+    // this.appGetaway.emitToClient(
+    //   matchSessionNew.host.id.toString(),
+    //   MatchSessionSocketEvents.MatchSessionChanges,
+    //   {
+    //     matchSession: matchSessionNew,
+    //     event: MatchSessionChangesEvents.ChangeStatus,
+    //   }
+    // )
+
+    // this.appGetaway.emitToClient(
+    //   matchSessionNew.guest.id.toString(),
+    //   MatchSessionSocketEvents.MatchSessionChanges,
+    //   {
+    //     matchSession: matchSessionNew,
+    //     event: MatchSessionChangesEvents.ChangeStatus,
+    //   }
+    // )
 
     return updateMatchSession
   }

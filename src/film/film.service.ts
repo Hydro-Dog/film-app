@@ -44,26 +44,6 @@ export class FilmService {
     pageNumbers: string,
     filmCategory: FilmCategories
   ): Promise<string[]> {
-    // console.log('pageNumbers: ', pageNumbers)
-    // const pageNumbersArr = pageNumbers.split(',')
-    //(vbabaev) generate request for each page number
-    //попробовать делать последовательные запросы
-    // const requestsArr = pageNumbersArr.map((page) => {
-    //   return this.httpService
-    //     .get(
-    //       getAPIReqCategoryUrl(
-    //         process.env.API_BASE_URL,
-    //         process.env.API_KEY,
-    //         filmCategory,
-    //         page,
-    //         lang
-    //       )
-    //     )
-    //     .toPromise()
-    // })
-
-    // const allRequests = await Promise.all(requestsArr)
-
     const films = await this.httpService
       .get(
         getAPIReqCategoryUrl(
