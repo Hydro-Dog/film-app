@@ -6,6 +6,7 @@ import {
   Response,
   Put,
   Post,
+  Body,
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { UserDTO } from './user.dto'
@@ -29,19 +30,25 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Put('api/users')
-  updateUser(@User() user) {
+  updateUser(@Body() user: UserDTO) {
     return this.userService.updateUser(user.id, user)
   }
 
   @UseGuards(AuthGuard)
   @Post('api/users/checkUserName')
-  checkByUserName(@User() user: Partial<UserDTO>, @Response() res: any) {
+  checkByUserName(
+    @User() user: { userName: string; userId: string },
+    @Response() res: any
+  ) {
     return this.userService.checkUserName(user, res)
   }
 
   @UseGuards(AuthGuard)
   @Post('api/users/checkPhoneNumber')
-  checkByPhoneNumber(@User() user: Partial<UserDTO>, @Response() res: any) {
+  checkByPhoneNumber(
+    @User() user: { phoneNumber: string; userId: string },
+    @Response() res: any
+  ) {
     return this.userService.checkPhoneNumber(user, res)
   }
 

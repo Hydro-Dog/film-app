@@ -17,6 +17,7 @@ export class UserService {
         ...user,
         ...payload,
       })
+      console.log('useruseruseruser: ', user)
       const userUpdated = await this.userRepository.findOne({ where: [{ id }] })
       return userUpdated.sanitizeUser()
     }
@@ -73,13 +74,12 @@ export class UserService {
     return res.status(HttpStatus.OK).json({ isAvailable: true })
   }
 
-  async checkUserName(userPayload: Partial<UserDTO>, res) {
+  async checkUserName(userPayload: { userName: string; userId: string }, res) {
     const { userName } = userPayload
     const user = await this.userRepository.findOne({
       where: [{ userName }],
     })
-    console.log('user: ', typeof user.id)
-    if (user && user.id !== userPayload.id) {
+    if (user && user.id !== userPayload.userId) {
       throw new HttpException(
         'Username is already taken',
         HttpStatus.BAD_REQUEST
@@ -88,12 +88,15 @@ export class UserService {
     return res.status(HttpStatus.OK).json({ isAvailable: true })
   }
 
-  async checkPhoneNumber(userPayload: Partial<UserDTO>, res) {
+  async checkPhoneNumber(
+    userPayload: { phoneNumber: string; userId: string },
+    res
+  ) {
     const { phoneNumber } = userPayload
     const user = await this.userRepository.findOne({
       where: [{ phoneNumber }],
     })
-    if (user && user.id !== userPayload.id) {
+    if (user && user.id !== userPayload.userId) {
       throw new HttpException(
         'Phone number is already taken',
         HttpStatus.BAD_REQUEST
