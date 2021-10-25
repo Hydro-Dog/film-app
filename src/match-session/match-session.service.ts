@@ -44,8 +44,7 @@ function matchSessionFactory(
     false,
     filmsSequenceJson,
     category,
-    filterParams,
-    false
+    filterParams
   )
 }
 
@@ -100,7 +99,7 @@ export class MatchSessionService {
       guest.id.toString(),
       MatchSessionSocketEvents.ServerMessage,
       {
-        message: matchSession,
+        payload: matchSession,
         event: MatchSessionChangesEvents.Add,
       }
     )
@@ -109,7 +108,7 @@ export class MatchSessionService {
       host.id.toString(),
       MatchSessionSocketEvents.ServerMessage,
       {
-        message: matchSession,
+        payload: matchSession,
         event: MatchSessionChangesEvents.Add,
       }
     )
@@ -153,7 +152,7 @@ export class MatchSessionService {
       matchSessionNew.host.id.toString(),
       MatchSessionSocketEvents.ServerMessage,
       {
-        message: matchSessionNew,
+        payload: matchSessionNew,
         event: MatchSessionChangesEvents.ChangeStatus,
       }
     )
@@ -162,7 +161,7 @@ export class MatchSessionService {
       matchSessionNew.guest.id.toString(),
       MatchSessionSocketEvents.ServerMessage,
       {
-        message: matchSessionNew,
+        payload: matchSessionNew,
         event: MatchSessionChangesEvents.ChangeStatus,
       }
     )
@@ -211,12 +210,11 @@ export class MatchSessionService {
 
   async swipe(
     matchSessionId: number,
-    filmId: number,
+    filmJSON: string,
     userId: number,
     swipeDirection: 'left' | 'right'
   ) {
-    //выстреливает только на одобрение фильма, при свайпе влево - ничего не отправляем на бэк
-
+    const film = JSON.parse(filmJSON)
     const currentMatchSession = await this.matchSessionRepository
       .createQueryBuilder('match_session')
       .select([
@@ -234,33 +232,58 @@ export class MatchSessionService {
     let isMatched = false
     if (userId === +currentMatchSession.host.id && swipeDirection === 'right') {
       //if film was liked by user, push new id to liked films array
-      currentMatchSession.hostLikedFilms.push(filmId.toString())
+      currentMatchSession.hostLikedFilms.push(film.id.toString())
       //check for matches isMatched: true?
       isMatched = currentMatchSession.guestLikedFilms.includes(
-        filmId.toString()
+        film.id.toString()
       )
-      currentMatchSession.filmsMatchTookPlace = isMatched
     } else if (
       userId == +currentMatchSession.guest.id &&
       swipeDirection === 'right'
     ) {
-      currentMatchSession.guestLikedFilms.push(filmId.toString())
-      isMatched = currentMatchSession.hostLikedFilms.includes(filmId.toString())
+      currentMatchSession.guestLikedFilms.push(film.id.toString())
+      isMatched = currentMatchSession.hostLikedFilms.includes(
+        film.id.toString()
+      )
     }
-    currentMatchSession.filmsMatchTookPlace = isMatched
 
-    //update matchedFilms array
     if (isMatched) {
-      currentMatchSession.matchedMoviesIds.push(filmId.toString())
+      //update matchedFilms array
+      currentMatchSession.matchedMoviesJSON.push(filmJSON)
       const filmIndex =
         userId === +currentMatchSession.host.id
           ? currentMatchSession.hostCurrentFilmIndex
           : currentMatchSession.guestCurrentFilmIndex
 
+      //send notifications to both users
       this.appGetaway.emitToClient(
-        userId.toString(),
-        MatchSessionSocketEvents.LikesMatched,
-        { film: currentMatchSession.filmsSequenceJson[filmIndex] }
+        currentMatchSession.guest.id.toString(),
+        MatchSessionSocketEvents.ServerMessage,
+        {
+          event: MatchSessionChangesEvents.FilmsMatch,
+          payload: {
+            filmJSON: currentMatchSession.filmsSequenceJson[filmIndex],
+            source::
+              userId.toString() === currentMatchSession.guest.id
+                ? 'self'
+                : 'opponent',
+          },
+        }
+      )
+
+      this.appGetaway.emitToClient(
+        currentMatchSession.host.id.toString(),
+        MatchSessionSocketEvents.ServerMessage,
+        {
+          event: MatchSessionChangesEvents.FilmsMatch,
+          payload: {
+            filmJSON: currentMatchSession.filmsSequenceJson[filmIndex],
+            source:
+              userId.toString() === currentMatchSession.host.id
+                ? 'self'
+                : 'opponent',
+          },
+        }
       )
     }
 
@@ -272,98 +295,9 @@ export class MatchSessionService {
     }
 
     let completed =
-      currentMatchSession.matchedMoviesIds.length >=
+      currentMatchSession.matchedMoviesJSON.length >=
       currentMatchSession.matchLimit
 
     return await this.matchSessionRepository.save(currentMatchSession)
   }
-
-  // deprecated
-  // async updateMatchSessionLikes(matchSession: MatchSession, user: User) {
-  //   const currentMatchSession = await this.matchSessionRepository.findOne({
-  //     where: { id: matchSession.id },
-  //   })
-
-  //   //TODO:
-  //   //добавить поля hostLikedFILM, guestLikedFILM, wasMatched
-  //   //привести к консистентности интерфейсы на фронте и таблицы в базе
-
-  //   //lock row/table by id (type orm)
-
-  //   if (user.id === matchSession.host.id) {
-  //     // ЕСЛИ есть значение в guestCurrentlyLikedFilm
-  //     // И ЕСЛИ этого фильма нет в массиве matchedFilms
-  //     // И ЕСЛИ этот фильм есть в массиве hostLikedFilms
-  //     if (
-  //       matchSession.guestLikedFilmIndex &&
-  //       !currentMatchSession.matchedMoviesIds.includes(
-  //         matchSession.guestLikedFilmIndex
-  //       ) &&
-  //       !currentMatchSession.hostLikedFilms.includes(
-  //         matchSession.guestLikedFilmIndex
-  //       )
-  //     ) {
-  //       currentMatchSession.filmsMatchTookPlace = true
-  //       // currentMatchSession.matchedMoviesIds.push()
-  //     } else {
-  //       currentMatchSession.filmsMatchTookPlace = false
-  //     }
-
-  //     // if(счетчик юзера === последнему индексу массива фильмов) {
-  //     // докачать фильмы из АПИ
-  //     // }
-
-  //     if (
-  //       matchSession.hostCurrentFilmIndex ===
-  //       matchSession.filmsSequenceJson.length
-  //     ) {
-  //       const page =
-  //         (matchSession.filmsSequenceJson.length + 1) / FILMS_PAGE_SIZE
-  //       this.filmService.getFilmsByCategory(
-  //         page.toString(),
-  //         matchSession.category as FilmCategories
-  //       )
-  //     }
-
-  //     return await this.matchSessionRepository.save({
-  //       ...currentMatchSession,
-  //       hostLikedFilms: matchSession.hostLikedFilms,
-  //       hostCurrentFilmIndex: matchSession.hostCurrentFilmIndex,
-  //     })
-  //   } else if (user.id === matchSession.guest.id) {
-  //     if (
-  //       matchSession.hostLikedFilmIndex &&
-  //       !currentMatchSession.matchedMoviesIds.includes(
-  //         matchSession.hostLikedFilmIndex
-  //       ) &&
-  //       !currentMatchSession.guestLikedFilms.includes(
-  //         matchSession.hostLikedFilmIndex
-  //       )
-  //     ) {
-  //       currentMatchSession.filmsMatchTookPlace = true
-  //     } else {
-  //       currentMatchSession.filmsMatchTookPlace = false
-  //     }
-
-  //     if (
-  //       matchSession.guestCurrentFilmIndex ===
-  //       matchSession.filmsSequenceJson.length
-  //     ) {
-  //       const page =
-  //         (matchSession.filmsSequenceJson.length + 1) / FILMS_PAGE_SIZE
-  //       this.filmService.getFilmsByCategory(
-  //         page.toString(),
-  //         matchSession.category as FilmCategories
-  //       )
-  //     }
-
-  //     return await this.matchSessionRepository.save({
-  //       ...currentMatchSession,
-  //       hostLikedFilms: matchSession.guestLikedFilms,
-  //       guestSequenceCounter: matchSession.guestCurrentFilmIndex,
-  //     })
-  //   } else {
-  //     throw new HttpException('Jopa', HttpStatus.BAD_REQUEST)
-  //   }
-  // }
 }

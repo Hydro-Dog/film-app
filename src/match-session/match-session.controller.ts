@@ -47,14 +47,14 @@ export class MatchSessionController {
     @User()
     data: {
       matchSessionId: number
-      filmId: number
+      filmJSON: string
       userId: number
       swipeDirection: 'left' | 'right'
     }
   ) {
     return this.matchSessionService.swipe(
       data.matchSessionId,
-      data.filmId,
+      data.filmJSON,
       data.userId,
       data.swipeDirection
     )

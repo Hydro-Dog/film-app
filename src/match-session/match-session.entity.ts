@@ -19,15 +19,14 @@ export class MatchSession {
     guestLikedFilms: string[],
     hostLikedFilmIndex: number,
     guestLikedFilmIndex: number,
-    matchedMoviesIds: string[],
+    matchedMoviesJSON: string[],
     matchLimit: number,
     completed: boolean,
     accepted: boolean,
     declined: boolean,
     filmsSequenceJson: string[],
     category: string,
-    filterParams: string,
-    filmsMatchTookPlace: boolean
+    filterParams: string
   ) {
     this.host = host
     this.guest = guest
@@ -38,7 +37,7 @@ export class MatchSession {
     this.guestLikedFilms = guestLikedFilms
     this.hostLikedFilmIndex = hostLikedFilmIndex
     this.guestLikedFilmIndex = guestLikedFilmIndex
-    this.matchedMoviesIds = matchedMoviesIds
+    this.matchedMoviesJSON = matchedMoviesJSON
     this.matchLimit = matchLimit
     this.completed = completed
     this.accepted = accepted
@@ -46,7 +45,6 @@ export class MatchSession {
     this.filmsSequenceJson = filmsSequenceJson
     this.category = category
     this.filterParams = filterParams
-    this.filmsMatchTookPlace = filmsMatchTookPlace
   }
 
   @PrimaryGeneratedColumn()
@@ -71,10 +69,9 @@ export class MatchSession {
   @Column('text', { nullable: true }) hostLikedFilmIndex: number
   @Column('text', { nullable: true }) guestLikedFilmIndex: number
   @Column({ nullable: true }) filterParams?: string
-  @Column('text', { array: true }) matchedMoviesIds?: string[]
+  @Column('text', { array: true }) matchedMoviesJSON?: string[]
   @Column() matchLimit: number
   @Column({ nullable: true }) completed: boolean
   @Column({ nullable: true }) accepted: boolean
   @Column({ nullable: true }) declined: boolean
-  @Column({ nullable: true }) filmsMatchTookPlace: boolean
 }

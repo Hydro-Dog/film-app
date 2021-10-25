@@ -12,4 +12,5 @@ export enum MatchSessionSocketEvents {
 export enum MatchSessionChangesEvents {
   Add = 'add',
   ChangeStatus = 'change_status',
+  FilmsMatch = 'films_match',
 }
