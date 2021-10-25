@@ -19,10 +19,6 @@ export class AppGetaway implements OnGatewayConnection, OnGatewayDisconnect {
 
   constructor(private logger: Logger) {}
 
-  // afterInit(server: Server) {
-  //   this.logger.log('AppGetaway Instantiated', 'AppGetaway')
-  // }
-
   handleConnection(client: Socket, ...args: any[]) {
     this.logger.log(`Client ${client.id} connected`, 'AppGetaway')
   }
@@ -32,28 +28,12 @@ export class AppGetaway implements OnGatewayConnection, OnGatewayDisconnect {
     this.logger.log(`Client ${client.id} disconnected`, 'AppGetaway')
   }
 
-  // @SubscribeMessage('msgToServer')
-  // handleMessage(client: Socket, text: string): WsResponse<string> {
-  //   return { event: 'msgToClient', data: 'Hello' }
-  // }
-
-  // @SubscribeMessage('request_user_match_sessions')
-  // getMatchSessionByUserId(
-  //   @MessageBody() content: { id: number },
-  //   @ConnectedSocket() socket: Socket
-  // ): WsResponse<any> {
-  //   socket.join(content.id.toString())
-
-  //   return { event: 'msgToClient', data: 'request_user_match_sessions' }
-  // }
-
   @SubscribeMessage(MatchSessionSocketEvents.RegisterNewListener)
   registerSocketListener(
     @MessageBody() content: { id: number },
     @ConnectedSocket() socket: Socket
   ): WsResponse<any> {
     socket.join(content.id.toString())
-    console.log('registerSocketListener', content.id)
     return {
       event: MatchSessionSocketEvents.RegisterNewListener,
       data: `Listener with id ${content.id} registered`,
@@ -61,7 +41,7 @@ export class AppGetaway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   emitToClient(id: any, event: string, message: any) {
-    console.log('EMIT TO CLIENT', id, event, message)
+    console.log('emitToClient: ', id, event)
     this.wss.to(id.toString()).emit(event, { message })
   }
 }
