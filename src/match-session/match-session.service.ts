@@ -263,8 +263,8 @@ export class MatchSessionService {
           event: MatchSessionChangesEvents.FilmsMatch,
           payload: {
             filmJSON: currentMatchSession.filmsSequenceJson[filmIndex],
-            source::
-              userId.toString() === currentMatchSession.guest.id
+            source:
+              userId.toString() === currentMatchSession.guest.id.toString()
                 ? 'self'
                 : 'opponent',
           },
@@ -279,7 +279,7 @@ export class MatchSessionService {
           payload: {
             filmJSON: currentMatchSession.filmsSequenceJson[filmIndex],
             source:
-              userId.toString() === currentMatchSession.host.id
+              userId.toString() === currentMatchSession.host.id.toString()
                 ? 'self'
                 : 'opponent',
           },
