@@ -15,7 +15,7 @@ import { FilmCategories } from 'src/film/film.models'
 import { deprecate } from 'util'
 
 const INITIAL_PAGES = '1'
-const FILMS_PAGE_SIZE = 10
+const FILMS_PAGE_SIZE = 20
 
 function matchSessionFactory(
   hostId,
@@ -39,6 +39,7 @@ function matchSessionFactory(
     null,
     [],
     matchLimit,
+    1,
     false,
     false,
     false,
@@ -297,6 +298,24 @@ export class MatchSessionService {
     let completed =
       currentMatchSession.matchedMoviesJSON.length >=
       currentMatchSession.matchLimit
+
+    const lastFilmIndex = currentMatchSession.filmsSequenceJson.length - 1
+    if (
+      currentMatchSession.hostCurrentFilmIndex >= lastFilmIndex ||
+      currentMatchSession.guestCurrentFilmIndex >= lastFilmIndex
+    ) {
+      const currentPage =
+        currentMatchSession.filmsSequenceJson.length / FILMS_PAGE_SIZE
+      const filmsSequence = await this.filmService.getFilmsByCategory(
+        (currentPage + 1).toString(),
+        currentMatchSession.category as FilmCategories
+      )
+
+      currentMatchSession.filmsSequenceJson = [
+        ...currentMatchSession.filmsSequenceJson,
+        ...filmsSequence.map((filmObj) => JSON.stringify(filmObj)),
+      ]
+    }
 
     return await this.matchSessionRepository.save(currentMatchSession)
   }

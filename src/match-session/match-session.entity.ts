@@ -21,6 +21,7 @@ export class MatchSession {
     guestLikedFilmIndex: number,
     matchedMoviesJSON: string[],
     matchLimit: number,
+    page: number,
     completed: boolean,
     accepted: boolean,
     declined: boolean,
@@ -39,6 +40,7 @@ export class MatchSession {
     this.guestLikedFilmIndex = guestLikedFilmIndex
     this.matchedMoviesJSON = matchedMoviesJSON
     this.matchLimit = matchLimit
+    this.page = page
     this.completed = completed
     this.accepted = accepted
     this.declined = declined
@@ -71,6 +73,7 @@ export class MatchSession {
   @Column({ nullable: true }) filterParams?: string
   @Column('text', { array: true }) matchedMoviesJSON?: string[]
   @Column() matchLimit: number
+  @Column() page: number
   @Column({ nullable: true }) completed: boolean
   @Column({ nullable: true }) accepted: boolean
   @Column({ nullable: true }) declined: boolean

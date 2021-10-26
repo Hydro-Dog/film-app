@@ -11,6 +11,7 @@ export class CreateMatchSessionDTO {
   @IsEmpty() guestLikedFilms?: string[]
   @IsEmpty() matchedFilms?: string[]
   @IsNotEmpty() matchLimit: number
+  @IsOptional() page?: number
   @IsEmpty() filmsIdsSequence?: string[]
   @IsOptional() category?: FilmCategories
   @IsOptional() filterParams?: Record<string, unknown>

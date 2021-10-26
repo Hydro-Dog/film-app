@@ -12,6 +12,8 @@ import {
 } from 'src/helpers/url-for-tmdb-generator.helper'
 import { FilmCategories } from './film.models'
 import { shuffle } from 'lodash'
+import { Observable } from 'rxjs'
+import { AxiosResponse } from 'axios'
 
 // Get Popular     https://api.themoviedb.org/3/movie/popular?api_key=<;<api_key>>&language=en-US&page=1
 // Get Now Playing https://api.themoviedb.org/3/movie/now_playing?api_key=<;<api_key>>&language=en-US&page=1
@@ -41,7 +43,7 @@ export class FilmService {
   }
 
   async getFilmsByCategory(
-    pageNumbers: string,
+    pageNumber: string,
     filmCategory: FilmCategories
   ): Promise<string[]> {
     const films = await this.httpService
@@ -50,16 +52,16 @@ export class FilmService {
           process.env.API_BASE_URL,
           process.env.API_KEY,
           filmCategory,
-          '1'
+          pageNumber
         )
       )
       .toPromise()
-    console.log('films.data.results: ', films.data.results)
+
     if (!films.data.results) {
       throw new HttpException('Error from API', HttpStatus.I_AM_A_TEAPOT)
     }
+
     return shuffle(films.data.results)
-    // return allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))
   }
 
   async getFilmsByFilters(
@@ -86,3 +88,21 @@ export class FilmService {
     return allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))
   }
 }
+
+// function foo(filmsDdApiCall: Promise<AxiosResponse<any>>) {
+//   let counter = 0
+
+//   async function recursiveApiCalls2(apiCall: Promise<AxiosResponse<any>>) {
+//     const films = await apiCall
+//     if (!films.data.results && counter < 50) {
+//       counter++
+//       console.log('---------counter: ', counter)
+//       recursiveApiCalls2(apiCall)
+//     } else {
+//       counter = 0
+//       return 'no_results'
+//     }
+//   }
+
+//   return recursiveApiCalls2(filmsDdApiCall)
+// }
