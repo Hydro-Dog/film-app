@@ -131,7 +131,13 @@ export class MatchSessionService {
 
       await this.userRepository.update(
         { id: guest.id },
-        { ...guest, currentMatchSession: matchSessionNew.id }
+        {
+          ...guest,
+          currentMatchSession: matchSessionNew.id,
+          sessionsInvite: guest.sessionsInvite.filter(
+            (id) => id.toString() !== matchSessionNew.id.toString()
+          ),
+        }
       )
     }
 
