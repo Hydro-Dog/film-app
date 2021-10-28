@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm'
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { FilmService } from 'src/film/film.service'
 import { User } from 'src/user/user.entity'
@@ -323,6 +323,9 @@ export class MatchSessionService {
       ]
     }
 
-    return await this.matchSessionRepository.save(currentMatchSession)
+    return await this.matchSessionRepository.save({
+      ...currentMatchSession,
+      completed,
+    })
   }
 }
