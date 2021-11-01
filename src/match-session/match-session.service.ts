@@ -12,7 +12,6 @@ import {
   MatchSessionSocketEvents,
 } from './match-session.model'
 import { FilmCategories } from 'src/film/film.models'
-import { deprecate } from 'util'
 
 const INITIAL_PAGES = '1'
 const FILMS_PAGE_SIZE = 20

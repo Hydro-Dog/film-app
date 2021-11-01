@@ -88,21 +88,3 @@ export class FilmService {
     return allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))
   }
 }
-
-// function foo(filmsDdApiCall: Promise<AxiosResponse<any>>) {
-//   let counter = 0
-
-//   async function recursiveApiCalls2(apiCall: Promise<AxiosResponse<any>>) {
-//     const films = await apiCall
-//     if (!films.data.results && counter < 50) {
-//       counter++
-//       console.log('---------counter: ', counter)
-//       recursiveApiCalls2(apiCall)
-//     } else {
-//       counter = 0
-//       return 'no_results'
-//     }
-//   }
-
-//   return recursiveApiCalls2(filmsDdApiCall)
-// }
