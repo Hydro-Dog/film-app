@@ -78,6 +78,25 @@ export class AuthService {
     return responseUser
   }
 
+  async logout(userId: string) {
+    const user = await this.userRepository.findOne({ where: { id: userId } })
+    if (!user) {
+      throw new HttpException(
+        'Who the duck are you looking for?',
+        HttpStatus.BAD_REQUEST
+      )
+    }
+
+    const loggedOutUser: Partial<User> = {
+      ...user,
+      accessToken: null,
+      refreshToken: null,
+    }
+    await this.userRepository.update(user.id, loggedOutUser)
+
+    return userId
+  }
+
   async register(data: UserDTO) {
     const { email, userName } = data
     console.log('email: ', email, userName)

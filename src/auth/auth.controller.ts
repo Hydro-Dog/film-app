@@ -3,6 +3,7 @@ import { Body } from '@nestjs/common'
 import { Controller } from '@nestjs/common'
 import { UserDTO } from 'src/user/user.dto'
 import { AuthService } from './auth.service'
+import { User } from 'src/shared/user-id.decorator'
 
 @Controller()
 export class AuthController {
@@ -11,6 +12,11 @@ export class AuthController {
   @Post('login')
   login(@Body() data: Pick<UserDTO, 'userName' | 'password'>) {
     return this.authService.login(data)
+  }
+
+  @Post('logout')
+  logout(@User() data: { userId: string }) {
+    return this.authService.logout(data.userId)
   }
 
   @Post('register')

@@ -99,9 +99,6 @@ export class User {
       phoneNumber,
       currentMatchSession,
     }
-    // if (!hideToken) {
-    //   responseObject.accessToken = accessToken
-    // }
     return responseObject
   }
 
