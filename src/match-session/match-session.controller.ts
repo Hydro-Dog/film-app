@@ -60,13 +60,21 @@ export class MatchSessionController {
     )
   }
 
+  @Delete('api/matchsession')
+  deleteMatchSession(@User() data: { matchSessionId: number; userId: number }) {
+    return this.matchSessionService.deleteMatchSession(
+      data.matchSessionId,
+      data.userId
+    )
+  }
+
   @Put('api/matchsession/:id')
   update(@Param() { id }, @Body() matchSession: MatchSession) {
     return this.matchSessionService.update(id, matchSession)
   }
 
-  @Delete('api/matchsession/:id')
-  delete(@Param() { id }, @Body() matchSession: MatchSession) {
-    return this.matchSessionService.delete(id)
-  }
+  // @Delete('api/matchsession/:id')
+  // delete(@Param() { id }, @Body() matchSession: MatchSession) {
+  //   return this.matchSessionService.delete(id)
+  // }
 }

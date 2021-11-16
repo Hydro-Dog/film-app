@@ -175,11 +175,11 @@ export class MatchSessionService {
     return updateMatchSession
   }
 
-  async delete(id: number) {
-    await this.matchSessionRepository.delete({ id })
+  // async delete(id: number) {
+  //   await this.matchSessionRepository.delete({ id })
 
-    return id
-  }
+  //   return id
+  // }
 
   async getMatchSessionByUserId(id: any) {
     return await this.matchSessionRepository
@@ -326,5 +326,38 @@ export class MatchSessionService {
       ...currentMatchSession,
       completed,
     })
+  }
+
+  async deleteMatchSession(matchSessionId: number, userId: number) {
+    const matchSession = await this.matchSessionRepository
+      .createQueryBuilder('match_session')
+      .select([
+        'match_session',
+        'guest.id',
+        'guest.userName',
+        'host.id',
+        'host.userName',
+      ])
+      .leftJoin('match_session.guest', 'guest')
+      .leftJoin('match_session.host', 'host')
+      .where('match_session.id = :id', { id: matchSessionId })
+      .getOne()
+
+    if (+matchSession?.guest?.id === +userId) {
+      matchSession.guest = null
+    } else if (+matchSession?.host?.id === +userId) {
+      matchSession.host = null
+    }
+
+    await this.matchSessionRepository.update(
+      { id: matchSessionId },
+      { ...matchSession }
+    )
+
+    if (!matchSession.host && !matchSession.guest) {
+      await this.matchSessionRepository.delete({ id: matchSessionId })
+    }
+
+    return matchSessionId
   }
 }

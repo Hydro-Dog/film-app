@@ -50,9 +50,6 @@ export class User {
   @Column({ nullable: true })
   refreshToken: string
 
-  // @Column('text', { array: true, nullable: true })
-  // activeSessions: string[]
-
   @Column('text', { nullable: true })
   currentMatchSession: number
 

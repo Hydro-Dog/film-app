@@ -4,7 +4,7 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common'
-import { map } from 'rxjs/operators'
+import { concatMap, delay, map, retry, retryWhen, tap } from 'rxjs/operators'
 import { objectToQueryString } from 'src/helpers/object-to-query-string.helper'
 import {
   getAPIDiscoverUrl,
@@ -12,7 +12,7 @@ import {
 } from 'src/helpers/url-for-tmdb-generator.helper'
 import { FilmCategories } from './film.models'
 import { shuffle } from 'lodash'
-import { Observable } from 'rxjs'
+import { Observable, of, throwError } from 'rxjs'
 import { AxiosResponse } from 'axios'
 
 // Get Popular     https://api.themoviedb.org/3/movie/popular?api_key=<;<api_key>>&language=en-US&page=1
@@ -57,6 +57,7 @@ export class FilmService {
       )
       .toPromise()
 
+    console.log('films.data: ', films.data)
     if (!films.data.results) {
       throw new HttpException('Error from API', HttpStatus.I_AM_A_TEAPOT)
     }
@@ -88,3 +89,16 @@ export class FilmService {
     return allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))
   }
 }
+
+// const p = new Promise(() => {})
+
+// function foo() {
+//   source$.pipe(
+//     tap({ error: err => console.log('error: ', err.message) }),
+//     retry(5),
+//  )
+//  .subscribe({
+//    next: value => console.log(value),
+//    error: err => console.log('only fires once ', err.message),
+//  });
+// }

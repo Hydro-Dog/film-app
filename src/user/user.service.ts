@@ -17,7 +17,6 @@ export class UserService {
         ...user,
         ...payload,
       })
-      console.log('useruseruseruser: ', user)
       const userUpdated = await this.userRepository.findOne({ where: [{ id }] })
       return userUpdated.sanitizeUser()
     }

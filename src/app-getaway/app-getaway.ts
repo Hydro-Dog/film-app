@@ -41,7 +41,6 @@ export class AppGetaway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   emitToClient(id: any, event: string, message: any) {
-    console.log('--------------emitToClient: ', id, event, message)
     this.wss.to(id.toString()).emit(event, { message })
   }
 }
