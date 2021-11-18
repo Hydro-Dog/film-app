@@ -89,16 +89,3 @@ export class FilmService {
     return allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))
   }
 }
-
-// const p = new Promise(() => {})
-
-// function foo() {
-//   source$.pipe(
-//     tap({ error: err => console.log('error: ', err.message) }),
-//     retry(5),
-//  )
-//  .subscribe({
-//    next: value => console.log(value),
-//    error: err => console.log('only fires once ', err.message),
-//  });
-// }

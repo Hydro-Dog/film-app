@@ -117,6 +117,42 @@ export class MatchSessionService {
   }
 
   async update(id: number, matchSessionNew: MatchSession) {
+    //TODO: убрать это удаление когда добавим список отклоненных матчей
+    if (matchSessionNew.declined) {
+      await this.matchSessionRepository.delete({ id: matchSessionNew.id })
+      const guest = await this.userRepository.findOne({
+        where: { id: matchSessionNew.guest.id },
+      })
+      await this.userRepository.update(
+        { id: guest.id },
+        {
+          ...guest,
+          sessionsInvite: guest.sessionsInvite.filter(
+            (id) => id.toString() !== matchSessionNew.id.toString()
+          ),
+        }
+      )
+
+      this.appGetaway.emitToClient(
+        matchSessionNew.host.id.toString(),
+        MatchSessionSocketEvents.ServerMessage,
+        {
+          payload: matchSessionNew,
+          event: MatchSessionChangesEvents.ChangeStatus,
+        }
+      )
+
+      this.appGetaway.emitToClient(
+        matchSessionNew.guest.id.toString(),
+        MatchSessionSocketEvents.ServerMessage,
+        {
+          payload: matchSessionNew,
+          event: MatchSessionChangesEvents.ChangeStatus,
+        }
+      )
+
+      return matchSessionNew
+    }
     const matchSessionCurrent = await this.matchSessionRepository.findOne({
       where: { id },
     })
@@ -175,12 +211,6 @@ export class MatchSessionService {
     return updateMatchSession
   }
 
-  // async delete(id: number) {
-  //   await this.matchSessionRepository.delete({ id })
-
-  //   return id
-  // }
-
   async getMatchSessionByUserId(id: any) {
     return await this.matchSessionRepository
       .createQueryBuilder('match_session')
@@ -227,8 +257,10 @@ export class MatchSessionService {
         'match_session',
         'guest.id',
         'guest.userName',
+        'guest.currentMatchSession',
         'host.id',
         'host.userName',
+        'host.currentMatchSession',
       ])
       .leftJoin('match_session.guest', 'guest')
       .leftJoin('match_session.host', 'host')
@@ -261,36 +293,46 @@ export class MatchSessionService {
           ? currentMatchSession.hostCurrentFilmIndex
           : currentMatchSession.guestCurrentFilmIndex
 
-      //send notifications to both users
-      this.appGetaway.emitToClient(
-        currentMatchSession.guest.id.toString(),
-        MatchSessionSocketEvents.ServerMessage,
-        {
-          event: MatchSessionChangesEvents.FilmsMatch,
-          payload: {
-            filmJSON: currentMatchSession.filmsSequenceJson[filmIndex],
-            source:
-              userId.toString() === currentMatchSession.guest.id.toString()
-                ? 'self'
-                : 'opponent',
-          },
-        }
-      )
+      //send notifications to both users if the are in current match
+      if (
+        +currentMatchSession.id ===
+        +currentMatchSession.guest.currentMatchSession
+      ) {
+        this.appGetaway.emitToClient(
+          currentMatchSession.guest.id.toString(),
+          MatchSessionSocketEvents.ServerMessage,
+          {
+            event: MatchSessionChangesEvents.FilmsMatch,
+            payload: {
+              filmJSON: currentMatchSession.filmsSequenceJson[filmIndex],
+              source:
+                userId.toString() === currentMatchSession.guest.id.toString()
+                  ? 'self'
+                  : 'opponent',
+            },
+          }
+        )
+      }
 
-      this.appGetaway.emitToClient(
-        currentMatchSession.host.id.toString(),
-        MatchSessionSocketEvents.ServerMessage,
-        {
-          event: MatchSessionChangesEvents.FilmsMatch,
-          payload: {
-            filmJSON: currentMatchSession.filmsSequenceJson[filmIndex],
-            source:
-              userId.toString() === currentMatchSession.host.id.toString()
-                ? 'self'
-                : 'opponent',
-          },
-        }
-      )
+      if (
+        +currentMatchSession.id ===
+        +currentMatchSession.host.currentMatchSession
+      ) {
+        this.appGetaway.emitToClient(
+          currentMatchSession.host.id.toString(),
+          MatchSessionSocketEvents.ServerMessage,
+          {
+            event: MatchSessionChangesEvents.FilmsMatch,
+            payload: {
+              filmJSON: currentMatchSession.filmsSequenceJson[filmIndex],
+              source:
+                userId.toString() === currentMatchSession.host.id.toString()
+                  ? 'self'
+                  : 'opponent',
+            },
+          }
+        )
+      }
     }
 
     //increment users CurrentFilmIndex
