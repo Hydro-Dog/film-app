@@ -2,7 +2,10 @@
   "name": "filmder-back",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "hydro-dog",
+  "engines": {
+    "node": "14.15.1"
+  },
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
