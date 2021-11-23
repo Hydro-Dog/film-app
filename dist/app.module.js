@@ -88,6 +88,7 @@ AppModule = __decorate([
 ], AppModule);
 exports.AppModule = AppModule;
 function getTypeOrmConfig() {
+    console.log('==========================', ENVIRONMENT === 'dev');
     return typeorm_1.TypeOrmModule.forRoot((ENVIRONMENT === 'dev' ? dev : prod));
 }
 //# sourceMappingURL=app.module.js.map

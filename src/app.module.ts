@@ -81,6 +81,7 @@ const prod = {
 export class AppModule {}
 
 function getTypeOrmConfig() {
+  console.log('==========================', ENVIRONMENT === 'dev')
   return TypeOrmModule.forRoot(
     (ENVIRONMENT === 'dev' ? dev : prod) as TypeOrmModuleOptions
   )
