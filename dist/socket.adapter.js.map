@@ -1,0 +1,1 @@
+{"version":3,"file":"socket.adapter.js","sourceRoot":"","sources":["../src/socket.adapter.ts"],"names":[],"mappings":";;;AAAA,mEAAsD;AAGtD,MAAa,aAAc,SAAQ,8BAAS;IAC1C,cAAc,CACZ,IAAY,EACZ,OAGC;QAED,MAAM,MAAM,GAAG,KAAK,CAAC,cAAc,CAAC,IAAI,EAAE,EAAE,GAAG,OAAO,EAAE,IAAI,EAAE,IAAI,EAAE,CAAC,CAAA;QACrE,OAAO,MAAM,CAAA;IACf,CAAC;CACF;AAXD,sCAWC"}
