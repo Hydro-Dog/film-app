@@ -1,6 +1,6 @@
 import { Logger, Module } from '@nestjs/common'
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
-import { TypeOrmModule } from '@nestjs/typeorm'
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
 import { basename, dirname, join } from 'path'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
@@ -15,9 +15,11 @@ import { MailModule } from './mail/mail.module'
 import { GameModeModule } from './game-modes/game-mode.module'
 import { AppGetaway } from './app-getaway/app-getaway'
 
-const username = process.env.DB_USER
-const password = process.env.DB_PASSWORD
-const database = process.env.DB_NAME
+const DB_USER = process.env.DB_USER
+const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_NAME = process.env.DB_NAME
+const DB_URL = process.env.DB_URL
+const ENVIRONMENT = process.env.ENVIRONMENT
 
 @Module({
   imports: [
@@ -50,19 +52,36 @@ const database = process.env.DB_NAME
 export class AppModule {}
 
 function getTypeOrmConfig() {
-  return TypeOrmModule.forRoot({
-    type: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    username,
-    password,
-    database,
-    logging: true,
-    entities: [
-      join(__dirname, '**', '*.entity.{ts,js}'),
-      join(basename(dirname(__filename)), '**', '*.entity.{ts,js}'),
-    ],
-    synchronize: true,
-    autoLoadEntities: true,
-  })
+  return TypeOrmModule.forRoot(
+    (ENVIRONMENT === 'dev' ? dev : prod) as TypeOrmModuleOptions
+  )
+}
+
+const dev = {
+  type: 'postgres',
+  host: 'localhost',
+  port: 5432,
+  username: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_NAME,
+  logging: true,
+  entities: [
+    join(__dirname, '**', '*.entity.{ts,js}'),
+    join(basename(dirname(__filename)), '**', '*.entity.{ts,js}'),
+  ],
+  synchronize: true,
+  autoLoadEntities: true,
+}
+
+const prod = {
+  type: 'postgres',
+  url: DB_URL,
+  logging: true,
+  entities: [
+    join(__dirname, '**', '*.entity.{ts,js}'),
+    join(basename(dirname(__filename)), '**', '*.entity.{ts,js}'),
+  ],
+  synchronize: false,
+  autoLoadEntities: false,
+  migrations: ['src/migration/**/*.js'],
 }

@@ -7,7 +7,6 @@ import {
 import { Observable } from 'rxjs'
 import { tap } from 'rxjs/operators'
 
-// @Injectable() - нах не нужно?
 export class LoggerInterceptor implements NestInterceptor {
   intercept(
     context: ExecutionContext,
