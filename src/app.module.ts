@@ -13,7 +13,6 @@ import { TimeoutInterceptor } from './shared/timeout.interceptor'
 import { UserModule } from './user/user.module'
 import { MailModule } from './mail/mail.module'
 import { GameModeModule } from './game-modes/game-mode.module'
-import { AppGetaway } from './app-getaway/app-getaway'
 
 const DB_USER = process.env.DB_USER
 const DB_PASSWORD = process.env.DB_PASSWORD
@@ -21,34 +20,34 @@ const DB_NAME = process.env.DB_NAME
 const DB_URL = process.env.DB_URL
 const ENVIRONMENT = process.env.ENVIRONMENT
 
-const dev = {
-  type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: DB_USER,
-  password: DB_PASSWORD,
-  database: DB_NAME,
-  logging: true,
-  entities: [
-    join(__dirname, '**', '*.entity.{ts,js}'),
-    join(basename(dirname(__filename)), '**', '*.entity.{ts,js}'),
-  ],
-  synchronize: true,
-  autoLoadEntities: true,
-}
+// const dev = {
+//   type: 'postgres',
+//   host: 'localhost',
+//   port: 5432,
+//   username: DB_USER,
+//   password: DB_PASSWORD,
+//   database: DB_NAME,
+//   logging: true,
+//   entities: [
+//     join(__dirname, '**', '*.entity.{ts,js}'),
+//     join(basename(dirname(__filename)), '**', '*.entity.{ts,js}'),
+//   ],
+//   synchronize: true,
+//   autoLoadEntities: true,
+// }
 
-const prod = {
-  type: 'postgres',
-  url: DB_URL,
-  logging: true,
-  entities: [
-    join(__dirname, '**', '*.entity.{ts,js}'),
-    join(basename(dirname(__filename)), '**', '*.entity.{ts,js}'),
-  ],
-  synchronize: false,
-  autoLoadEntities: false,
-  migrations: ['src/migration/**/*.js'],
-}
+// const prod = {
+//   type: 'postgres',
+//   url: DB_URL,
+//   logging: true,
+//   entities: ['dist/**/*.entity{.ts,.js}'],
+//   synchronize: false,
+//   dropSchema: false,
+//   migrations: ['src/migration/**/*.ts'],
+//   cli: {
+//     migrationsDir: 'src/migration',
+//   },
+// }
 
 @Module({
   imports: [
@@ -81,8 +80,8 @@ const prod = {
 })
 export class AppModule {}
 
-function getTypeOrmConfig() {
-  return TypeOrmModule.forRoot(
-    (ENVIRONMENT === 'dev' ? dev : prod) as TypeOrmModuleOptions
-  )
-}
+// function getTypeOrmConfig() {
+//   return TypeOrmModule.forRoot(
+//     (ENVIRONMENT === 'dev' ? dev : prod) as TypeOrmModuleOptions
+//   )
+// }

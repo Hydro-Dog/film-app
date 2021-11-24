@@ -10,7 +10,6 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
 const typeorm_1 = require("@nestjs/typeorm");
-const path_1 = require("path");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const auth_module_1 = require("./auth/auth.module");
@@ -27,33 +26,6 @@ const DB_PASSWORD = process.env.DB_PASSWORD;
 const DB_NAME = process.env.DB_NAME;
 const DB_URL = process.env.DB_URL;
 const ENVIRONMENT = process.env.ENVIRONMENT;
-const dev = {
-    type: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    username: DB_USER,
-    password: DB_PASSWORD,
-    database: DB_NAME,
-    logging: true,
-    entities: [
-        path_1.join(__dirname, '**', '*.entity.{ts,js}'),
-        path_1.join(path_1.basename(path_1.dirname(__filename)), '**', '*.entity.{ts,js}'),
-    ],
-    synchronize: true,
-    autoLoadEntities: true,
-};
-const prod = {
-    type: 'postgres',
-    url: DB_URL,
-    logging: true,
-    entities: [
-        path_1.join(__dirname, '**', '*.entity.{ts,js}'),
-        path_1.join(path_1.basename(path_1.dirname(__filename)), '**', '*.entity.{ts,js}'),
-    ],
-    synchronize: false,
-    autoLoadEntities: false,
-    migrations: ['src/migration/**/*.js'],
-};
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -87,7 +59,4 @@ AppModule = __decorate([
     })
 ], AppModule);
 exports.AppModule = AppModule;
-function getTypeOrmConfig() {
-    return typeorm_1.TypeOrmModule.forRoot((ENVIRONMENT === 'dev' ? dev : prod));
-}
 //# sourceMappingURL=app.module.js.map
