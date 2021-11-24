@@ -52,7 +52,8 @@ const prod = {
 
 @Module({
   imports: [
-    getTypeOrmConfig(),
+    // getTypeOrmConfig(),
+    TypeOrmModule.forRoot(),
     UserModule,
     MatchSessionModule,
     FilmModule,

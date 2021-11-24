@@ -59,7 +59,7 @@ let AppModule = class AppModule {
 AppModule = __decorate([
     common_1.Module({
         imports: [
-            getTypeOrmConfig(),
+            typeorm_1.TypeOrmModule.forRoot(),
             user_module_1.UserModule,
             match_session_module_1.MatchSessionModule,
             film_module_1.FilmModule,
@@ -88,7 +88,6 @@ AppModule = __decorate([
 ], AppModule);
 exports.AppModule = AppModule;
 function getTypeOrmConfig() {
-    console.log('==========================', ENVIRONMENT === 'dev');
     return typeorm_1.TypeOrmModule.forRoot((ENVIRONMENT === 'dev' ? dev : prod));
 }
 //# sourceMappingURL=app.module.js.map
