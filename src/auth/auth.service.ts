@@ -139,7 +139,7 @@ export class AuthService {
   async sendUserConfirmation(user: User, token: string) {
     await this.mailerService.sendMail({
       to: user.email,
-      subject: 'Welcome to Nice App! Confirm your Email',
+      subject: 'Welcome to Filmder! Please, confirm your Email',
       template: './registration-confirmation',
       context: {
         name: user.firstName,
