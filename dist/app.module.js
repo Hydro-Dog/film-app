@@ -19,13 +19,6 @@ const http_error_filter_1 = require("./shared/http-error.filter");
 const logger_interceptor_1 = require("./shared/logger.interceptor");
 const timeout_interceptor_1 = require("./shared/timeout.interceptor");
 const user_module_1 = require("./user/user.module");
-const mail_module_1 = require("./mail/mail.module");
-const game_mode_module_1 = require("./game-modes/game-mode.module");
-const DB_USER = process.env.DB_USER;
-const DB_PASSWORD = process.env.DB_PASSWORD;
-const DB_NAME = process.env.DB_NAME;
-const DB_URL = process.env.DB_URL;
-const ENVIRONMENT = process.env.ENVIRONMENT;
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -35,9 +28,7 @@ AppModule = __decorate([
             user_module_1.UserModule,
             match_session_module_1.MatchSessionModule,
             film_module_1.FilmModule,
-            game_mode_module_1.GameModeModule,
             auth_module_1.AuthModule,
-            mail_module_1.MailModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

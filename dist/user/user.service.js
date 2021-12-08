@@ -15,85 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const user_entity_1 = require("../entity/user.entity");
 const typeorm_2 = require("typeorm");
-const user_entity_1 = require("./user.entity");
 let UserService = class UserService {
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
-    async updateUser(id, payload) {
-        const user = await this.userRepository.findOne({ where: [{ id }] });
-        if (user) {
-            await this.userRepository.update(id, {
-                ...user,
-                ...payload,
-            });
-            const userUpdated = await this.userRepository.findOne({ where: [{ id }] });
-            return userUpdated.sanitizeUser();
-        }
-        throw new common_1.HttpException('User not found', common_1.HttpStatus.BAD_REQUEST);
-    }
-    async getAll() {
-        const users = await this.userRepository.find();
-        return users.map((user) => user.sanitizeUser());
-    }
-    async getUser(id) {
-        const user = await this.userRepository.findOne({
-            where: [{ id }],
-        });
-        if (!user) {
-            throw new common_1.HttpException('Username not found', common_1.HttpStatus.BAD_REQUEST);
-        }
-        return user.sanitizeUser();
-    }
-    async findByUserName(userPayload, res) {
-        const { userName } = userPayload;
-        const user = await this.userRepository.findOne({
-            where: [{ userName }],
-        });
-        return user
-            ? res.status(common_1.HttpStatus.OK).json({ user: user.sanitizeUser() })
-            : res.status(common_1.HttpStatus.OK).json({ user: null });
-    }
-    async findByEmail(payload, res) {
-        const { email } = payload;
-        const user = await this.userRepository.findOne({
-            where: [{ email }],
-        });
-        if (user) {
-            throw new common_1.HttpException('Email is already taken', common_1.HttpStatus.BAD_REQUEST);
-        }
-        return res.status(common_1.HttpStatus.OK).json({ isAvailable: true });
-    }
-    async findByPhoneNumber(payload, res) {
-        const { phoneNumber } = payload;
-        const user = await this.userRepository.findOne({
-            where: [{ phoneNumber }],
-        });
-        if (user) {
-            throw new common_1.HttpException('Phone number is already taken', common_1.HttpStatus.BAD_REQUEST);
-        }
-        return res.status(common_1.HttpStatus.OK).json({ isAvailable: true });
-    }
-    async checkUserName(userPayload, res) {
-        const { userName } = userPayload;
-        const user = await this.userRepository.findOne({
-            where: [{ userName }],
-        });
-        if (user && user.id !== userPayload.userId) {
-            throw new common_1.HttpException('Username is already taken', common_1.HttpStatus.BAD_REQUEST);
-        }
-        return res.status(common_1.HttpStatus.OK).json({ isAvailable: true });
-    }
-    async checkPhoneNumber(userPayload, res) {
-        const { phoneNumber } = userPayload;
-        const user = await this.userRepository.findOne({
-            where: [{ phoneNumber }],
-        });
-        if (user && user.id !== userPayload.userId) {
-            throw new common_1.HttpException('Phone number is already taken', common_1.HttpStatus.BAD_REQUEST);
-        }
-        return res.status(common_1.HttpStatus.OK).json({ isAvailable: true });
+    findByUserName(userName, res) {
+        throw new Error('Method not implemented.');
     }
 };
 UserService = __decorate([

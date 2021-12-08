@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FilmController = void 0;
 const common_1 = require("@nestjs/common");
-const auth_guard_1 = require("../auth/auth.guard");
 const film_service_1 = require("./film.service");
 let FilmController = class FilmController {
     constructor(filmService) {
@@ -28,7 +27,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], FilmController.prototype, "getAvailableRegions", null);
 FilmController = __decorate([
-    common_1.UseGuards(auth_guard_1.AuthGuard),
     common_1.Controller(),
     __metadata("design:paramtypes", [film_service_1.FilmService])
 ], FilmController);

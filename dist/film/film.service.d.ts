@@ -5,5 +5,4 @@ export declare class FilmService {
     constructor(httpService: HttpService);
     getAvailableRegions(): Promise<any>;
     getFilmsByCategory(pageNumber: string, filmCategory: FilmCategories): Promise<string[]>;
-    getFilmsByFilters(pageNumbers: string, filterParams: Record<string, unknown>): Promise<any[]>;
 }

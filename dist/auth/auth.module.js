@@ -9,22 +9,38 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
+const passport_1 = require("@nestjs/passport");
 const typeorm_1 = require("@nestjs/typeorm");
-const user_entity_1 = require("../user/user.entity");
+const user_entity_1 = require("../entity/user.entity");
 const user_module_1 = require("../user/user.module");
 const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
+const google_strategy_1 = require("./strategies/google.strategy");
+const jwt_strategy_1 = require("./strategies/jwt.strategy");
+const local_strategy_1 = require("./strategies/local.strategy");
+const vkontakte_strategy_1 = require("./strategies/vkontakte.strategy");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     common_1.Module({
+        controllers: [auth_controller_1.AuthController],
         imports: [
+            passport_1.PassportModule,
             user_module_1.UserModule,
             typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
-            jwt_1.JwtModule.register({}),
+            jwt_1.JwtModule.register({
+                secret: process.env.JWT_SECRET,
+                signOptions: { expiresIn: '60s' },
+            }),
         ],
-        controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService],
+        providers: [
+            auth_service_1.AuthService,
+            local_strategy_1.LocalStrategy,
+            jwt_strategy_1.JwtStrategy,
+            google_strategy_1.GoogleOauthStrategy,
+            vkontakte_strategy_1.VkontakteStrategy,
+        ],
+        exports: [auth_service_1.AuthService],
     })
 ], AuthModule);
 exports.AuthModule = AuthModule;

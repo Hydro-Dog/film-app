@@ -1,41 +1,13 @@
 import { Repository } from 'typeorm';
 import { FilmService } from 'src/film/film.service';
-import { User } from 'src/user/user.entity';
-import { CreateMatchSessionDTO } from './match-session.dto';
-import { MatchSession } from './match-session.entity';
 import { AppGetaway } from 'src/app-getaway/app-getaway';
+import { MatchSession } from 'src/entity/match-session.entity';
 export declare class MatchSessionService {
     private appGetaway;
     private matchSessionRepository;
-    private userRepository;
     private filmService;
-    constructor(appGetaway: AppGetaway, matchSessionRepository: Repository<MatchSession>, userRepository: Repository<User>, filmService: FilmService);
-    create(data: CreateMatchSessionDTO): Promise<MatchSession>;
-    update(id: number, matchSessionNew: MatchSession): Promise<MatchSession>;
+    constructor(appGetaway: AppGetaway, matchSessionRepository: Repository<MatchSession>, filmService: FilmService);
     getMatchSessionByUserId(id: any): Promise<MatchSession[]>;
     getMatchSessionById(matchSessionId: any): Promise<MatchSession>;
-    swipe(matchSessionId: number, filmJSON: string, userId: number, swipeDirection: 'left' | 'right'): Promise<{
-        completed: boolean;
-        id: number;
-        created: Date;
-        region?: string;
-        category?: string;
-        filmsSequenceJson?: string[];
-        host: User;
-        guest: User;
-        lang?: string;
-        hostCurrentFilmIndex?: number;
-        guestCurrentFilmIndex?: number;
-        hostLikedFilms?: string[];
-        guestLikedFilms?: string[];
-        hostLikedFilmIndex: number;
-        guestLikedFilmIndex: number;
-        filterParams?: string;
-        matchedMoviesJSON?: string[];
-        matchLimit: number;
-        page: number;
-        accepted: boolean;
-        declined: boolean;
-    } & MatchSession>;
     deleteMatchSession(matchSessionId: number, userId: number): Promise<number>;
 }

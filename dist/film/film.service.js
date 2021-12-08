@@ -41,16 +41,6 @@ let FilmService = class FilmService {
         }
         return lodash_1.shuffle(films.data.results);
     }
-    async getFilmsByFilters(pageNumbers, filterParams) {
-        const pageNumbersArr = pageNumbers.split(',');
-        const requestsArr = pageNumbersArr.map((page) => {
-            return this.httpService
-                .get(url_for_tmdb_generator_helper_1.getAPIDiscoverUrl(process.env.API_BASE_URL, process.env.API_KEY, object_to_query_string_helper_1.objectToQueryString(filterParams), page, 'ru-RU'))
-                .toPromise();
-        });
-        const allRequests = await Promise.all(requestsArr);
-        return allRequests.flatMap((x) => x.data.results.map((movie) => movie.id));
-    }
 };
 FilmService = __decorate([
     common_1.Injectable(),

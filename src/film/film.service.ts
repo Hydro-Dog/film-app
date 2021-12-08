@@ -65,27 +65,27 @@ export class FilmService {
     return shuffle(films.data.results)
   }
 
-  async getFilmsByFilters(
-    pageNumbers: string,
-    filterParams: Record<string, unknown>
-  ) {
-    const pageNumbersArr = pageNumbers.split(',')
-    const requestsArr = pageNumbersArr.map((page) => {
-      return this.httpService
-        .get(
-          getAPIDiscoverUrl(
-            process.env.API_BASE_URL,
-            process.env.API_KEY,
-            objectToQueryString(filterParams),
-            page as unknown as number,
-            'ru-RU'
-          )
-        )
-        .toPromise()
-    })
+  // async getFilmsByFilters(
+  //   pageNumbers: string,
+  //   filterParams: Record<string, unknown>
+  // ) {
+  //   const pageNumbersArr = pageNumbers.split(',')
+  //   const requestsArr = pageNumbersArr.map((page) => {
+  //     return this.httpService
+  //       .get(
+  //         getAPIDiscoverUrl(
+  //           process.env.API_BASE_URL,
+  //           process.env.API_KEY,
+  //           objectToQueryString(filterParams),
+  //           page as unknown as number,
+  //           'ru-RU'
+  //         )
+  //       )
+  //       .toPromise()
+  //   })
 
-    const allRequests = await Promise.all(requestsArr)
+  //   const allRequests = await Promise.all(requestsArr)
 
-    return allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))
-  }
+  //   return allRequests.flatMap((x) => x.data.results.map((movie) => movie.id))
+  // }
 }

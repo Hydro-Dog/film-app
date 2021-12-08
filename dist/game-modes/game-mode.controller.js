@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameModeController = void 0;
 const common_1 = require("@nestjs/common");
-const auth_guard_1 = require("../auth/auth.guard");
 const game_mode_service_1 = require("./game-mode.service");
 let GameModeController = class GameModeController {
     constructor(gameModeService) {
@@ -28,7 +27,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], GameModeController.prototype, "getGameModes", null);
 GameModeController = __decorate([
-    common_1.UseGuards(auth_guard_1.AuthGuard),
     common_1.Controller(),
     __metadata("design:paramtypes", [game_mode_service_1.GameModeService])
 ], GameModeController);

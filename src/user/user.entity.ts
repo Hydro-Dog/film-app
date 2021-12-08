@@ -1,104 +1,109 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm'
+// import {
+//   Column,
+//   CreateDateColumn,
+//   Entity,
+//   OneToMany,
+//   PrimaryColumn,
+//   PrimaryGeneratedColumn,
+//   UpdateDateColumn,
+// } from 'typeorm'
 
-import * as bcrypt from 'bcrypt'
-import { UserRO } from './user.dto'
-import { MatchSession } from 'src/match-session/match-session.entity'
+// import * as bcrypt from 'bcrypt'
+// import { UserRO } from './user.dto'
+// import { MatchSession } from 'src/match-session/match-session.entity'
 
-@Entity()
-export class User {
-  constructor(data?: Partial<User>) {
-    if (data) {
-      Object.assign(this, data)
-    }
-  }
+// @Entity()
+// export class User {
+//   // constructor(data?: Partial<User>) {
+//   //   if (data) {
+//   //     Object.assign(this, data)
+//   //   }
+//   // }
 
-  @PrimaryGeneratedColumn()
-  id: string
+//   @PrimaryGeneratedColumn('uuid')
+//   id: string
 
-  @CreateDateColumn()
-  created: Date
+//   @CreateDateColumn()
+//   created: Date
 
-  @Column()
-  firstName: string
+//   @UpdateDateColumn()
+//   updated: Date
 
-  @Column()
-  lastName: string
+//   @Column()
+//   firstName: string
 
-  @Column({
-    unique: true,
-  })
-  email: string
+//   @Column()
+//   lastName: string
 
-  @Column({
-    unique: true,
-  })
-  userName: string
+//   @Column({
+//     unique: true,
+//   })
+//   email: string
 
-  @Column()
-  password: string
+//   @Column({
+//     unique: true,
+//   })
+//   userName: string
 
-  @Column({ nullable: true })
-  accessToken: string
+//   @Column()
+//   password: string
 
-  @Column({ nullable: true })
-  refreshToken: string
+//   @Column({ nullable: true })
+//   accessToken: string
 
-  @Column('text', { nullable: true })
-  currentMatchSession: number
+//   @Column({ nullable: true })
+//   refreshToken: string
 
-  @OneToMany((type) => MatchSession, (matchSession) => matchSession.guest)
-  @Column('text', { array: true, nullable: true })
-  sessionsInvite: number[]
+//   @Column('text', { nullable: true })
+//   currentMatchSession: number
 
-  @OneToMany((type) => MatchSession, (matchSession) => matchSession.host)
-  @Column('text', { array: true, nullable: true })
-  createdInvite: string[]
+//   @OneToMany((type) => MatchSession, (matchSession) => matchSession.guest)
+//   @Column('text', { array: true, nullable: true })
+//   sessionsInvite: number[]
 
-  @Column('text', { array: true, nullable: true })
-  favoriteFilms: string[]
+//   @OneToMany((type) => MatchSession, (matchSession) => matchSession.host)
+//   @Column('text', { array: true, nullable: true })
+//   createdInvite: string[]
 
-  @Column('text', { array: true, nullable: true })
-  sessionHistory: string[]
+//   @Column('text', { array: true, nullable: true })
+//   favoriteFilms: string[]
 
-  @Column()
-  emailConfirmed: boolean
+//   @Column('text', { array: true, nullable: true })
+//   sessionHistory: string[]
 
-  @Column('text', { nullable: true })
-  phoneNumber: string
+//   @Column()
+//   emailConfirmed: boolean
 
-  sanitizeUser(hideToken = true): UserRO {
-    const {
-      id,
-      created,
-      firstName,
-      lastName,
-      email,
-      userName,
-      accessToken,
-      phoneNumber,
-      currentMatchSession,
-    } = this
-    const responseObject: UserRO = {
-      id,
-      created,
-      firstName,
-      lastName,
-      email,
-      userName,
-      accessToken,
-      phoneNumber,
-      currentMatchSession,
-    }
-    return responseObject
-  }
+//   @Column('text', { nullable: true })
+//   phoneNumber: string
 
-  async comparePassword(attempt: string) {
-    return await bcrypt.compare(attempt, this.password)
-  }
-}
+//   sanitizeUser(hideToken = true): UserRO {
+//     const {
+//       id,
+//       created,
+//       firstName,
+//       lastName,
+//       email,
+//       userName,
+//       accessToken,
+//       phoneNumber,
+//       currentMatchSession,
+//     } = this
+//     const responseObject: UserRO = {
+//       id,
+//       created,
+//       firstName,
+//       lastName,
+//       email,
+//       userName,
+//       accessToken,
+//       phoneNumber,
+//       currentMatchSession,
+//     }
+//     return responseObject
+//   }
+
+//   async comparePassword(attempt: string) {
+//     return await bcrypt.compare(attempt, this.password)
+//   }
+// }

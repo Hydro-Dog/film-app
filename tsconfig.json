@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "lib": ["es5", "es6", "es7", "dom"],
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -11,5 +12,6 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true
-  }
+  },
+  "exclude": ["node_modules", "dist", "uploads"]
 }

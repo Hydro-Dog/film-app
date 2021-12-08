@@ -21,8 +21,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migrations:run": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:run"
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.6.0",
@@ -42,7 +41,10 @@
     "lodash": "^4.17.21",
     "nodemailer": "^6.6.2",
     "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "passport-vkontakte": "^0.5.0",
     "pg": "^8.6.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
@@ -58,6 +60,10 @@
     "@types/jest": "^26.0.22",
     "@types/jsonwebtoken": "^8.5.1",
     "@types/node": "^14.14.36",
+    "@types/passport-google-oauth20": "^2.0.11",
+    "@types/passport-jwt": "^3.0.6",
+    "@types/passport-local": "^1.0.34",
+    "@types/passport-vkontakte": "^1.3.1",
     "@types/socket.io": "^3.0.2",
     "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
@@ -72,7 +78,7 @@
     "ts-jest": "^26.5.4",
     "ts-loader": "^8.0.18",
     "ts-node": "^9.1.1",
-    "tsconfig-paths": "^3.9.0",
+    "tsconfig-paths": "^3.12.0",
     "typescript": "^4.2.3"
   },
   "jest": {

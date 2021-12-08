@@ -1,26 +1,17 @@
-import { User } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { UserDTO } from 'src/user/user.dto';
-import { MailerService } from '@nestjs-modules/mailer';
+import { User } from 'src/entity/user.entity';
 export declare class AuthService {
     private userRepository;
     private jwtService;
-    private mailerService;
-    constructor(userRepository: Repository<User>, jwtService: JwtService, mailerService: MailerService);
-    confirmUser(token: string, userName: string): Promise<string>;
-    refresh(headers: any, refresh: string): Promise<import("src/user/user.dto").UserRO>;
-    login(data: Pick<UserDTO, 'userName' | 'password'>): Promise<import("src/user/user.dto").UserRO>;
-    logout(userId: string): Promise<string>;
-    register(data: UserDTO): Promise<{
-        id: string;
+    constructor(userRepository: Repository<User>, jwtService: JwtService);
+    validateUser(username: string, pass: string): Promise<any>;
+    login(user: any): Promise<{
+        access_token: string;
     }>;
-    sendUserConfirmation(user: User, token: string): Promise<void>;
-    hashPassword(password: string): Promise<string>;
-    getAccessToken(id: string): Promise<{
-        accessToken: string;
-    }>;
-    getRefreshToken(id: string): Promise<{
-        refreshToken: string;
-    }>;
+    googleLogin(userPayload: Partial<User>): Promise<User>;
+    vkontakteLogin(userPayload: Partial<User>): Promise<User>;
+    createOrFind(userPayload: Partial<User>): Promise<User>;
+    checkIfUserEmailExists(userPayload: Partial<User>): Promise<User>;
+    createUser(userPayload: Partial<User>): Promise<User>;
 }
