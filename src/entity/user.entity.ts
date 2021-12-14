@@ -6,10 +6,15 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
-import { MatchSession } from './match-session.entity'
+import { MatchSessionEntity } from './match-session.entity'
+import { Exclude } from 'class-transformer'
 
-@Entity()
-export class User {
+@Entity({ name: 'user' })
+export class UserEntity {
+  constructor(partial: Partial<UserEntity>) {
+    Object.assign(this, partial)
+  }
+
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -36,6 +41,7 @@ export class User {
   })
   username: string
 
+  @Exclude()
   @Column({ nullable: true })
   password: string
 
@@ -48,14 +54,14 @@ export class User {
   @Column('uuid', { nullable: true })
   currentMatchSession: string
 
-  @OneToMany((type) => MatchSession, (matchSession) => matchSession.guest)
+  @OneToMany((type) => MatchSessionEntity, (matchSession) => matchSession.guest)
   @Column('uuid', { array: true, nullable: true })
   invites: string[]
 
-  @OneToMany((type) => MatchSession, (matchSession) => matchSession.host)
+  @OneToMany((type) => MatchSessionEntity, (matchSession) => matchSession.host)
   @Column('uuid', { array: true, nullable: true })
   hosted: string[]
 
-  @Column()
+  @Column({ nullable: true })
   emailConfirmed: boolean
 }

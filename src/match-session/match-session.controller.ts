@@ -16,7 +16,7 @@ import {
 } from './match-session.dto'
 import { MatchSessionService } from './match-session.service'
 // import { AuthGuard } from 'src/auth/auth.guard'
-import { MatchSession } from 'src/entity/match-session.entity'
+import { MatchSessionEntity } from 'src/entity/match-session.entity'
 
 // @UseGuards(AuthGuard)
 @Controller()

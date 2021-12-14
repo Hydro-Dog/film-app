@@ -85,7 +85,7 @@ let MatchSessionService = class MatchSessionService {
 };
 MatchSessionService = __decorate([
     common_1.Injectable(),
-    __param(1, typeorm_1.InjectRepository(match_session_entity_1.MatchSession)),
+    __param(1, typeorm_1.InjectRepository(match_session_entity_1.MatchSessionEntity)),
     __metadata("design:paramtypes", [app_getaway_1.AppGetaway,
         typeorm_2.Repository,
         film_service_1.FilmService])

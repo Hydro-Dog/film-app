@@ -1,12 +1,12 @@
 import { MatchSessionService } from './match-session.service';
-import { MatchSession } from 'src/entity/match-session.entity';
+import { MatchSessionEntity } from 'src/entity/match-session.entity';
 export declare class MatchSessionController {
     private matchSessionService;
     constructor(matchSessionService: MatchSessionService);
     getMatchSession({ userId, matchSessionId }: {
         userId: any;
         matchSessionId: any;
-    }): Promise<MatchSession[]> | Promise<MatchSession>;
+    }): Promise<MatchSessionEntity[]> | Promise<MatchSessionEntity>;
     deleteMatchSession(data: {
         matchSessionId: number;
         userId: number;

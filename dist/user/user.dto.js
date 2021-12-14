@@ -9,24 +9,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserRO = exports.UserDTO = void 0;
+exports.LoginUserDTO = exports.CreateUserDTO = exports.UserDTO = void 0;
 const class_validator_1 = require("class-validator");
 class UserDTO {
 }
 __decorate([
-    class_validator_1.IsNotEmpty(),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", Date)
+], UserDTO.prototype, "created", void 0);
+__decorate([
+    class_validator_1.IsOptional(),
+    __metadata("design:type", Date)
+], UserDTO.prototype, "updated", void 0);
+__decorate([
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], UserDTO.prototype, "id", void 0);
+__decorate([
+    class_validator_1.IsOptional(),
+    __metadata("design:type", Object)
+], UserDTO.prototype, "password", void 0);
+__decorate([
+    class_validator_1.IsOptional(),
     __metadata("design:type", String)
 ], UserDTO.prototype, "email", void 0);
 __decorate([
-    class_validator_1.IsNotEmpty(),
-    __metadata("design:type", String)
-], UserDTO.prototype, "password", void 0);
-__decorate([
-    class_validator_1.IsNotEmpty(),
+    class_validator_1.IsOptional(),
     __metadata("design:type", String)
 ], UserDTO.prototype, "firstName", void 0);
 __decorate([
-    class_validator_1.IsNotEmpty(),
+    class_validator_1.IsOptional(),
     __metadata("design:type", String)
 ], UserDTO.prototype, "lastName", void 0);
 __decorate([
@@ -34,11 +46,22 @@ __decorate([
     __metadata("design:type", String)
 ], UserDTO.prototype, "userName", void 0);
 __decorate([
-    class_validator_1.IsNotEmpty(),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", Object)
+], UserDTO.prototype, "accessToken", void 0);
+__decorate([
+    class_validator_1.IsOptional(),
     __metadata("design:type", String)
-], UserDTO.prototype, "phoneNumber", void 0);
+], UserDTO.prototype, "refreshToken", void 0);
+__decorate([
+    class_validator_1.IsOptional(),
+    __metadata("design:type", Boolean)
+], UserDTO.prototype, "emailConfirmed", void 0);
 exports.UserDTO = UserDTO;
-class UserRO {
+class CreateUserDTO {
 }
-exports.UserRO = UserRO;
+exports.CreateUserDTO = CreateUserDTO;
+class LoginUserDTO {
+}
+exports.LoginUserDTO = LoginUserDTO;
 //# sourceMappingURL=user.dto.js.map

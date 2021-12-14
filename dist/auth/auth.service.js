@@ -18,11 +18,14 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const jwt_1 = require("@nestjs/jwt");
 const user_dto_1 = require("../user/user.dto");
+const bcrypt = require("bcrypt");
+const mailer_1 = require("@nestjs-modules/mailer");
 const user_entity_1 = require("../entity/user.entity");
 let AuthService = class AuthService {
-    constructor(userRepository, jwtService) {
+    constructor(userRepository, jwtService, mailerService) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
+        this.mailerService = mailerService;
     }
     async validateUser(username, pass) {
         console.log('username: ', username);
@@ -34,43 +37,98 @@ let AuthService = class AuthService {
         }
         return null;
     }
-    async login(user) {
-        const payload = { username: user.username, sub: user.userId };
-        return {
-            access_token: this.jwtService.sign(payload),
-        };
-    }
-    async googleLogin(userPayload) {
-        console.log('userPayload: ', userPayload);
-        return await this.createOrFind(userPayload);
-    }
-    async vkontakteLogin(userPayload) {
-        return await this.createOrFind(userPayload);
-    }
-    async createOrFind(userPayload) {
-        const user = await this.checkIfUserEmailExists(userPayload);
-        console.log('user: ', user);
-        if (!user) {
-            return await this.createUser(userPayload);
+    async register(userData) {
+        const emailExists = await this.checkForExistence('email', userData.email);
+        const usernameExists = await this.checkForExistence('username', userData.username);
+        if (emailExists || usernameExists) {
+            throw new common_1.HttpException('User with such email or user name number already exist', common_1.HttpStatus.BAD_REQUEST);
         }
-        return user;
+        else {
+            return await this.createUser(userData);
+        }
     }
-    async checkIfUserEmailExists(userPayload) {
+    async login(userData) {
+        const user = await this.userRepository.findOne({
+            where: { email: userData.email },
+        });
+        if (!user) {
+            throw new common_1.HttpException('No such user', common_1.HttpStatus.BAD_REQUEST);
+        }
+        const accessToken = await this.jwtService.sign({ id: user.id }, {
+            expiresIn: process.env.ACCESS_EXPIRATION,
+            secret: process.env.JWT_SECRET,
+        });
+        const refreshToken = await this.jwtService.sign({ id: user.id }, {
+            expiresIn: process.env.REFRESH_EXPIRATION,
+            secret: process.env.JWT_SECRET,
+        });
+        const userUpdated = await this.userRepository.save({
+            ...user,
+            accessToken,
+            refreshToken,
+        });
+        return new user_entity_1.UserEntity(userUpdated);
+    }
+    async checkForExistence(key, value) {
         return await this.userRepository.findOne({
-            where: { email: userPayload.email },
+            where: { [key]: value },
         });
     }
-    async createUser(userPayload) {
-        const user = await this.userRepository.create(userPayload);
-        await this.userRepository.save(user);
-        return user;
+    async hashUserPassword(userData) {
+        let password = await bcrypt.hash(userData.password + process.env.SAULT, 10);
+        return { ...userData, password };
+    }
+    async sendUserConfirmation(user) {
+        const token = await bcrypt.hash(user.username + process.env.CONFIRMATION_SECRET, 10);
+        try {
+            return await this.mailerService.sendMail({
+                to: user.email,
+                subject: 'Welcome to Filmder! Please, confirm your Email',
+                template: './registration-confirmation',
+                context: {
+                    name: user.firstName,
+                    username: user.username,
+                    token,
+                },
+            });
+        }
+        catch (error) {
+            console.error('ERROR: ', error);
+            throw new common_1.HttpException(error, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async createUser(userData) {
+        try {
+            const hashedUser = await this.hashUserPassword(userData);
+            const user = await this.userRepository.create(hashedUser);
+            await this.userRepository.save(user);
+            const mailerResponse = await this.sendUserConfirmation(user);
+            return new user_entity_1.UserEntity({ user, ...mailerResponse });
+        }
+        catch (error) {
+            console.error('ERROR: ', error);
+            throw new common_1.HttpException(error, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async confirmUser(token, username) {
+        const isValid = await bcrypt.compare(username + process.env.CONFIRMATION_SECRET, token);
+        if (isValid) {
+            const user = await this.userRepository.findOne({ where: { username } });
+            user.emailConfirmed = true;
+            this.userRepository.save(user);
+            return 'Account confirmed';
+        }
+        else {
+            throw new common_1.HttpException('Invalid token', common_1.HttpStatus.BAD_REQUEST);
+        }
     }
 };
 AuthService = __decorate([
     common_1.Injectable(),
-    __param(0, typeorm_1.InjectRepository(user_entity_1.User)),
+    __param(0, typeorm_1.InjectRepository(user_entity_1.UserEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
-        jwt_1.JwtService])
+        jwt_1.JwtService,
+        mailer_1.MailerService])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

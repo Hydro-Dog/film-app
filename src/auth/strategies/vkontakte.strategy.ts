@@ -1,7 +1,7 @@
 import { PassportStrategy } from '@nestjs/passport'
 import { Strategy, VerifyCallback } from 'passport-vkontakte'
 import { Injectable } from '@nestjs/common'
-import { User } from 'src/entity/user.entity'
+import { UserEntity } from 'src/entity/user.entity'
 
 @Injectable()
 export class VkontakteStrategy extends PassportStrategy(Strategy, 'vkontakte') {
@@ -21,7 +21,7 @@ export class VkontakteStrategy extends PassportStrategy(Strategy, 'vkontakte') {
         done
       ) {
         const { name, emails, photos } = profile
-        const user: Partial<User> = {
+        const user: Partial<UserEntity> = {
           email: emails[0].value,
           firstName: name.givenName,
           lastName: name.familyName,

@@ -3,7 +3,7 @@ import { Strategy, VerifyCallback } from 'passport-google-oauth20'
 import { config } from 'dotenv'
 
 import { Injectable } from '@nestjs/common'
-import { User } from 'src/entity/user.entity'
+import { UserEntity } from 'src/entity/user.entity'
 
 @Injectable()
 export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
@@ -23,7 +23,7 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
     done: VerifyCallback
   ): Promise<any> {
     const { name, emails } = profile
-    const user: Partial<User> = {
+    const user: Partial<UserEntity> = {
       email: emails[0].value,
       firstName: name.givenName,
       lastName: name.familyName,

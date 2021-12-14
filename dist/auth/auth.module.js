@@ -12,13 +12,12 @@ const jwt_1 = require("@nestjs/jwt");
 const passport_1 = require("@nestjs/passport");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("../entity/user.entity");
+const mail_module_1 = require("../mail/mail.module");
 const user_module_1 = require("../user/user.module");
 const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
-const google_strategy_1 = require("./strategies/google.strategy");
 const jwt_strategy_1 = require("./strategies/jwt.strategy");
 const local_strategy_1 = require("./strategies/local.strategy");
-const vkontakte_strategy_1 = require("./strategies/vkontakte.strategy");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
@@ -27,18 +26,14 @@ AuthModule = __decorate([
         imports: [
             passport_1.PassportModule,
             user_module_1.UserModule,
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
-            jwt_1.JwtModule.register({
-                secret: process.env.JWT_SECRET,
-                signOptions: { expiresIn: '60s' },
-            }),
+            mail_module_1.MailModule,
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity]),
+            jwt_1.JwtModule.register({}),
         ],
         providers: [
             auth_service_1.AuthService,
             local_strategy_1.LocalStrategy,
             jwt_strategy_1.JwtStrategy,
-            google_strategy_1.GoogleOauthStrategy,
-            vkontakte_strategy_1.VkontakteStrategy,
         ],
         exports: [auth_service_1.AuthService],
     })

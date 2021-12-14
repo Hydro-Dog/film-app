@@ -1,22 +1,24 @@
 export declare class UserDTO {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-    userName: string;
-    phoneNumber: string;
-    id: any;
-    clientId: any;
-}
-export declare class UserRO {
-    id: string;
     created: Date;
+    updated: Date;
+    id: string;
+    password: any;
     email: string;
     firstName: string;
     lastName: string;
     userName: string;
-    accessToken?: string;
-    refreshToken?: string;
-    phoneNumber: string;
-    currentMatchSession: number;
+    accessToken: any;
+    refreshToken: string;
+    emailConfirmed: boolean;
+}
+export declare class CreateUserDTO {
+    readonly password: string;
+    readonly email: string;
+    readonly firstName: string;
+    readonly lastName: string;
+    readonly username: string;
+}
+export declare class LoginUserDTO {
+    readonly password: string;
+    readonly email: string;
 }

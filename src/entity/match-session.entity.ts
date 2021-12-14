@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
-import { User } from './user.entity'
+import { UserEntity } from './user.entity'
 
 export enum MatchSessionStatus {
   Pending,
@@ -20,8 +20,8 @@ export interface MatchSessionPlayer {
   likedFilmsIndex: number
 }
 
-@Entity()
-export class MatchSession {
+@Entity({ name: 'matchSession' })
+export class MatchSessionEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -39,11 +39,11 @@ export class MatchSession {
    */
   @Column('text', { array: true }) filmsSequence: string[]
 
-  @ManyToOne((type) => User, (user) => user.id)
-  host: User
+  @ManyToOne((type) => UserEntity, (user) => user.id)
+  host: UserEntity
 
-  @ManyToOne((type) => User, (user) => user.id)
-  guest: User
+  @ManyToOne((type) => UserEntity, (user) => user.id)
+  guest: UserEntity
 
   @Column('json', { nullable: true }) filterParams: string
 

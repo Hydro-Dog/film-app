@@ -15,66 +15,46 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const common_2 = require("@nestjs/common");
+const user_dto_1 = require("../user/user.dto");
 const auth_service_1 = require("./auth.service");
-const google_guard_1 = require("./strategies/google.guard");
-const local_auth_guard_1 = require("./strategies/local-auth.guard");
-const vkontakte_auth_guard_1 = require("./strategies/vkontakte-auth.guard");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    async login(req) {
-        return this.authService.login(req.user);
+    async login(data) {
+        return this.authService.login(data);
     }
-    async googleAuth(req) { }
-    googleAuthRedirect(req) {
-        return this.authService.googleLogin(req.user);
+    register(data) {
+        console.log('data: ', data);
+        return this.authService.register(data);
     }
-    async vkontakteAuth(req) { }
-    vkontakteAuthRedirect(req) {
-        return this.authService.vkontakteLogin(req.user);
+    confirm({ token, userName }) {
+        return this.authService.confirmUser(token, userName);
     }
 };
 __decorate([
-    common_1.UseGuards(local_auth_guard_1.LocalAuthGuard),
-    common_1.Post('auth/login'),
-    __param(0, common_1.Request()),
+    common_1.UseInterceptors(common_1.ClassSerializerInterceptor),
+    common_1.Post('login'),
+    __param(0, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [user_dto_1.LoginUserDTO]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 __decorate([
-    common_1.Get('google'),
-    common_1.UseGuards(google_guard_1.GoogleAuthGuard),
-    __param(0, common_1.Request()),
+    common_1.UseInterceptors(common_1.ClassSerializerInterceptor),
+    common_1.Post('register'),
+    __param(0, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "googleAuth", null);
+    __metadata("design:paramtypes", [user_dto_1.CreateUserDTO]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "register", null);
 __decorate([
-    common_1.Get('google/redirect'),
-    common_1.UseGuards(google_guard_1.GoogleAuthGuard),
-    __param(0, common_1.Request()),
+    common_1.Get('confirm'),
+    __param(0, common_1.Query()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
-], AuthController.prototype, "googleAuthRedirect", null);
-__decorate([
-    common_1.Get('vkontakte'),
-    common_1.UseGuards(vkontakte_auth_guard_1.VkontakteAuthGuard),
-    __param(0, common_1.Request()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "vkontakteAuth", null);
-__decorate([
-    common_1.Get('vkontakte/redirect'),
-    common_1.UseGuards(vkontakte_auth_guard_1.VkontakteAuthGuard),
-    __param(0, common_1.Request()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "vkontakteAuthRedirect", null);
+], AuthController.prototype, "confirm", null);
 AuthController = __decorate([
     common_2.Controller(),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

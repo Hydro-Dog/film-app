@@ -1,8 +1,8 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { User } from 'src/entity/user.entity'
+import { UserEntity } from 'src/entity/user.entity'
 import { Repository } from 'typeorm'
-import { UserDTO, UserRO } from './user.dto'
+import { UserDTO } from './user.dto'
 
 @Injectable()
 export class UserService {
@@ -10,7 +10,7 @@ export class UserService {
     throw new Error('Method not implemented.')
   }
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>
+    @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>
   ) {}
 
   // async updateUser(id: number, payload: Partial<UserDTO>): Promise<UserRO> {

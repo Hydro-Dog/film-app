@@ -3742,8 +3742,8 @@
         "affectsGlobalScope": false
       },
       "../src/user/user.dto.ts": {
-        "version": "e9cf21e47a87134d62d0e7c96bb6b2d9653e32cca6d408914e3edbea30549e19",
-        "signature": "a173c6dfea469f2a7c2823d84cdb946d83aa458924f105245ef9e80ab077dd4e",
+        "version": "a028a7afbb47a2dab66c148905ade674ef8223c4827450484d95b0556386c4fc",
+        "signature": "060df23069808cb5a71c64d767b4e74a3f9c37f3b588bbd529475906b18f4936",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/bcrypt/index.d.ts": {
@@ -3807,18 +3807,153 @@
         "affectsGlobalScope": false
       },
       "../src/entity/match-session.entity.ts": {
-        "version": "c40266602aa882d4a9cf19cdccac31b4d0f5edde448f4cd4a428226658accc2b",
-        "signature": "9217faad628089ee550f117f1d74acc2c92dcbfbee5b2f9ae4a632b8228af1fe",
+        "version": "5ef04fb46afc1a6976ef2f2de1f2adcfede2b54740dd6d788dabe0e4fd2fa7d8",
+        "signature": "78472929b943ce7f183a2c45845f7a9f571f858f9ca33076d0b0be7fc9108210",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/interfaces/decorator-options/expose-options.interface.d.ts": {
+        "version": "b6e995b5ef6661f5636ff738e67e4ec90150768ef119ad74b473c404304408a1",
+        "signature": "b6e995b5ef6661f5636ff738e67e4ec90150768ef119ad74b473c404304408a1",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/interfaces/decorator-options/exclude-options.interface.d.ts": {
+        "version": "5d470930bf6142d7cbda81c157869024527dc7911ba55d90b8387ef6e1585aa1",
+        "signature": "5d470930bf6142d7cbda81c157869024527dc7911ba55d90b8387ef6e1585aa1",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/interfaces/decorator-options/transform-options.interface.d.ts": {
+        "version": "074483fdbf20b30bd450e54e6892e96ea093430c313e61be5fdfe51588baa2d6",
+        "signature": "074483fdbf20b30bd450e54e6892e96ea093430c313e61be5fdfe51588baa2d6",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/interfaces/decorator-options/type-discriminator-descriptor.interface.d.ts": {
+        "version": "b7e6a6a3495301360edb9e1474702db73d18be7803b3f5c6c05571212acccd16",
+        "signature": "b7e6a6a3495301360edb9e1474702db73d18be7803b3f5c6c05571212acccd16",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/interfaces/decorator-options/type-options.interface.d.ts": {
+        "version": "aa7527285c94043f21baf6e337bc60a92c20b6efaa90859473f6476954ac5f79",
+        "signature": "aa7527285c94043f21baf6e337bc60a92c20b6efaa90859473f6476954ac5f79",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/interfaces/metadata/exclude-metadata.interface.d.ts": {
+        "version": "dd3be6d9dcd79e46d192175a756546630f2dc89dab28073823c936557b977f26",
+        "signature": "dd3be6d9dcd79e46d192175a756546630f2dc89dab28073823c936557b977f26",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/interfaces/metadata/expose-metadata.interface.d.ts": {
+        "version": "8d0566152618a1da6536c75a5659c139522d67c63a9ae27e8228d76ab0420584",
+        "signature": "8d0566152618a1da6536c75a5659c139522d67c63a9ae27e8228d76ab0420584",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/enums/transformation-type.enum.d.ts": {
+        "version": "ba06bf784edafe0db0e2bd1f6ecf3465b81f6b1819871bf190a0e0137b5b7f18",
+        "signature": "ba06bf784edafe0db0e2bd1f6ecf3465b81f6b1819871bf190a0e0137b5b7f18",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/enums/index.d.ts": {
+        "version": "a0500233cb989bcb78f5f1a81f51eabc06b5c39e3042c560a7489f022f1f55a3",
+        "signature": "a0500233cb989bcb78f5f1a81f51eabc06b5c39e3042c560a7489f022f1f55a3",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/interfaces/target-map.interface.d.ts": {
+        "version": "220508b3fb6b773f49d8fb0765b04f90ef15caacf0f3d260e3412ed38f71ef09",
+        "signature": "220508b3fb6b773f49d8fb0765b04f90ef15caacf0f3d260e3412ed38f71ef09",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/interfaces/class-transformer-options.interface.d.ts": {
+        "version": "1ad113089ad5c188fec4c9a339cb53d1bcbb65682407d6937557bb23a6e1d4e5",
+        "signature": "1ad113089ad5c188fec4c9a339cb53d1bcbb65682407d6937557bb23a6e1d4e5",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/interfaces/metadata/transform-fn-params.interface.d.ts": {
+        "version": "e56427c055602078cbf0e58e815960541136388f4fc62554813575508def98b6",
+        "signature": "e56427c055602078cbf0e58e815960541136388f4fc62554813575508def98b6",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/interfaces/metadata/transform-metadata.interface.d.ts": {
+        "version": "1f58b0676a80db38df1ce19d15360c20ce9e983b35298a5d0b4aa4eb4fb67e0f",
+        "signature": "1f58b0676a80db38df1ce19d15360c20ce9e983b35298a5d0b4aa4eb4fb67e0f",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/interfaces/metadata/type-metadata.interface.d.ts": {
+        "version": "3d67e7eb73c6955ee27f1d845cae88923f75c8b0830d4b5440eea2339958e8ec",
+        "signature": "3d67e7eb73c6955ee27f1d845cae88923f75c8b0830d4b5440eea2339958e8ec",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/interfaces/class-constructor.type.d.ts": {
+        "version": "11fec302d58b56033ab07290a3abc29e9908e29d504db9468544b15c4cd7670d",
+        "signature": "11fec302d58b56033ab07290a3abc29e9908e29d504db9468544b15c4cd7670d",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/interfaces/type-help-options.interface.d.ts": {
+        "version": "c66d6817c931633650edf19a8644eea61aeeb84190c7219911cefa8ddea8bd9a",
+        "signature": "c66d6817c931633650edf19a8644eea61aeeb84190c7219911cefa8ddea8bd9a",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/interfaces/index.d.ts": {
+        "version": "ab1359707e4fc610c5f37f1488063af65cda3badca6b692d44b95e8380e0f6c2",
+        "signature": "ab1359707e4fc610c5f37f1488063af65cda3badca6b692d44b95e8380e0f6c2",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/ClassTransformer.d.ts": {
+        "version": "37deda160549729287645b3769cf126b0a17e7e2218737352676705a01d5957e",
+        "signature": "37deda160549729287645b3769cf126b0a17e7e2218737352676705a01d5957e",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/decorators/exclude.decorator.d.ts": {
+        "version": "d80ffdd55e7f4bc69cde66933582b8592d3736d3b0d1d8cc63995a7b2bcca579",
+        "signature": "d80ffdd55e7f4bc69cde66933582b8592d3736d3b0d1d8cc63995a7b2bcca579",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/decorators/expose.decorator.d.ts": {
+        "version": "c9b71952b2178e8737b63079dba30e1b29872240b122905cbaba756cb60b32f5",
+        "signature": "c9b71952b2178e8737b63079dba30e1b29872240b122905cbaba756cb60b32f5",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/decorators/transform-instance-to-instance.decorator.d.ts": {
+        "version": "b596585338b0d870f0e19e6b6bcbf024f76328f2c4f4e59745714e38ee9b0582",
+        "signature": "b596585338b0d870f0e19e6b6bcbf024f76328f2c4f4e59745714e38ee9b0582",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/decorators/transform-instance-to-plain.decorator.d.ts": {
+        "version": "e6717fc103dfa1635947bf2b41161b5e4f2fabbcaf555754cc1b4340ec4ca587",
+        "signature": "e6717fc103dfa1635947bf2b41161b5e4f2fabbcaf555754cc1b4340ec4ca587",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/decorators/transform-plain-to-instance.decorator.d.ts": {
+        "version": "c36186d7bdf1f525b7685ee5bf639e4b157b1e803a70c25f234d4762496f771f",
+        "signature": "c36186d7bdf1f525b7685ee5bf639e4b157b1e803a70c25f234d4762496f771f",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/decorators/transform.decorator.d.ts": {
+        "version": "026726932a4964341ab8544f12b912c8dfaa388d2936b71cc3eca0cffb49cc1d",
+        "signature": "026726932a4964341ab8544f12b912c8dfaa388d2936b71cc3eca0cffb49cc1d",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/decorators/type.decorator.d.ts": {
+        "version": "83188d037c81bd27076218934ba9e1742ddb69cd8cc64cdb8a554078de38eb12",
+        "signature": "83188d037c81bd27076218934ba9e1742ddb69cd8cc64cdb8a554078de38eb12",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/decorators/index.d.ts": {
+        "version": "7d82f2d6a89f07c46c7e3e9071ab890124f95931d9c999ba8f865fa6ef6cbf72",
+        "signature": "7d82f2d6a89f07c46c7e3e9071ab890124f95931d9c999ba8f865fa6ef6cbf72",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/class-transformer/types/index.d.ts": {
+        "version": "4fc523037d14d9bb6ddb586621a93dd05b6c6d8d59919a40c436ca3ac29d9716",
+        "signature": "4fc523037d14d9bb6ddb586621a93dd05b6c6d8d59919a40c436ca3ac29d9716",
         "affectsGlobalScope": false
       },
       "../src/entity/user.entity.ts": {
-        "version": "dfda0c66e942fd6feec37717f46ddae71c436165c589a98170328e37da0cb9e5",
-        "signature": "ffe00033de7fb33e21ee356d9393e2ab05a82bb4ef753189114630f4ab10e68b",
+        "version": "7f264a891e4c2906664eb62263ba5d4c90c933611785ba579dede1bd0209e97c",
+        "signature": "d3787784877ab1bb5ce5c1e5e2de8c8254248e56a8ba7985e5816969ece5c416",
         "affectsGlobalScope": false
       },
       "../src/auth/auth.service.ts": {
-        "version": "90a25332624e5a013c41778ee2469b9bfab9a6eff7a32d5db70855d9cd55783f",
-        "signature": "fd1680e0519ba11a612eb3af8ff18c559f47585d94470071f2a277f80dc10a27",
+        "version": "d854d2cdd94dbd211020dceff3e4dce673aa565e4f0878435405a68e92a34f56",
+        "signature": "f8280b49ca2928caee33416928cc81864e2b979bb2f1acf4363a1e6c17efcded",
         "affectsGlobalScope": false
       },
       "../src/app.controller.ts": {
@@ -4106,14 +4241,39 @@
         "signature": "8f1241f5d9f0d3d72117768b3c974e462840fbd85026fb66685078945404cf2f",
         "affectsGlobalScope": false
       },
+      "../src/mail/mail.service.ts": {
+        "version": "9d0e92e469368400d6d40ba4b841d18ce55815cf042ebb08545ae20160414ab4",
+        "signature": "a22524620f2dbc1a8bd9164fda7524f4a6f5ef73f9a1030df2ca103fb13340f9",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/handlebars/types/index.d.ts": {
+        "version": "f3a68054f682f21cec1eb6bc37d3c4c7f73b7723c7256f8a1ccc75873024aaa6",
+        "signature": "f3a68054f682f21cec1eb6bc37d3c4c7f73b7723c7256f8a1ccc75873024aaa6",
+        "affectsGlobalScope": true
+      },
+      "../node_modules/@nestjs-modules/mailer/dist/interfaces/template-adapter-config.interface.d.ts": {
+        "version": "bb053e79ad27dcd9cd7a285b2b37a621581511bdab36b8028f720d9b207d0af3",
+        "signature": "bb053e79ad27dcd9cd7a285b2b37a621581511bdab36b8028f720d9b207d0af3",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@nestjs-modules/mailer/dist/adapters/handlebars.adapter.d.ts": {
+        "version": "dd9a68fb11b43c2e35ed4a2eb01c6be9157ffc38c2e99cbfeaebc403ae79dbd7",
+        "signature": "dd9a68fb11b43c2e35ed4a2eb01c6be9157ffc38c2e99cbfeaebc403ae79dbd7",
+        "affectsGlobalScope": false
+      },
+      "../src/mail/mail.module.ts": {
+        "version": "adeefaac48999db6e341bf93f81e610749ef68e4e317de3ba4f20d49dbb23954",
+        "signature": "447b753b3e76578ef29631d0bcca78bac6ce0b377c4ca60923c08c835f09e01e",
+        "affectsGlobalScope": false
+      },
       "../src/auth/strategies/jwt-auth.guard.ts": {
         "version": "29551fd915d7e04485247a9b620431c45069fe0b167703bffe2c196305fa6730",
         "signature": "e9629b89f6cd33a040577695d89edf882e66287d30c87121f5fc07f404decd25",
         "affectsGlobalScope": false
       },
       "../src/user/user.service.ts": {
-        "version": "cc9f7994558dd5bff1ddefe1a6d428bf4f3bf81389e2e0c1768b83559567bafd",
-        "signature": "581014437f66e4b1a8fc4c44e28adec64cff987b1c2e4f7c4a3511fa01650b7c",
+        "version": "5e225dd8598a5aa167da01021392262cc7230fc6f939b85d307cb3174c765f26",
+        "signature": "12590f95d95edb89f54475212f66540dbb1adc04a5809bb2a621bef75c47047a",
         "affectsGlobalScope": false
       },
       "../src/user/user.controller.ts": {
@@ -4122,13 +4282,8 @@
         "affectsGlobalScope": false
       },
       "../src/user/user.module.ts": {
-        "version": "e8b96f7254510c371eac64352116a89e106db6586a22718c55093ddb1c9a444e",
+        "version": "8d46ad570945af44670be87ef092583d98c2640c08d96f42736375bdf095698a",
         "signature": "482b8f0d35a3d453500a15b6c6057c1e4c40baa4329b39da9e1026d8e1de4329",
-        "affectsGlobalScope": false
-      },
-      "../src/auth/strategies/google.guard.ts": {
-        "version": "beaccf1c57ea4416052c82e5df5d806619ac987165c0b7085ef62223ae027663",
-        "signature": "a45e6172177f4de99fdb6caf6814946f2d1240569c7363ca4975fd7bda4169f6",
         "affectsGlobalScope": false
       },
       "../src/auth/strategies/local-auth.guard.ts": {
@@ -4136,39 +4291,9 @@
         "signature": "9116cbf32650ce234338c6f8395ecb044d06f6d939f2f6ca6d21335f4e663b71",
         "affectsGlobalScope": false
       },
-      "../src/auth/strategies/vkontakte-auth.guard.ts": {
-        "version": "29ba58079c9537c97cd5d922b43daf0d10da8018bc8693d7e17facaf5b09308a",
-        "signature": "8d55993721b8767676bc1bdaa980bbe97a0bc8adb115770d5a071a6980269c69",
-        "affectsGlobalScope": false
-      },
       "../src/auth/auth.controller.ts": {
-        "version": "6074dc06d8c8a5ffb33d54cd28501eb046fbf5534100f67101fda004590327a1",
-        "signature": "e43cab7516ca04dd43886f640736666147047a9a70778d97ae00f5ca1d5cdfcb",
-        "affectsGlobalScope": false
-      },
-      "../node_modules/@types/oauth/index.d.ts": {
-        "version": "ee4b33bde3c17180fc5ef9f8d3f153659fd9827ae82eef9ca4e8956ca343fadd",
-        "signature": "ee4b33bde3c17180fc5ef9f8d3f153659fd9827ae82eef9ca4e8956ca343fadd",
-        "affectsGlobalScope": false
-      },
-      "../node_modules/@types/passport-oauth2/index.d.ts": {
-        "version": "1840db2b13c57a3ff9974bbe5c8cf50c8ce7430834b9cc26c72fe1ed593b5a15",
-        "signature": "1840db2b13c57a3ff9974bbe5c8cf50c8ce7430834b9cc26c72fe1ed593b5a15",
-        "affectsGlobalScope": false
-      },
-      "../node_modules/@types/passport-google-oauth20/index.d.ts": {
-        "version": "8b8d4e8a4840540104f67afa8d636d0e8f237c10aa0daf204e84446dbe2ecca7",
-        "signature": "8b8d4e8a4840540104f67afa8d636d0e8f237c10aa0daf204e84446dbe2ecca7",
-        "affectsGlobalScope": false
-      },
-      "../node_modules/dotenv/types/index.d.ts": {
-        "version": "40b741dd397d635ee3df8b4880f30f15fa7394b9da31d4454805e47692438ff3",
-        "signature": "40b741dd397d635ee3df8b4880f30f15fa7394b9da31d4454805e47692438ff3",
-        "affectsGlobalScope": false
-      },
-      "../src/auth/strategies/google.strategy.ts": {
-        "version": "86e33dad05a8e02b39e22328121c0748a816c325264eca999e14fab9e1279fd6",
-        "signature": "f6a891ca170330fa22bbdb6af9f1c2221d564e8f4f559ff53aa34643802e8716",
+        "version": "ad3d860b50b6837f934a11c14f77540e791c1e4ed07811be6b62abaecdb0f302",
+        "signature": "934ae5487f75d04261d6d6145c64d39af95e289e3691af64b66cfa10a6133408",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/passport-strategy/index.d.ts": {
@@ -4201,18 +4326,8 @@
         "signature": "7b10ccce134632aba837a91abbce7da17e2b23c942b34833b1bf9ed5c8ba8361",
         "affectsGlobalScope": false
       },
-      "../node_modules/@types/passport-vkontakte/index.d.ts": {
-        "version": "3f8b4903ca0d46de5ecd8405643d7eed0c2895f37a4a77aa65145c32b2f593e4",
-        "signature": "3f8b4903ca0d46de5ecd8405643d7eed0c2895f37a4a77aa65145c32b2f593e4",
-        "affectsGlobalScope": false
-      },
-      "../src/auth/strategies/vkontakte.strategy.ts": {
-        "version": "d4a34d24c94a5c60c16f09c9739ee50b2fa2f0883b5b6368c5762dbd666db68a",
-        "signature": "e239d4f46bd9fac212feb9b3a4bb94b700dad48a72bb8357449c0ca03dbb0c28",
-        "affectsGlobalScope": false
-      },
       "../src/auth/auth.module.ts": {
-        "version": "fd6c42e1010bd7a69d3d1e3324152a18ddcb0b94d98f8854df1ac13c007f266c",
+        "version": "ab5b90c5db25ef2d1bf130de96603ada650c9e240c8e95b2fe1130a8f257bc7e",
         "signature": "a28b5c0c372fb375910b3fe3c3ce4331509bc18ccef7cc39c9ee9d8daf8225d1",
         "affectsGlobalScope": false
       },
@@ -4791,31 +4906,6 @@
         "signature": "9d104e66a5765eb9e203d1640fa0e6d93fb1f6a0691135fd74084274d9e96705",
         "affectsGlobalScope": false
       },
-      "../src/mail/mail.service.ts": {
-        "version": "9d0e92e469368400d6d40ba4b841d18ce55815cf042ebb08545ae20160414ab4",
-        "signature": "a22524620f2dbc1a8bd9164fda7524f4a6f5ef73f9a1030df2ca103fb13340f9",
-        "affectsGlobalScope": false
-      },
-      "../node_modules/handlebars/types/index.d.ts": {
-        "version": "f3a68054f682f21cec1eb6bc37d3c4c7f73b7723c7256f8a1ccc75873024aaa6",
-        "signature": "f3a68054f682f21cec1eb6bc37d3c4c7f73b7723c7256f8a1ccc75873024aaa6",
-        "affectsGlobalScope": true
-      },
-      "../node_modules/@nestjs-modules/mailer/dist/interfaces/template-adapter-config.interface.d.ts": {
-        "version": "bb053e79ad27dcd9cd7a285b2b37a621581511bdab36b8028f720d9b207d0af3",
-        "signature": "bb053e79ad27dcd9cd7a285b2b37a621581511bdab36b8028f720d9b207d0af3",
-        "affectsGlobalScope": false
-      },
-      "../node_modules/@nestjs-modules/mailer/dist/adapters/handlebars.adapter.d.ts": {
-        "version": "dd9a68fb11b43c2e35ed4a2eb01c6be9157ffc38c2e99cbfeaebc403ae79dbd7",
-        "signature": "dd9a68fb11b43c2e35ed4a2eb01c6be9157ffc38c2e99cbfeaebc403ae79dbd7",
-        "affectsGlobalScope": false
-      },
-      "../src/mail/mail.module.ts": {
-        "version": "adeefaac48999db6e341bf93f81e610749ef68e4e317de3ba4f20d49dbb23954",
-        "signature": "447b753b3e76578ef29631d0bcca78bac6ce0b377c4ca60923c08c835f09e01e",
-        "affectsGlobalScope": false
-      },
       "../node_modules/@nestjs/websockets/adapters/ws-adapter.d.ts": {
         "version": "895d77a389c25348c2b54aad128d850f1c2f0363d301fd04d56e788667561101",
         "signature": "895d77a389c25348c2b54aad128d850f1c2f0363d301fd04d56e788667561101",
@@ -5067,17 +5157,17 @@
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.service.ts": {
-        "version": "4df8977b14979849d8f1d13c728c05748f4bf91e7091a19e9b2b63e707f35bb5",
-        "signature": "bbf18fc0d31a33e68fcc635c090de2113211c1b4ea3e4ec7ae68b7c294861aa8",
+        "version": "a33339e786b7af251e38bb90359fd15fda434f2d74b78e7bdbc311284535c395",
+        "signature": "347e8dcafca476797a3d5a342c5dfaacd98169e8d42512dabfe206707fdf3020",
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.controller.ts": {
-        "version": "a7abb08f5e52c3c2ce2f6455e0763878fb7477dc763243541b09685a6714c07d",
-        "signature": "c72863a190a66054baa323202370a8e5ad430c2090e58adf8c00363af4059a49",
+        "version": "cb1652c450bf69fa80174c86111feab3665ae0a54103d35201945226c40cdd15",
+        "signature": "eefade1ff1ee037185a6a06543f5d52637995c9a086dfaefb1173d475ab99d23",
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.module.ts": {
-        "version": "085873602ccc2d7db72b2be363660b4074a0c48992f270d9fad41e17cfb98459",
+        "version": "57799e9c992a9800b5c55d303d59191fcbc123f0e47f222ddc52bc4bc7e190f5",
         "signature": "47ace87d42adfd151ec9eeb053e0b52490b8c16f7fb723cccfa57589064f6715",
         "affectsGlobalScope": false
       },
@@ -5166,8 +5256,53 @@
         "signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "affectsGlobalScope": false
       },
+      "../src/auth/strategies/google.guard.ts": {
+        "version": "beaccf1c57ea4416052c82e5df5d806619ac987165c0b7085ef62223ae027663",
+        "signature": "a45e6172177f4de99fdb6caf6814946f2d1240569c7363ca4975fd7bda4169f6",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/oauth/index.d.ts": {
+        "version": "ee4b33bde3c17180fc5ef9f8d3f153659fd9827ae82eef9ca4e8956ca343fadd",
+        "signature": "ee4b33bde3c17180fc5ef9f8d3f153659fd9827ae82eef9ca4e8956ca343fadd",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/passport-oauth2/index.d.ts": {
+        "version": "1840db2b13c57a3ff9974bbe5c8cf50c8ce7430834b9cc26c72fe1ed593b5a15",
+        "signature": "1840db2b13c57a3ff9974bbe5c8cf50c8ce7430834b9cc26c72fe1ed593b5a15",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/passport-google-oauth20/index.d.ts": {
+        "version": "8b8d4e8a4840540104f67afa8d636d0e8f237c10aa0daf204e84446dbe2ecca7",
+        "signature": "8b8d4e8a4840540104f67afa8d636d0e8f237c10aa0daf204e84446dbe2ecca7",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/dotenv/types/index.d.ts": {
+        "version": "40b741dd397d635ee3df8b4880f30f15fa7394b9da31d4454805e47692438ff3",
+        "signature": "40b741dd397d635ee3df8b4880f30f15fa7394b9da31d4454805e47692438ff3",
+        "affectsGlobalScope": false
+      },
+      "../src/auth/strategies/google.strategy.ts": {
+        "version": "d410df072af196ffa1906a2db9616cd3111a0bb5711353eb6420ef2691358069",
+        "signature": "f6a891ca170330fa22bbdb6af9f1c2221d564e8f4f559ff53aa34643802e8716",
+        "affectsGlobalScope": false
+      },
+      "../src/auth/strategies/vkontakte-auth.guard.ts": {
+        "version": "29ba58079c9537c97cd5d922b43daf0d10da8018bc8693d7e17facaf5b09308a",
+        "signature": "8d55993721b8767676bc1bdaa980bbe97a0bc8adb115770d5a071a6980269c69",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/passport-vkontakte/index.d.ts": {
+        "version": "3f8b4903ca0d46de5ecd8405643d7eed0c2895f37a4a77aa65145c32b2f593e4",
+        "signature": "3f8b4903ca0d46de5ecd8405643d7eed0c2895f37a4a77aa65145c32b2f593e4",
+        "affectsGlobalScope": false
+      },
+      "../src/auth/strategies/vkontakte.strategy.ts": {
+        "version": "2426e7282ca17ffbee2fc0eada9a9d468f9cb4720df3c0943e4180423dfb23ee",
+        "signature": "e239d4f46bd9fac212feb9b3a4bb94b700dad48a72bb8357449c0ca03dbb0c28",
+        "affectsGlobalScope": false
+      },
       "../src/entity/game-mode.entity.ts": {
-        "version": "7cc2424c9d8fe951f6dfb67accfeaaabb47c0e166b839af2d8822ee1befc70cd",
+        "version": "354389049074ded1415373ac1287b6ff39743fc9c86199d430b6d6961fd90d15",
         "signature": "eae7c2829eaa42be79caccbf68608e0f6db74b062baa2c6a2f95bd992d61840b",
         "affectsGlobalScope": false
       },
@@ -5189,11 +5324,6 @@
       "../src/shared/models/region.model.ts": {
         "version": "5b62ac47cfca3e2ee83e14f2d46e6d159889ffdbdafecb9b3eb027d86342582c",
         "signature": "6e4693cc55bda831cc0f6e6862d0f818b9615084c172d24bda281b2656298468",
-        "affectsGlobalScope": false
-      },
-      "../src/user/user.entity.ts": {
-        "version": "469b2ea7f38cf33bbcf6f0381bec703896b2bd71a6aa9d1f8531fdad5337fe6c",
-        "signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "affectsGlobalScope": false
       },
       "../node_modules/@babel/types/lib/index.d.ts": {
@@ -6586,6 +6716,90 @@
       ],
       "../node_modules/@types/yargs/index.d.ts": [
         "../node_modules/@types/yargs-parser/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/ClassTransformer.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/exclude.decorator.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/expose.decorator.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/index.d.ts": [
+        "../node_modules/class-transformer/types/decorators/exclude.decorator.d.ts",
+        "../node_modules/class-transformer/types/decorators/expose.decorator.d.ts",
+        "../node_modules/class-transformer/types/decorators/transform-instance-to-instance.decorator.d.ts",
+        "../node_modules/class-transformer/types/decorators/transform-instance-to-plain.decorator.d.ts",
+        "../node_modules/class-transformer/types/decorators/transform-plain-to-instance.decorator.d.ts",
+        "../node_modules/class-transformer/types/decorators/transform.decorator.d.ts",
+        "../node_modules/class-transformer/types/decorators/type.decorator.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/transform-instance-to-instance.decorator.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/transform-instance-to-plain.decorator.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/transform-plain-to-instance.decorator.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/transform.decorator.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/type.decorator.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/enums/index.d.ts": [
+        "../node_modules/class-transformer/types/enums/transformation-type.enum.d.ts"
+      ],
+      "../node_modules/class-transformer/types/index.d.ts": [
+        "../node_modules/class-transformer/types/ClassTransformer.d.ts",
+        "../node_modules/class-transformer/types/decorators/index.d.ts",
+        "../node_modules/class-transformer/types/enums/index.d.ts",
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/class-transformer-options.interface.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/target-map.interface.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/decorator-options/type-discriminator-descriptor.interface.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/decorator-options/type-options.interface.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/decorator-options/type-discriminator-descriptor.interface.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/index.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/class-constructor.type.d.ts",
+        "../node_modules/class-transformer/types/interfaces/class-transformer-options.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/decorator-options/exclude-options.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/decorator-options/expose-options.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/decorator-options/transform-options.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/decorator-options/type-discriminator-descriptor.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/decorator-options/type-options.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/metadata/exclude-metadata.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/metadata/expose-metadata.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/metadata/transform-fn-params.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/metadata/transform-metadata.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/metadata/type-metadata.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/target-map.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/type-help-options.interface.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/metadata/exclude-metadata.interface.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/metadata/expose-metadata.interface.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/metadata/transform-fn-params.interface.d.ts": [
+        "../node_modules/class-transformer/types/enums/index.d.ts",
+        "../node_modules/class-transformer/types/interfaces/class-transformer-options.interface.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/metadata/transform-metadata.interface.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts",
+        "../node_modules/class-transformer/types/interfaces/metadata/transform-fn-params.interface.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/metadata/type-metadata.interface.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
       ],
       "../node_modules/class-validator/types/decorator/ValidationOptions.d.ts": [
         "../node_modules/class-validator/types/validation/ValidationArguments.d.ts"
@@ -9247,9 +9461,8 @@
       "../src/auth/auth.controller.ts": [
         "../node_modules/@nestjs/common/index.d.ts",
         "../src/auth/auth.service.ts",
-        "../src/auth/strategies/google.guard.ts",
         "../src/auth/strategies/local-auth.guard.ts",
-        "../src/auth/strategies/vkontakte-auth.guard.ts"
+        "../src/user/user.dto.ts"
       ],
       "../src/auth/auth.module.ts": [
         "../node_modules/@nestjs/common/index.d.ts",
@@ -9258,11 +9471,10 @@
         "../node_modules/@nestjs/typeorm/index.d.ts",
         "../src/auth/auth.controller.ts",
         "../src/auth/auth.service.ts",
-        "../src/auth/strategies/google.strategy.ts",
         "../src/auth/strategies/jwt.strategy.ts",
         "../src/auth/strategies/local.strategy.ts",
-        "../src/auth/strategies/vkontakte.strategy.ts",
         "../src/entity/user.entity.ts",
+        "../src/mail/mail.module.ts",
         "../src/user/user.module.ts"
       ],
       "../src/auth/auth.service.ts": [
@@ -9324,6 +9536,7 @@
         "../src/entity/user.entity.ts"
       ],
       "../src/entity/user.entity.ts": [
+        "../node_modules/class-transformer/types/index.d.ts",
         "../node_modules/typeorm/index.d.ts",
         "../src/entity/match-session.entity.ts"
       ],
@@ -10659,6 +10872,90 @@
       ],
       "../node_modules/@types/yargs/index.d.ts": [
         "../node_modules/@types/yargs-parser/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/ClassTransformer.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/exclude.decorator.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/expose.decorator.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/index.d.ts": [
+        "../node_modules/class-transformer/types/decorators/exclude.decorator.d.ts",
+        "../node_modules/class-transformer/types/decorators/expose.decorator.d.ts",
+        "../node_modules/class-transformer/types/decorators/transform-instance-to-instance.decorator.d.ts",
+        "../node_modules/class-transformer/types/decorators/transform-instance-to-plain.decorator.d.ts",
+        "../node_modules/class-transformer/types/decorators/transform-plain-to-instance.decorator.d.ts",
+        "../node_modules/class-transformer/types/decorators/transform.decorator.d.ts",
+        "../node_modules/class-transformer/types/decorators/type.decorator.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/transform-instance-to-instance.decorator.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/transform-instance-to-plain.decorator.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/transform-plain-to-instance.decorator.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/transform.decorator.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/decorators/type.decorator.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/enums/index.d.ts": [
+        "../node_modules/class-transformer/types/enums/transformation-type.enum.d.ts"
+      ],
+      "../node_modules/class-transformer/types/index.d.ts": [
+        "../node_modules/class-transformer/types/ClassTransformer.d.ts",
+        "../node_modules/class-transformer/types/decorators/index.d.ts",
+        "../node_modules/class-transformer/types/enums/index.d.ts",
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/class-transformer-options.interface.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/target-map.interface.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/decorator-options/type-discriminator-descriptor.interface.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/decorator-options/type-options.interface.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/decorator-options/type-discriminator-descriptor.interface.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/index.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/class-constructor.type.d.ts",
+        "../node_modules/class-transformer/types/interfaces/class-transformer-options.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/decorator-options/exclude-options.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/decorator-options/expose-options.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/decorator-options/transform-options.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/decorator-options/type-discriminator-descriptor.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/decorator-options/type-options.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/metadata/exclude-metadata.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/metadata/expose-metadata.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/metadata/transform-fn-params.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/metadata/transform-metadata.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/metadata/type-metadata.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/target-map.interface.d.ts",
+        "../node_modules/class-transformer/types/interfaces/type-help-options.interface.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/metadata/exclude-metadata.interface.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/metadata/expose-metadata.interface.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/metadata/transform-fn-params.interface.d.ts": [
+        "../node_modules/class-transformer/types/enums/index.d.ts",
+        "../node_modules/class-transformer/types/interfaces/class-transformer-options.interface.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/metadata/transform-metadata.interface.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts",
+        "../node_modules/class-transformer/types/interfaces/metadata/transform-fn-params.interface.d.ts"
+      ],
+      "../node_modules/class-transformer/types/interfaces/metadata/type-metadata.interface.d.ts": [
+        "../node_modules/class-transformer/types/interfaces/index.d.ts"
       ],
       "../node_modules/class-validator/types/decorator/ValidationOptions.d.ts": [
         "../node_modules/class-validator/types/validation/ValidationArguments.d.ts"
@@ -13297,12 +13594,15 @@
       ],
       "../src/auth/auth.controller.ts": [
         "../src/auth/auth.service.ts",
-        "../src/entity/user.entity.ts"
+        "../src/entity/user.entity.ts",
+        "../src/user/user.dto.ts"
       ],
       "../src/auth/auth.service.ts": [
+        "../node_modules/@nestjs-modules/mailer/index.d.ts",
         "../node_modules/@nestjs/jwt/index.d.ts",
         "../node_modules/typeorm/index.d.ts",
-        "../src/entity/user.entity.ts"
+        "../src/entity/user.entity.ts",
+        "../src/user/user.dto.ts"
       ],
       "../src/auth/strategies/google.guard.ts": [
         "../node_modules/@nestjs/passport/index.d.ts"
@@ -13736,6 +14036,33 @@
       "../node_modules/@types/yargs/index.d.ts",
       "../node_modules/@types/zen-observable/index.d.ts",
       "../node_modules/axios/index.d.ts",
+      "../node_modules/class-transformer/types/ClassTransformer.d.ts",
+      "../node_modules/class-transformer/types/decorators/exclude.decorator.d.ts",
+      "../node_modules/class-transformer/types/decorators/expose.decorator.d.ts",
+      "../node_modules/class-transformer/types/decorators/index.d.ts",
+      "../node_modules/class-transformer/types/decorators/transform-instance-to-instance.decorator.d.ts",
+      "../node_modules/class-transformer/types/decorators/transform-instance-to-plain.decorator.d.ts",
+      "../node_modules/class-transformer/types/decorators/transform-plain-to-instance.decorator.d.ts",
+      "../node_modules/class-transformer/types/decorators/transform.decorator.d.ts",
+      "../node_modules/class-transformer/types/decorators/type.decorator.d.ts",
+      "../node_modules/class-transformer/types/enums/index.d.ts",
+      "../node_modules/class-transformer/types/enums/transformation-type.enum.d.ts",
+      "../node_modules/class-transformer/types/index.d.ts",
+      "../node_modules/class-transformer/types/interfaces/class-constructor.type.d.ts",
+      "../node_modules/class-transformer/types/interfaces/class-transformer-options.interface.d.ts",
+      "../node_modules/class-transformer/types/interfaces/decorator-options/exclude-options.interface.d.ts",
+      "../node_modules/class-transformer/types/interfaces/decorator-options/expose-options.interface.d.ts",
+      "../node_modules/class-transformer/types/interfaces/decorator-options/transform-options.interface.d.ts",
+      "../node_modules/class-transformer/types/interfaces/decorator-options/type-discriminator-descriptor.interface.d.ts",
+      "../node_modules/class-transformer/types/interfaces/decorator-options/type-options.interface.d.ts",
+      "../node_modules/class-transformer/types/interfaces/index.d.ts",
+      "../node_modules/class-transformer/types/interfaces/metadata/exclude-metadata.interface.d.ts",
+      "../node_modules/class-transformer/types/interfaces/metadata/expose-metadata.interface.d.ts",
+      "../node_modules/class-transformer/types/interfaces/metadata/transform-fn-params.interface.d.ts",
+      "../node_modules/class-transformer/types/interfaces/metadata/transform-metadata.interface.d.ts",
+      "../node_modules/class-transformer/types/interfaces/metadata/type-metadata.interface.d.ts",
+      "../node_modules/class-transformer/types/interfaces/target-map.interface.d.ts",
+      "../node_modules/class-transformer/types/interfaces/type-help-options.interface.d.ts",
       "../node_modules/class-validator/types/container.d.ts",
       "../node_modules/class-validator/types/decorator/ValidationOptions.d.ts",
       "../node_modules/class-validator/types/decorator/array/ArrayContains.d.ts",
@@ -14465,7 +14792,6 @@
       "../src/socket.adapter.ts",
       "../src/user/user.controller.ts",
       "../src/user/user.dto.ts",
-      "../src/user/user.entity.ts",
       "../src/user/user.module.ts",
       "../src/user/user.service.ts"
     ]

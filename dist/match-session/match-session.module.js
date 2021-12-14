@@ -24,7 +24,7 @@ MatchSessionModule = __decorate([
         imports: [
             film_module_1.FilmModule,
             user_module_1.UserModule,
-            typeorm_1.TypeOrmModule.forFeature([match_session_entity_1.MatchSession, user_entity_1.User]),
+            typeorm_1.TypeOrmModule.forFeature([match_session_entity_1.MatchSessionEntity, user_entity_1.UserEntity]),
             jwt_1.JwtModule.register({}),
         ],
         controllers: [match_session_controller_1.MatchSessionController],

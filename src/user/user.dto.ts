@@ -1,38 +1,62 @@
-import { IsNotEmpty } from 'class-validator'
+import { IsNotEmpty, IsOptional } from 'class-validator'
 
 export class UserDTO {
-  @IsNotEmpty()
-  email: string
-
-  @IsNotEmpty()
-  password: string
-
-  @IsNotEmpty()
-  firstName: string
-
-  @IsNotEmpty()
-  lastName: string
-
-  @IsNotEmpty()
-  userName: string
-
-  @IsNotEmpty()
-  phoneNumber: string
-
-  id: any
-
-  clientId: any
-}
-
-export class UserRO {
-  id: string
+  @IsOptional()
   created: Date
+
+  @IsOptional()
+  updated: Date
+
+  @IsOptional()
+  id: string
+
+  @IsOptional()
+  password
+
+  @IsOptional()
   email: string
+
+  @IsOptional()
   firstName: string
+
+  @IsOptional()
   lastName: string
+
+  @IsNotEmpty()
   userName: string
-  accessToken?: string
-  refreshToken?: string
-  phoneNumber: string
-  currentMatchSession: number
+
+  @IsOptional()
+  accessToken
+
+  @IsOptional()
+  refreshToken: string
+
+  @IsOptional()
+  emailConfirmed: boolean
 }
+
+export class CreateUserDTO {
+  readonly password: string
+  readonly email: string
+  readonly firstName: string
+  readonly lastName: string
+  readonly username: string
+}
+
+export class LoginUserDTO {
+  readonly password: string
+  readonly email: string
+}
+
+// export class UserRO {
+//   id: string
+//   created: Date
+//   email: string
+//   firstName: string
+//   lastName: string
+//   userName: string
+//   accessToken?: string
+//   refreshToken?: string
+//   phoneNumber: string
+//   currentMatchSession: number
+// }

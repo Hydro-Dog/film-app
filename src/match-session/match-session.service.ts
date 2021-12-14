@@ -10,7 +10,7 @@ import {
   MatchSessionSocketEvents,
 } from './match-session.model'
 import { FilmCategories } from 'src/film/film.models'
-import { MatchSession } from 'src/entity/match-session.entity'
+import { MatchSessionEntity } from 'src/entity/match-session.entity'
 
 const INITIAL_PAGES = '1'
 const FILMS_PAGE_SIZE = 20
@@ -51,8 +51,8 @@ const FILMS_PAGE_SIZE = 20
 export class MatchSessionService {
   constructor(
     private appGetaway: AppGetaway,
-    @InjectRepository(MatchSession)
-    private matchSessionRepository: Repository<MatchSession>,
+    @InjectRepository(MatchSessionEntity)
+    private matchSessionRepository: Repository<MatchSessionEntity>,
     // @InjectRepository(User)
     // private userRepository: Repository<User>,
     private filmService: FilmService
