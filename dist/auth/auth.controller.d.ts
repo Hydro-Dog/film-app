@@ -9,4 +9,7 @@ export declare class AuthController {
         token: any;
         userName: any;
     }): Promise<string>;
+    refresh(headers: any, { refreshToken }: {
+        refreshToken: any;
+    }): Promise<import("../entity/user.entity").UserEntity>;
 }

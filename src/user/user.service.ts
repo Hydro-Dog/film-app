@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { UserEntity } from 'src/entity/user.entity'
 import { Repository } from 'typeorm'
-import { UserDTO } from './user.dto'
+import { CreateUserDTO, UserDTO } from './user.dto'
 
 @Injectable()
 export class UserService {
@@ -12,6 +12,29 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>
   ) {}
+
+  async getUser(query: Partial<UserEntity>) {
+    let user: UserEntity
+    if (query?.email) {
+      user = await this.userRepository.findOne({
+        where: [{ email: query.email }],
+      })
+    } else if (query?.username) {
+      user = await this.userRepository.findOne({
+        where: [{ username: query.username }],
+      })
+    } else if (query?.id) {
+      user = await this.userRepository.findOne({
+        where: [{ id: query.id }],
+      })
+    }
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST)
+    }
+
+    return user
+  }
 
   // async updateUser(id: number, payload: Partial<UserDTO>): Promise<UserRO> {
   //   const user = await this.userRepository.findOne({ where: [{ id }] })

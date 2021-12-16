@@ -9,7 +9,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common'
-import { User } from 'src/shared/user-id.decorator'
+import { UserID } from 'src/shared/user-id.decorator'
 import {
   CreateMatchSessionDTO,
   UpdateMatchSessionDTO,
@@ -61,7 +61,9 @@ export class MatchSessionController {
   // }
 
   @Delete('api/matchsession')
-  deleteMatchSession(@User() data: { matchSessionId: number; userId: number }) {
+  deleteMatchSession(
+    @UserID() data: { matchSessionId: number; userId: number }
+  ) {
     return this.matchSessionService.deleteMatchSession(
       data.matchSessionId,
       data.userId

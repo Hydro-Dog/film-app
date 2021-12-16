@@ -122,6 +122,35 @@ let AuthService = class AuthService {
             throw new common_1.HttpException('Invalid token', common_1.HttpStatus.BAD_REQUEST);
         }
     }
+    async refresh(headers, refresh) {
+        console.log('refresh::: ', refresh);
+        try {
+            this.jwtService.verify(refresh, { secret: process.env.JWT_SECRET });
+        }
+        catch (error) {
+            throw new common_1.HttpException('Refresh expired', common_1.HttpStatus.BAD_REQUEST);
+        }
+        const payload = this.jwtService.decode(headers.authorization.split(' ')[1]);
+        console.log('payload: ', payload);
+        const user = await this.userRepository.findOne({
+            where: { id: payload.id },
+        });
+        console.log('user: ', user);
+        const { accessToken } = await this.getAccessToken(user.id);
+        user.accessToken = accessToken;
+        await this.userRepository.update(user.id, user);
+        return new user_entity_1.UserEntity(user);
+    }
+    async getAccessToken(id) {
+        const payload = {
+            id,
+        };
+        const accessToken = await this.jwtService.sign(payload, {
+            expiresIn: process.env.JWT_EXPIRATION,
+            secret: process.env.JWT_SECRET,
+        });
+        return { accessToken };
+    }
 };
 AuthService = __decorate([
     common_1.Injectable(),

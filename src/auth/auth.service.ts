@@ -196,30 +196,34 @@ export class AuthService {
     }
   }
 
-  // async refresh(headers: any, refresh: string) {
-  //   try {
-  //     this.jwtService.verify(refresh, { secret: process.env.JWT_SECRET })
-  //   } catch (error) {
-  //     throw new HttpException('Refresh expired', HttpStatus.BAD_REQUEST)
-  //   }
+  async refresh(headers: any, refresh: string) {
+    console.log('refresh::: ', refresh)
+    try {
+      this.jwtService.verify(refresh, { secret: process.env.JWT_SECRET })
+    } catch (error) {
+      throw new HttpException('Refresh expired', HttpStatus.BAD_REQUEST)
+    }
 
-  //   const payload = this.jwtService.decode(
-  //     headers.authorization.split(' ')[1]
-  //   ) as { [key: string]: any }
+    const payload = this.jwtService.decode(
+      headers.authorization.split(' ')[1]
+    ) as { [key: string]: any }
 
-  //   const user = await this.userRepository.findOne({
-  //     where: { id: payload.id },
-  //   })
+    console.log('payload: ', payload)
 
-  //   const { accessToken } = await this.getAccessToken(user.id)
+    const user = await this.userRepository.findOne({
+      where: { id: payload.id },
+    })
 
-  //   user.accessToken = accessToken
+    console.log('user: ', user)
 
-  //   await this.userRepository.update(user.id, user)
-  //   const responseUser = user.sanitizeUser()
+    const { accessToken } = await this.getAccessToken(user.id)
 
-  //   return responseUser
-  // }
+    user.accessToken = accessToken
+
+    await this.userRepository.update(user.id, user)
+
+    return new UserEntity(user)
+  }
 
   // async login(data: Pick<UserDTO, 'userName' | 'password'>) {
   //   const { userName, password } = data
@@ -280,17 +284,18 @@ export class AuthService {
   //   return await bcrypt.hash(password, 10)
   // }
 
-  // async getAccessToken(id: string) {
-  //   const payload = {
-  //     id,
-  //   }
-  //   const accessToken = await this.jwtService.sign(payload, {
-  //     expiresIn: process.env.JWT_EXPIRATION,
-  //     secret: process.env.JWT_SECRET,
-  //   })
+  async getAccessToken(id: string) {
+    const payload = {
+      id,
+    }
 
-  //   return { accessToken }
-  // }
+    const accessToken = await this.jwtService.sign(payload, {
+      expiresIn: process.env.JWT_EXPIRATION,
+      secret: process.env.JWT_SECRET,
+    })
+
+    return { accessToken }
+  }
 
   // async getRefreshToken(id: string) {
   //   const payload = {

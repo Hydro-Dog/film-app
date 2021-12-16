@@ -1,5 +1,9 @@
-import { Controller, Get, UseGuards, Request } from '@nestjs/common'
+import { Controller, Get, UseGuards, Request, Query } from '@nestjs/common'
+import { FilmderAuthGuard } from 'src/auth/auth.guard'
 import { JwtAuthGuard } from 'src/auth/strategies/jwt-auth.guard'
+import { UserEntity } from 'src/entity/user.entity'
+import { UserID } from 'src/shared/user-id.decorator'
+import { CreateUserDTO } from './user.dto'
 import { UserService } from './user.service'
 
 @Controller()
@@ -11,6 +15,17 @@ export class UserController {
   getProfile(@Request() req) {
     console.log('req: ', req)
     return req.user
+  }
+
+  @Get('api/user')
+  getUser(@Query() query: Partial<UserEntity>) {
+    return this.userService.getUser(query)
+  }
+
+  @UseGuards(FilmderAuthGuard)
+  @Get('api/currentuser')
+  getCurrentUser(@UserID() { user_id }) {
+    return this.userService.getUser({ id: user_id })
   }
 
   // @UseGuards(AuthGuard)

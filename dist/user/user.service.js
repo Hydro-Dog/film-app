@@ -24,6 +24,28 @@ let UserService = class UserService {
     findByUserName(userName, res) {
         throw new Error('Method not implemented.');
     }
+    async getUser(query) {
+        let user;
+        if (query === null || query === void 0 ? void 0 : query.email) {
+            user = await this.userRepository.findOne({
+                where: [{ email: query.email }],
+            });
+        }
+        else if (query === null || query === void 0 ? void 0 : query.username) {
+            user = await this.userRepository.findOne({
+                where: [{ username: query.username }],
+            });
+        }
+        else if (query === null || query === void 0 ? void 0 : query.id) {
+            user = await this.userRepository.findOne({
+                where: [{ id: query.id }],
+            });
+        }
+        if (!user) {
+            throw new common_1.HttpException('User not found', common_1.HttpStatus.BAD_REQUEST);
+        }
+        return user;
+    }
 };
 UserService = __decorate([
     common_1.Injectable(),

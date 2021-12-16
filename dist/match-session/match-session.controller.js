@@ -42,7 +42,7 @@ __decorate([
 ], MatchSessionController.prototype, "getMatchSession", null);
 __decorate([
     common_1.Delete('api/matchsession'),
-    __param(0, user_id_decorator_1.User()),
+    __param(0, user_id_decorator_1.UserID()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)

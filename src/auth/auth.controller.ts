@@ -2,6 +2,7 @@ import {
   Post,
   UseGuards,
   Request,
+  Headers,
   Body,
   Query,
   Get,
@@ -61,8 +62,8 @@ export class AuthController {
     return this.authService.confirmUser(token, userName)
   }
 
-  // @Post('refresh')
-  // refresh(@Headers() headers, @Body() { refreshToken }) {
-  //   return this.authService.refresh(headers, refreshToken)
-  // }
+  @Post('refresh')
+  refresh(@Headers() headers, @Body() { refreshToken }) {
+    return this.authService.refresh(headers, refreshToken)
+  }
 }

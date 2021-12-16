@@ -5,4 +5,5 @@ export declare class UserService {
     private userRepository;
     findByUserName(userName: Pick<UserDTO, 'userName'>, res: any): void;
     constructor(userRepository: Repository<UserEntity>);
+    getUser(query: Partial<UserEntity>): Promise<UserEntity>;
 }

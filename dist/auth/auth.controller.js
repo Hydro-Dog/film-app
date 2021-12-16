@@ -31,6 +31,9 @@ let AuthController = class AuthController {
     confirm({ token, userName }) {
         return this.authService.confirmUser(token, userName);
     }
+    refresh(headers, { refreshToken }) {
+        return this.authService.refresh(headers, refreshToken);
+    }
 };
 __decorate([
     common_1.UseInterceptors(common_1.ClassSerializerInterceptor),
@@ -55,6 +58,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "confirm", null);
+__decorate([
+    common_1.Post('refresh'),
+    __param(0, common_1.Headers()), __param(1, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "refresh", null);
 AuthController = __decorate([
     common_2.Controller(),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
