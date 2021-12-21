@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const common_2 = require("@nestjs/common");
+const user_id_decorator_1 = require("../shared/user-id.decorator");
 const user_dto_1 = require("../user/user.dto");
 const auth_service_1 = require("./auth.service");
 let AuthController = class AuthController {
@@ -23,6 +24,9 @@ let AuthController = class AuthController {
     }
     async login(data) {
         return this.authService.login(data);
+    }
+    logout({ user_id }) {
+        return this.authService.logout({ id: user_id });
     }
     register(data) {
         console.log('data: ', data);
@@ -43,6 +47,13 @@ __decorate([
     __metadata("design:paramtypes", [user_dto_1.LoginUserDTO]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
+__decorate([
+    common_1.Post('logout'),
+    __param(0, user_id_decorator_1.UserID()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "logout", null);
 __decorate([
     common_1.UseInterceptors(common_1.ClassSerializerInterceptor),
     common_1.Post('register'),

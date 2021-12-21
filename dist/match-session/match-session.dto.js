@@ -9,67 +9,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateMatchSessionDTO = exports.CreateMatchSessionDTO = void 0;
+exports.UpdateMatchSessionDTO = exports.CreateMatchSessionDTO = exports.GetMatchSessionDTO = void 0;
 const class_validator_1 = require("class-validator");
 const film_models_1 = require("../film/film.models");
+class GetMatchSessionDTO {
+}
+exports.GetMatchSessionDTO = GetMatchSessionDTO;
 class CreateMatchSessionDTO {
 }
 __decorate([
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
-], CreateMatchSessionDTO.prototype, "clientId", void 0);
+], CreateMatchSessionDTO.prototype, "hostId", void 0);
 __decorate([
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], CreateMatchSessionDTO.prototype, "guestId", void 0);
-__decorate([
-    class_validator_1.IsOptional(),
-    __metadata("design:type", String)
-], CreateMatchSessionDTO.prototype, "lang", void 0);
-__decorate([
-    class_validator_1.IsEmpty(),
-    __metadata("design:type", Number)
-], CreateMatchSessionDTO.prototype, "hostSequenceCounter", void 0);
-__decorate([
-    class_validator_1.IsEmpty(),
-    __metadata("design:type", Number)
-], CreateMatchSessionDTO.prototype, "guestSequenceCounter", void 0);
-__decorate([
-    class_validator_1.IsEmpty(),
-    __metadata("design:type", Array)
-], CreateMatchSessionDTO.prototype, "hostLikedFilms", void 0);
-__decorate([
-    class_validator_1.IsEmpty(),
-    __metadata("design:type", Array)
-], CreateMatchSessionDTO.prototype, "guestLikedFilms", void 0);
-__decorate([
-    class_validator_1.IsEmpty(),
-    __metadata("design:type", Array)
-], CreateMatchSessionDTO.prototype, "matchedFilms", void 0);
 __decorate([
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", Number)
 ], CreateMatchSessionDTO.prototype, "matchLimit", void 0);
 __decorate([
     class_validator_1.IsOptional(),
-    __metadata("design:type", Number)
-], CreateMatchSessionDTO.prototype, "page", void 0);
-__decorate([
-    class_validator_1.IsEmpty(),
-    __metadata("design:type", Array)
-], CreateMatchSessionDTO.prototype, "filmsIdsSequence", void 0);
-__decorate([
-    class_validator_1.IsOptional(),
     __metadata("design:type", String)
 ], CreateMatchSessionDTO.prototype, "category", void 0);
-__decorate([
-    class_validator_1.IsOptional(),
-    __metadata("design:type", Object)
-], CreateMatchSessionDTO.prototype, "filterParams", void 0);
-__decorate([
-    class_validator_1.IsOptional(),
-    __metadata("design:type", String)
-], CreateMatchSessionDTO.prototype, "userId", void 0);
 exports.CreateMatchSessionDTO = CreateMatchSessionDTO;
 class UpdateMatchSessionDTO {
 }

@@ -15,14 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const match_session_entity_1 = require("../entity/match-session.entity");
 const user_entity_1 = require("../entity/user.entity");
+const match_session_dto_1 = require("../match-session/match-session.dto");
+const match_session_service_1 = require("../match-session/match-session.service");
 const typeorm_2 = require("typeorm");
 let UserService = class UserService {
-    constructor(userRepository) {
+    constructor(userRepository, matchSessionService) {
         this.userRepository = userRepository;
-    }
-    findByUserName(userName, res) {
-        throw new Error('Method not implemented.');
+        this.matchSessionService = matchSessionService;
     }
     async getUser(query) {
         let user;
@@ -46,11 +47,37 @@ let UserService = class UserService {
         }
         return user;
     }
+    async updateUser(userData) {
+        const user = await this.userRepository.findOne({
+            where: [{ id: userData.id }],
+        });
+        if (user) {
+            await this.userRepository.update(userData.id, {
+                ...user,
+                ...userData,
+            });
+            const userUpdated = await this.userRepository.findOne({
+                where: [{ id: userData.id }],
+            });
+            return new user_entity_1.UserEntity(userUpdated);
+        }
+        throw new common_1.HttpException('User not found', common_1.HttpStatus.BAD_REQUEST);
+    }
+    async getUserMatchSession(user_id) {
+        const matchSession = this.matchSessionService.getMatchSessionByUserId(user_id);
+        if (matchSession) {
+            return matchSession;
+        }
+        else {
+            throw new common_1.HttpException('No match sessions for user', common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
 };
 UserService = __decorate([
     common_1.Injectable(),
     __param(0, typeorm_1.InjectRepository(user_entity_1.UserEntity)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        match_session_service_1.MatchSessionService])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

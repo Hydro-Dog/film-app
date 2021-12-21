@@ -10,6 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { Controller } from '@nestjs/common'
+import { UserID } from 'src/shared/user-id.decorator'
 import { CreateUserDTO, LoginUserDTO, UserDTO } from 'src/user/user.dto'
 import { AuthService } from './auth.service'
 import { LocalAuthGuard } from './strategies/local-auth.guard'
@@ -45,10 +46,10 @@ export class AuthController {
   //   return this.authService.vkontakteLogin(req.user)
   // }
 
-  // @Post('logout')
-  // logout(@User() data: { userId: string }) {
-  //   return this.authService.logout(data.userId)
-  // }
+  @Post('logout')
+  logout(@UserID() { user_id }) {
+    return this.authService.logout({ id: user_id })
+  }
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Post('register')

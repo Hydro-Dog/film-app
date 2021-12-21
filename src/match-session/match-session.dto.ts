@@ -1,21 +1,27 @@
 import { IsEmpty, IsNotEmpty, IsOptional } from 'class-validator'
 import { FilmCategories } from 'src/film/film.models'
 
+export class GetMatchSessionDTO {
+  matchSessionId?: string
+  userId?: string
+}
+
 export class CreateMatchSessionDTO {
-  @IsNotEmpty() clientId: string
+  @IsNotEmpty() hostId: string
   @IsNotEmpty() guestId: string
-  @IsOptional() lang: string
-  @IsEmpty() hostSequenceCounter?: number
-  @IsEmpty() guestSequenceCounter?: number
-  @IsEmpty() hostLikedFilms?: string[]
-  @IsEmpty() guestLikedFilms?: string[]
-  @IsEmpty() matchedFilms?: string[]
   @IsNotEmpty() matchLimit: number
-  @IsOptional() page?: number
-  @IsEmpty() filmsIdsSequence?: string[]
-  @IsOptional() category?: FilmCategories
-  @IsOptional() filterParams?: Record<string, unknown>
-  @IsOptional() userId?: string
+  @IsOptional() category: FilmCategories
+  // @IsOptional() category?: FilmCategories
+  // @IsOptional() lang: string
+  // @IsEmpty() hostSequenceCounter?: number
+  // @IsEmpty() guestSequenceCounter?: number
+  // @IsEmpty() hostLikedFilms?: string[]
+  // @IsEmpty() guestLikedFilms?: string[]
+  // @IsEmpty() matchedFilms?: string[]
+  // @IsOptional() page?: number
+  // @IsEmpty() filmsIdsSequence?: string[]
+  // @IsOptional() filterParams?: Record<string, unknown>
+  // @IsOptional() userId?: string
 }
 
 export class UpdateMatchSessionDTO {

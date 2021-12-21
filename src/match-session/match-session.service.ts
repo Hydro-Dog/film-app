@@ -2,118 +2,147 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Injectable } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { FilmService } from 'src/film/film.service'
-
 import { CreateMatchSessionDTO } from './match-session.dto'
-import { AppGetaway } from 'src/app-getaway/app-getaway'
 import {
-  MatchSessionChangesEvents,
-  MatchSessionSocketEvents,
-} from './match-session.model'
-import { FilmCategories } from 'src/film/film.models'
-import { MatchSessionEntity } from 'src/entity/match-session.entity'
+  MatchSessionEntity,
+  MatchSessionStatus,
+} from 'src/entity/match-session.entity'
+import { UserEntity } from 'src/entity/user.entity'
 
 const INITIAL_PAGES = '1'
 const FILMS_PAGE_SIZE = 20
 
-// function matchSessionFactory(
-//   hostId,
-//   hostUserName,
-//   guestId,
-//   guestUserName,
-//   matchLimit,
-//   category,
-//   filterParams,
-//   filmsSequenceJson
-// ) {
-//   return new MatchSession(
-//     new User({ id: hostId, userName: hostUserName }),
-//     new User({ id: guestId, userName: guestUserName }),
-//     'EN',
-//     0,
-//     0,
-//     [],
-//     [],
-//     null,
-//     null,
-//     [],
-//     matchLimit,
-//     1,
-//     false,
-//     false,
-//     false,
-//     filmsSequenceJson,
-//     category,
-//     filterParams
-//   )
-// }
-
 @Injectable()
 export class MatchSessionService {
   constructor(
-    private appGetaway: AppGetaway,
+    // private appGetaway: AppGetaway,
     @InjectRepository(MatchSessionEntity)
     private matchSessionRepository: Repository<MatchSessionEntity>,
-    // @InjectRepository(User)
-    // private userRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
     private filmService: FilmService
   ) {}
 
-  // async create(data: CreateMatchSessionDTO) {
-  //   const filmsSequenceJson = await this.filmService.getFilmsByCategory(
-  //     INITIAL_PAGES,
-  //     data.category
-  //   )
+  async create(data: CreateMatchSessionDTO) {
+    const filmsSequence = await this.filmService.getFilmsByCategory(
+      INITIAL_PAGES,
+      data.category
+    )
 
-  //   const host = await this.userRepository.findOne({
-  //     where: { id: data.userId },
-  //   })
-  //   const guest = await this.userRepository.findOne({
-  //     where: { id: data.guestId },
-  //   })
+    const host = await this.userRepository.findOne({
+      where: { id: data.hostId },
+    })
+    const guest = await this.userRepository.findOne({
+      where: { id: data.guestId },
+    })
 
-  //   const matchSessionObj = matchSessionFactory(
-  //     host.id,
-  //     host.userName,
-  //     guest.id,
-  //     guest.userName,
-  //     data.matchLimit,
-  //     data.category,
-  //     data.filterParams,
-  //     filmsSequenceJson
-  //   )
+    const matchSessionData = await this.matchSessionRepository.create(
+      new MatchSessionEntity({
+        host: new UserEntity(host),
+        guest: new UserEntity(guest),
+        filmsSequence,
+        category: data.category,
+        matchLimit: data.matchLimit,
+        status: MatchSessionStatus.Pending,
+      })
+    )
 
-  //   //create matchSession
-  //   const matchSession = await this.matchSessionRepository.create(
-  //     matchSessionObj
-  //   )
+    const matchSessionSaved = await this.matchSessionRepository.save(
+      matchSessionData
+    )
 
-  //   await this.matchSessionRepository.save(matchSession)
+    guest.invitedToMatchesUUIDs.push(matchSessionSaved.id)
+    host.hostedMatchesUUIDs.push(matchSessionSaved.id)
 
-  //   guest.sessionsInvite = [...guest.sessionsInvite, matchSession.id]
+    await this.userRepository.update({ id: host.id }, { ...host })
+    await this.userRepository.update({ id: guest.id }, { ...guest })
 
-  //   await this.userRepository.update({ id: host.id }, { ...host })
-  //   await this.userRepository.update({ id: guest.id }, { ...guest })
+    // this.appGetaway.emitToClient(
+    //   guest.id.toString(),
+    //   MatchSessionSocketEvents.ServerMessage,
+    //   {
+    //     payload: matchSession,
+    //     event: MatchSessionChangesEvents.Add,
+    //   }
+    // )
 
-  //   this.appGetaway.emitToClient(
-  //     guest.id.toString(),
-  //     MatchSessionSocketEvents.ServerMessage,
-  //     {
-  //       payload: matchSession,
-  //       event: MatchSessionChangesEvents.Add,
-  //     }
-  //   )
+    // this.appGetaway.emitToClient(
+    //   host.id.toString(),
+    //   MatchSessionSocketEvents.ServerMessage,
+    //   {
+    //     payload: matchSession,
+    //     event: MatchSessionChangesEvents.Add,
+    //   }
+    // )
 
-  //   this.appGetaway.emitToClient(
-  //     host.id.toString(),
-  //     MatchSessionSocketEvents.ServerMessage,
-  //     {
-  //       payload: matchSession,
-  //       event: MatchSessionChangesEvents.Add,
-  //     }
-  //   )
+    return matchSessionData
+  }
 
-  //   return matchSession
-  // }
+  async deleteMatchSession(matchSessionId: number, userId: number) {
+    const matchSession = await this.matchSessionRepository
+      .createQueryBuilder('match_session')
+      .select([
+        'match_session',
+        'guest.id',
+        'guest.userName',
+        'host.id',
+        'host.userName',
+      ])
+      .leftJoin('match_session.guest', 'guest')
+      .leftJoin('match_session.host', 'host')
+      .where('match_session.id = :id', { id: matchSessionId })
+      .getOne()
+
+    if (+matchSession?.guest?.id === +userId) {
+      matchSession.guest = null
+    } else if (+matchSession?.host?.id === +userId) {
+      matchSession.host = null
+    }
+
+    // await this.matchSessionRepository.update(
+    //   { id: matchSessionId },
+    //   { ...matchSession }
+    // )
+
+    // if (!matchSession.host && !matchSession.guest) {
+    //   await this.matchSessionRepository.delete({ id: matchSessionId })
+    // }
+
+    return matchSessionId
+  }
+
+  async getMatchSessionByUserId(id: any) {
+    return await this.matchSessionRepository
+      .createQueryBuilder('match_session')
+      .select([
+        'match_session',
+        'guest.id',
+        'guest.username',
+        'host.id',
+        'host.username',
+      ])
+      .leftJoin('match_session.guest', 'guest')
+      .leftJoin('match_session.host', 'host')
+      .where('match_session.guest.id = :id', { id })
+      .orWhere('match_session.host.id = :id', { id })
+      .getMany()
+  }
+
+  async getMatchSessionById(matchSessionId: any) {
+    return await this.matchSessionRepository
+      .createQueryBuilder('match_session')
+      .select([
+        'match_session',
+        'guest.id',
+        'guest.userName',
+        'host.id',
+        'host.userName',
+      ])
+      .leftJoin('match_session.guest', 'guest')
+      .leftJoin('match_session.host', 'host')
+      .where('match_session.id = :id', { id: matchSessionId })
+      .getOne()
+  }
 
   // async update(id: number, matchSessionNew: MatchSession) {
   //   //TODO: убрать это удаление когда добавим список отклоненных матчей
@@ -209,39 +238,6 @@ export class MatchSessionService {
 
   //   return updateMatchSession
   // }
-
-  async getMatchSessionByUserId(id: any) {
-    return await this.matchSessionRepository
-      .createQueryBuilder('match_session')
-      .select([
-        'match_session',
-        'guest.id',
-        'guest.userName',
-        'host.id',
-        'host.userName',
-      ])
-      .leftJoin('match_session.guest', 'guest')
-      .leftJoin('match_session.host', 'host')
-      .where('match_session.guest.id = :id', { id })
-      .orWhere('match_session.host.id = :id', { id })
-      .getMany()
-  }
-
-  async getMatchSessionById(matchSessionId: any) {
-    return await this.matchSessionRepository
-      .createQueryBuilder('match_session')
-      .select([
-        'match_session',
-        'guest.id',
-        'guest.userName',
-        'host.id',
-        'host.userName',
-      ])
-      .leftJoin('match_session.guest', 'guest')
-      .leftJoin('match_session.host', 'host')
-      .where('match_session.id = :id', { id: matchSessionId })
-      .getOne()
-  }
 
   // async swipe(
   //   matchSessionId: number,
@@ -368,37 +364,4 @@ export class MatchSessionService {
   //     completed,
   //   })
   // }
-
-  async deleteMatchSession(matchSessionId: number, userId: number) {
-    const matchSession = await this.matchSessionRepository
-      .createQueryBuilder('match_session')
-      .select([
-        'match_session',
-        'guest.id',
-        'guest.userName',
-        'host.id',
-        'host.userName',
-      ])
-      .leftJoin('match_session.guest', 'guest')
-      .leftJoin('match_session.host', 'host')
-      .where('match_session.id = :id', { id: matchSessionId })
-      .getOne()
-
-    if (+matchSession?.guest?.id === +userId) {
-      matchSession.guest = null
-    } else if (+matchSession?.host?.id === +userId) {
-      matchSession.host = null
-    }
-
-    // await this.matchSessionRepository.update(
-    //   { id: matchSessionId },
-    //   { ...matchSession }
-    // )
-
-    // if (!matchSession.host && !matchSession.guest) {
-    //   await this.matchSessionRepository.delete({ id: matchSessionId })
-    // }
-
-    return matchSessionId
-  }
 }

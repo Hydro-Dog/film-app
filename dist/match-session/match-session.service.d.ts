@@ -1,13 +1,15 @@
 import { Repository } from 'typeorm';
 import { FilmService } from 'src/film/film.service';
-import { AppGetaway } from 'src/app-getaway/app-getaway';
+import { CreateMatchSessionDTO } from './match-session.dto';
 import { MatchSessionEntity } from 'src/entity/match-session.entity';
+import { UserEntity } from 'src/entity/user.entity';
 export declare class MatchSessionService {
-    private appGetaway;
     private matchSessionRepository;
+    private userRepository;
     private filmService;
-    constructor(appGetaway: AppGetaway, matchSessionRepository: Repository<MatchSessionEntity>, filmService: FilmService);
+    constructor(matchSessionRepository: Repository<MatchSessionEntity>, userRepository: Repository<UserEntity>, filmService: FilmService);
+    create(data: CreateMatchSessionDTO): Promise<MatchSessionEntity>;
+    deleteMatchSession(matchSessionId: number, userId: number): Promise<number>;
     getMatchSessionByUserId(id: any): Promise<MatchSessionEntity[]>;
     getMatchSessionById(matchSessionId: any): Promise<MatchSessionEntity>;
-    deleteMatchSession(matchSessionId: number, userId: number): Promise<number>;
 }

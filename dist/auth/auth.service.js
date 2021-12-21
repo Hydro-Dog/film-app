@@ -123,7 +123,6 @@ let AuthService = class AuthService {
         }
     }
     async refresh(headers, refresh) {
-        console.log('refresh::: ', refresh);
         try {
             this.jwtService.verify(refresh, { secret: process.env.JWT_SECRET });
         }
@@ -131,25 +130,31 @@ let AuthService = class AuthService {
             throw new common_1.HttpException('Refresh expired', common_1.HttpStatus.BAD_REQUEST);
         }
         const payload = this.jwtService.decode(headers.authorization.split(' ')[1]);
-        console.log('payload: ', payload);
         const user = await this.userRepository.findOne({
             where: { id: payload.id },
         });
-        console.log('user: ', user);
-        const { accessToken } = await this.getAccessToken(user.id);
+        const accessToken = await this.jwtService.sign({ id: user.id }, {
+            expiresIn: process.env.ACCESS_EXPIRATION,
+            secret: process.env.JWT_SECRET,
+        });
         user.accessToken = accessToken;
         await this.userRepository.update(user.id, user);
         return new user_entity_1.UserEntity(user);
     }
-    async getAccessToken(id) {
-        const payload = {
-            id,
-        };
-        const accessToken = await this.jwtService.sign(payload, {
-            expiresIn: process.env.JWT_EXPIRATION,
-            secret: process.env.JWT_SECRET,
+    async logout(userData) {
+        const user = await this.userRepository.findOne({
+            where: { id: userData.id },
         });
-        return { accessToken };
+        if (!user) {
+            throw new common_1.HttpException('Who the duck are you looking for?', common_1.HttpStatus.BAD_REQUEST);
+        }
+        const loggedOutUser = {
+            ...user,
+            accessToken: null,
+            refreshToken: null,
+        };
+        await this.userRepository.update(user.id, loggedOutUser);
+        return user.id;
     }
 };
 AuthService = __decorate([

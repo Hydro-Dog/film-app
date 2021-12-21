@@ -11,12 +11,16 @@ import { MatchSessionService } from './match-session.service'
 
 @Module({
   imports: [
-    FilmModule,
-    UserModule,
     TypeOrmModule.forFeature([MatchSessionEntity, UserEntity]),
     JwtModule.register({}),
+    FilmModule,
   ],
+  exports: [MatchSessionService],
   controllers: [MatchSessionController],
-  providers: [MatchSessionService, AppGetaway, Logger],
+  providers: [
+    MatchSessionService,
+    // AppGetaway,
+    //  Logger
+  ],
 })
 export class MatchSessionModule {}

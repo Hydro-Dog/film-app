@@ -9,9 +9,10 @@ import {
 import { UserEntity } from './user.entity'
 
 export enum MatchSessionStatus {
-  Pending,
-  Accepted,
-  Declined,
+  Pending = 0,
+  Accepted = 1,
+  Declined = 2,
+  Completed = 3,
 }
 
 export interface MatchSessionPlayer {
@@ -22,6 +23,10 @@ export interface MatchSessionPlayer {
 
 @Entity({ name: 'matchSession' })
 export class MatchSessionEntity {
+  constructor(partial: Partial<MatchSessionEntity>) {
+    Object.assign(this, partial)
+  }
+
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -47,7 +52,7 @@ export class MatchSessionEntity {
 
   @Column('json', { nullable: true }) filterParams: string
 
-  @Column('text', { array: true }) matchedMoviesJSON?: string[]
+  @Column('text', { nullable: true, array: true }) matchedMovies?: string[]
 
   @Column() matchLimit: number
 
@@ -57,6 +62,10 @@ export class MatchSessionEntity {
   })
   status: MatchSessionStatus
 
-  @Column('json') hostMatchStats: string
-  @Column('json') guestMatchStats: string
+  @Column({ nullable: true }) hostCurrentFilmIndex?: number
+  @Column({ nullable: true }) guestCurrentFilmIndex?: number
+  @Column('text', { nullable: true, array: true }) hostLikedFilms?: string[]
+  @Column('text', { nullable: true, array: true }) guestLikedFilms?: string[]
+  @Column('text', { nullable: true }) hostLikedFilmIndex: number
+  @Column('text', { nullable: true }) guestLikedFilmIndex: number
 }

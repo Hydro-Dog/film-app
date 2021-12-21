@@ -22,13 +22,15 @@ let MatchSessionModule = class MatchSessionModule {
 MatchSessionModule = __decorate([
     common_1.Module({
         imports: [
-            film_module_1.FilmModule,
-            user_module_1.UserModule,
             typeorm_1.TypeOrmModule.forFeature([match_session_entity_1.MatchSessionEntity, user_entity_1.UserEntity]),
             jwt_1.JwtModule.register({}),
+            film_module_1.FilmModule,
         ],
+        exports: [match_session_service_1.MatchSessionService],
         controllers: [match_session_controller_1.MatchSessionController],
-        providers: [match_session_service_1.MatchSessionService, app_getaway_1.AppGetaway, common_1.Logger],
+        providers: [
+            match_session_service_1.MatchSessionService,
+        ],
     })
 ], MatchSessionModule);
 exports.MatchSessionModule = MatchSessionModule;

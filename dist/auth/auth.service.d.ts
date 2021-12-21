@@ -17,7 +17,7 @@ export declare class AuthService {
     createUser(userData: CreateUserDTO): Promise<UserEntity>;
     confirmUser(token: string, username: string): Promise<string>;
     refresh(headers: any, refresh: string): Promise<UserEntity>;
-    getAccessToken(id: string): Promise<{
-        accessToken: string;
-    }>;
+    logout(userData: {
+        id: string;
+    }): Promise<string>;
 }

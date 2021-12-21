@@ -13,6 +13,18 @@ import { Exclude } from 'class-transformer'
 export class UserEntity {
   constructor(partial: Partial<UserEntity>) {
     Object.assign(this, partial)
+    if (partial?.invitedToMatchesUUIDs) {
+      this.invitedToMatchesUUIDs = [
+        ...this.invitedToMatchesUUIDs,
+        ...partial.invitedToMatchesUUIDs,
+      ]
+    }
+    if (partial?.hostedMatchesUUIDs) {
+      this.hostedMatchesUUIDs = [
+        ...this.hostedMatchesUUIDs,
+        ...partial.hostedMatchesUUIDs,
+      ]
+    }
   }
 
   @PrimaryGeneratedColumn('uuid')
@@ -56,11 +68,11 @@ export class UserEntity {
 
   @OneToMany((type) => MatchSessionEntity, (matchSession) => matchSession.guest)
   @Column('uuid', { array: true, nullable: true })
-  invites: string[]
+  invitedToMatchesUUIDs: string[]
 
   @OneToMany((type) => MatchSessionEntity, (matchSession) => matchSession.host)
   @Column('uuid', { array: true, nullable: true })
-  hosted: string[]
+  hostedMatchesUUIDs: string[]
 
   @Column({ nullable: true })
   emailConfirmed: boolean

@@ -4,6 +4,9 @@ export declare class AuthController {
     private authService;
     constructor(authService: AuthService);
     login(data: LoginUserDTO): Promise<import("../entity/user.entity").UserEntity>;
+    logout({ user_id }: {
+        user_id: any;
+    }): Promise<string>;
     register(data: CreateUserDTO): Promise<import("../entity/user.entity").UserEntity>;
     confirm({ token, userName }: {
         token: any;

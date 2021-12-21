@@ -197,7 +197,6 @@ export class AuthService {
   }
 
   async refresh(headers: any, refresh: string) {
-    console.log('refresh::: ', refresh)
     try {
       this.jwtService.verify(refresh, { secret: process.env.JWT_SECRET })
     } catch (error) {
@@ -208,15 +207,17 @@ export class AuthService {
       headers.authorization.split(' ')[1]
     ) as { [key: string]: any }
 
-    console.log('payload: ', payload)
-
     const user = await this.userRepository.findOne({
       where: { id: payload.id },
     })
 
-    console.log('user: ', user)
-
-    const { accessToken } = await this.getAccessToken(user.id)
+    const accessToken = await this.jwtService.sign(
+      { id: user.id },
+      {
+        expiresIn: process.env.ACCESS_EXPIRATION,
+        secret: process.env.JWT_SECRET,
+      }
+    )
 
     user.accessToken = accessToken
 
@@ -248,24 +249,26 @@ export class AuthService {
   //   return responseUser
   // }
 
-  // async logout(userId: string) {
-  //   const user = await this.userRepository.findOne({ where: { id: userId } })
-  //   if (!user) {
-  //     throw new HttpException(
-  //       'Who the duck are you looking for?',
-  //       HttpStatus.BAD_REQUEST
-  //     )
-  //   }
+  async logout(userData: { id: string }) {
+    const user = await this.userRepository.findOne({
+      where: { id: userData.id },
+    })
+    if (!user) {
+      throw new HttpException(
+        'Who the duck are you looking for?',
+        HttpStatus.BAD_REQUEST
+      )
+    }
 
-  //   const loggedOutUser: Partial<User> = {
-  //     ...user,
-  //     accessToken: null,
-  //     refreshToken: null,
-  //   }
-  //   await this.userRepository.update(user.id, loggedOutUser)
+    const loggedOutUser: Partial<UserEntity> = {
+      ...user,
+      accessToken: null,
+      refreshToken: null,
+    }
+    await this.userRepository.update(user.id, loggedOutUser)
 
-  //   return userId
-  // }
+    return user.id
+  }
 
   // async sendUserConfirmation(user: User, token: string) {
   //   await this.mailerService.sendMail({
@@ -284,18 +287,18 @@ export class AuthService {
   //   return await bcrypt.hash(password, 10)
   // }
 
-  async getAccessToken(id: string) {
-    const payload = {
-      id,
-    }
+  // async getAccessToken(id: string) {
+  //   const payload = {
+  //     id,
+  //   }
 
-    const accessToken = await this.jwtService.sign(payload, {
-      expiresIn: process.env.JWT_EXPIRATION,
-      secret: process.env.JWT_SECRET,
-    })
+  //   const accessToken = await this.jwtService.sign(payload, {
+  //     expiresIn: process.env.ACCESS_EXPIRATION,
+  //     secret: process.env.JWT_SECRET,
+  //   })
 
-    return { accessToken }
-  }
+  //   return { accessToken }
+  // }
 
   // async getRefreshToken(id: string) {
   //   const payload = {

@@ -12,35 +12,50 @@ import {
 import { UserID } from 'src/shared/user-id.decorator'
 import {
   CreateMatchSessionDTO,
+  GetMatchSessionDTO,
   UpdateMatchSessionDTO,
 } from './match-session.dto'
 import { MatchSessionService } from './match-session.service'
 // import { AuthGuard } from 'src/auth/auth.guard'
 import { MatchSessionEntity } from 'src/entity/match-session.entity'
 
-// @UseGuards(AuthGuard)
+// @UseGuards(FilmderAuthGuard)
 @Controller()
 export class MatchSessionController {
   constructor(private matchSessionService: MatchSessionService) {}
 
-  // @Post('api/matchsession')
-  // create(@User() data: CreateMatchSessionDTO) {
-  //   return this.matchSessionService.create(data)
-  // }
-
-  /**
-   * Return all match session where the user is host or guest.
-   * @param userId
-   * @param matchSessionId
-   */
   @Get('api/matchsession')
-  getMatchSession(@Query() { userId, matchSessionId }) {
-    if (userId) {
-      return this.matchSessionService.getMatchSessionByUserId(userId)
-    } else if (matchSessionId) {
-      return this.matchSessionService.getMatchSessionById(matchSessionId)
+  getMatchSession(@Query() query: GetMatchSessionDTO) {
+    if (query.userId) {
+      return this.matchSessionService.getMatchSessionByUserId(query.userId)
+    } else if (query.matchSessionId) {
+      return this.matchSessionService.getMatchSessionById(query.matchSessionId)
     }
   }
+
+  @Post('api/matchsession')
+  create(@Body() data: CreateMatchSessionDTO) {
+    return this.matchSessionService.create(data)
+  }
+
+  // @Delete('api/matchsession')
+  // deleteMatchSession(
+  //   @UserID() data: { matchSessionId: number; userId: number }
+  // ) {
+  //   return this.matchSessionService.deleteMatchSession(
+  //     data.matchSessionId,
+  //     data.userId
+  //   )
+  // }
+
+  // @Get('api/matchsession')
+  // getMatchSession(@Query() { userId, matchSessionId }) {
+  //   if (userId) {
+  //     return this.matchSessionService.getMatchSessionByUserId(userId)
+  //   } else if (matchSessionId) {
+  //     return this.matchSessionService.getMatchSessionById(matchSessionId)
+  //   }
+  // }
 
   // @Post('api/swipefilm')
   // swipeFilm(
@@ -59,16 +74,6 @@ export class MatchSessionController {
   //     data.swipeDirection
   //   )
   // }
-
-  @Delete('api/matchsession')
-  deleteMatchSession(
-    @UserID() data: { matchSessionId: number; userId: number }
-  ) {
-    return this.matchSessionService.deleteMatchSession(
-      data.matchSessionId,
-      data.userId
-    )
-  }
 
   // @Put('api/matchsession/:id')
   // update(@Param() { id }, @Body() matchSession: MatchSession) {

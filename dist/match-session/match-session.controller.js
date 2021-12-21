@@ -15,38 +15,39 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MatchSessionController = void 0;
 const common_1 = require("@nestjs/common");
 const user_id_decorator_1 = require("../shared/user-id.decorator");
+const match_session_dto_1 = require("./match-session.dto");
 const match_session_service_1 = require("./match-session.service");
 const match_session_entity_1 = require("../entity/match-session.entity");
 let MatchSessionController = class MatchSessionController {
     constructor(matchSessionService) {
         this.matchSessionService = matchSessionService;
     }
-    getMatchSession({ userId, matchSessionId }) {
-        if (userId) {
-            return this.matchSessionService.getMatchSessionByUserId(userId);
+    getMatchSession(query) {
+        if (query.userId) {
+            return this.matchSessionService.getMatchSessionByUserId(query.userId);
         }
-        else if (matchSessionId) {
-            return this.matchSessionService.getMatchSessionById(matchSessionId);
+        else if (query.matchSessionId) {
+            return this.matchSessionService.getMatchSessionById(query.matchSessionId);
         }
     }
-    deleteMatchSession(data) {
-        return this.matchSessionService.deleteMatchSession(data.matchSessionId, data.userId);
+    create(data) {
+        return this.matchSessionService.create(data);
     }
 };
 __decorate([
     common_1.Get('api/matchsession'),
     __param(0, common_1.Query()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [match_session_dto_1.GetMatchSessionDTO]),
     __metadata("design:returntype", void 0)
 ], MatchSessionController.prototype, "getMatchSession", null);
 __decorate([
-    common_1.Delete('api/matchsession'),
-    __param(0, user_id_decorator_1.UserID()),
+    common_1.Post('api/matchsession'),
+    __param(0, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [match_session_dto_1.CreateMatchSessionDTO]),
     __metadata("design:returntype", void 0)
-], MatchSessionController.prototype, "deleteMatchSession", null);
+], MatchSessionController.prototype, "create", null);
 MatchSessionController = __decorate([
     common_1.Controller(),
     __metadata("design:paramtypes", [match_session_service_1.MatchSessionService])
