@@ -9,8 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateMatchSessionDTO = exports.CreateMatchSessionDTO = exports.GetMatchSessionDTO = void 0;
+exports.UpdateMatchSessionStatusDTO = exports.CreateMatchSessionDTO = exports.GetMatchSessionDTO = void 0;
 const class_validator_1 = require("class-validator");
+const match_session_entity_1 = require("../entity/match-session.entity");
 const film_models_1 = require("../film/film.models");
 class GetMatchSessionDTO {
 }
@@ -34,23 +35,15 @@ __decorate([
     __metadata("design:type", String)
 ], CreateMatchSessionDTO.prototype, "category", void 0);
 exports.CreateMatchSessionDTO = CreateMatchSessionDTO;
-class UpdateMatchSessionDTO {
+class UpdateMatchSessionStatusDTO {
 }
 __decorate([
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
-], UpdateMatchSessionDTO.prototype, "userId", void 0);
-__decorate([
-    class_validator_1.IsNotEmpty(),
-    __metadata("design:type", String)
-], UpdateMatchSessionDTO.prototype, "matchSessionId", void 0);
+], UpdateMatchSessionStatusDTO.prototype, "matchSessionId", void 0);
 __decorate([
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", Number)
-], UpdateMatchSessionDTO.prototype, "filmId", void 0);
-__decorate([
-    class_validator_1.IsNotEmpty(),
-    __metadata("design:type", Boolean)
-], UpdateMatchSessionDTO.prototype, "filmApproved", void 0);
-exports.UpdateMatchSessionDTO = UpdateMatchSessionDTO;
+], UpdateMatchSessionStatusDTO.prototype, "status", void 0);
+exports.UpdateMatchSessionStatusDTO = UpdateMatchSessionStatusDTO;
 //# sourceMappingURL=match-session.dto.js.map

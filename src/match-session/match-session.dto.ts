@@ -1,4 +1,5 @@
 import { IsEmpty, IsNotEmpty, IsOptional } from 'class-validator'
+import { MatchSessionStatus } from 'src/entity/match-session.entity'
 import { FilmCategories } from 'src/film/film.models'
 
 export class GetMatchSessionDTO {
@@ -24,9 +25,14 @@ export class CreateMatchSessionDTO {
   // @IsOptional() userId?: string
 }
 
-export class UpdateMatchSessionDTO {
-  @IsNotEmpty() userId: string
+export class UpdateMatchSessionStatusDTO {
   @IsNotEmpty() matchSessionId: string
-  @IsNotEmpty() filmId: number
-  @IsNotEmpty() filmApproved: boolean
+  @IsNotEmpty() status: MatchSessionStatus
 }
+
+// export class UpdateMatchSessionDTO {
+//   @IsNotEmpty() userId: string
+//   @IsNotEmpty() matchSessionId: string
+//   @IsNotEmpty() filmId: number
+//   @IsNotEmpty() filmApproved: boolean
+// }

@@ -33,6 +33,9 @@ let MatchSessionController = class MatchSessionController {
     create(data) {
         return this.matchSessionService.create(data);
     }
+    updateStatus(data) {
+        return this.matchSessionService.updateStatus(data);
+    }
 };
 __decorate([
     common_1.Get('api/matchsession'),
@@ -48,6 +51,13 @@ __decorate([
     __metadata("design:paramtypes", [match_session_dto_1.CreateMatchSessionDTO]),
     __metadata("design:returntype", void 0)
 ], MatchSessionController.prototype, "create", null);
+__decorate([
+    common_1.Post('api/matchsession/status'),
+    __param(0, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [match_session_dto_1.UpdateMatchSessionStatusDTO]),
+    __metadata("design:returntype", void 0)
+], MatchSessionController.prototype, "updateStatus", null);
 MatchSessionController = __decorate([
     common_1.Controller(),
     __metadata("design:paramtypes", [match_session_service_1.MatchSessionService])

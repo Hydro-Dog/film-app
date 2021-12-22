@@ -73,6 +73,15 @@ let MatchSessionService = class MatchSessionService {
         }
         return matchSessionId;
     }
+    async updateStatus(data) {
+        return await this.matchSessionRepository.save({
+            id: data.matchSessionId,
+            status: data.status,
+        });
+    }
+    decline() { }
+    continue() { }
+    leave() { }
     async getMatchSessionByUserId(id) {
         return await this.matchSessionRepository
             .createQueryBuilder('match_session')

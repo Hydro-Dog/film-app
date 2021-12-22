@@ -1,3 +1,4 @@
+import { MatchSessionStatus } from 'src/entity/match-session.entity';
 import { FilmCategories } from 'src/film/film.models';
 export declare class GetMatchSessionDTO {
     matchSessionId?: string;
@@ -9,9 +10,7 @@ export declare class CreateMatchSessionDTO {
     matchLimit: number;
     category: FilmCategories;
 }
-export declare class UpdateMatchSessionDTO {
-    userId: string;
+export declare class UpdateMatchSessionStatusDTO {
     matchSessionId: string;
-    filmId: number;
-    filmApproved: boolean;
+    status: MatchSessionStatus;
 }

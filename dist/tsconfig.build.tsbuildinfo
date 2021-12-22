@@ -4287,8 +4287,8 @@
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.dto.ts": {
-        "version": "b7846443b22181c9adad1c4381813e7ab9223b40ccdc7b7d766fbf7a39691441",
-        "signature": "b8816d0a51193c866e19db4c11b35cc7fcda7cb1e073c6ee59b37d2b7d3588a5",
+        "version": "62fc8085c27a01a14841320c658778ad12a764c1571770d3131fe5ba432531c8",
+        "signature": "4c0bd1b4a95c69c39c345172e5826a74f2c71b1fdeefbb846b98969ebac90e86",
         "affectsGlobalScope": false
       },
       "../node_modules/rxjs/internal/operators/audit.d.ts": {
@@ -4827,8 +4827,8 @@
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.service.ts": {
-        "version": "41bb800a088dc18db28f046121be55984205f0250c1723ab74ca16432bee0ea1",
-        "signature": "b2d2f83ad8fb58c075091d4662b3f268246544d1de28358d632e89dd332b86db",
+        "version": "5e2be73c24fc56a41913f28832aac46cd97ff4ae75a48ff60f6d596a5a235880",
+        "signature": "5b3fa9732263ee44549bef5ddbe8e036fd3976d2c5cfbf6c0eeed1036601008a",
         "affectsGlobalScope": false
       },
       "../src/user/user.service.ts": {
@@ -5092,8 +5092,8 @@
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.controller.ts": {
-        "version": "9ff07b2ed5f58c106568918628b0393683ca2348b10c6115519479ae5ffcc289",
-        "signature": "a790bb6b1a50261396f6e5de265fabe19eb44d12bf8d28294e03b54fef2162b3",
+        "version": "004bd89d54175c9045c1a8b6d98494bf26c072d6748408d1db83acebb73cfe43",
+        "signature": "a030cc43037f62f2296aa7a4434a232c1b66d3b8c97c57757670b9e910b9dcd4",
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.module.ts": {
@@ -9622,6 +9622,7 @@
       ],
       "../src/match-session/match-session.dto.ts": [
         "../node_modules/class-validator/types/index.d.ts",
+        "../src/entity/match-session.entity.ts",
         "../src/film/film.models.ts"
       ],
       "../src/match-session/match-session.gateway.ts": [
@@ -13674,6 +13675,7 @@
         "../src/match-session/match-session.service.ts"
       ],
       "../src/match-session/match-session.dto.ts": [
+        "../src/entity/match-session.entity.ts",
         "../src/film/film.models.ts"
       ],
       "../src/match-session/match-session.gateway.ts": [

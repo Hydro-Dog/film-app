@@ -13,7 +13,7 @@ import { UserID } from 'src/shared/user-id.decorator'
 import {
   CreateMatchSessionDTO,
   GetMatchSessionDTO,
-  UpdateMatchSessionDTO,
+  UpdateMatchSessionStatusDTO,
 } from './match-session.dto'
 import { MatchSessionService } from './match-session.service'
 // import { AuthGuard } from 'src/auth/auth.guard'
@@ -37,6 +37,31 @@ export class MatchSessionController {
   create(@Body() data: CreateMatchSessionDTO) {
     return this.matchSessionService.create(data)
   }
+
+  @Post('api/matchsession/status')
+  updateStatus(@Body() data: UpdateMatchSessionStatusDTO) {
+    return this.matchSessionService.updateStatus(data)
+  }
+
+  // @Post('api/matchsession/accept')
+  // accept(@Body() data: CreateMatchSessionDTO) {
+  //   return this.matchSessionService.create(data)
+  // }
+
+  // @Post('api/matchsession/decline')
+  // decline(@Body() data: CreateMatchSessionDTO) {
+  //   return this.matchSessionService.create(data)
+  // }
+
+  // @Post('api/matchsession/continue')
+  // continue(@Body() data: CreateMatchSessionDTO) {
+  //   return this.matchSessionService.create(data)
+  // }
+
+  // @Post('api/matchsession/leave')
+  // leave(@Body() data: CreateMatchSessionDTO) {
+  //   return this.matchSessionService.create(data)
+  // }
 
   // @Delete('api/matchsession')
   // deleteMatchSession(

@@ -2,7 +2,10 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Injectable } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { FilmService } from 'src/film/film.service'
-import { CreateMatchSessionDTO } from './match-session.dto'
+import {
+  CreateMatchSessionDTO,
+  UpdateMatchSessionStatusDTO,
+} from './match-session.dto'
 import {
   MatchSessionEntity,
   MatchSessionStatus,
@@ -110,6 +113,19 @@ export class MatchSessionService {
 
     return matchSessionId
   }
+
+  async updateStatus(data: UpdateMatchSessionStatusDTO) {
+    return await this.matchSessionRepository.save({
+      id: data.matchSessionId,
+      status: data.status,
+    })
+  }
+
+  decline() {}
+
+  continue() {}
+
+  leave() {}
 
   async getMatchSessionByUserId(id: any) {
     return await this.matchSessionRepository
