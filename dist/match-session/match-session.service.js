@@ -44,8 +44,11 @@ let MatchSessionService = class MatchSessionService {
             status: match_session_entity_1.MatchSessionStatus.Pending,
         }));
         const matchSessionSaved = await this.matchSessionRepository.save(matchSessionData);
-        guest.invitedToMatchesUUIDs.push(matchSessionSaved.id);
-        host.hostedMatchesUUIDs.push(matchSessionSaved.id);
+        guest.invitedToMatchesUUIDs = [
+            ...guest.invitedToMatchesUUIDs,
+            matchSessionSaved.id,
+        ];
+        host.hostedMatchesUUIDs = [...host.hostedMatchesUUIDs, matchSessionSaved.id];
         await this.userRepository.update({ id: host.id }, { ...host });
         await this.userRepository.update({ id: guest.id }, { ...guest });
         return matchSessionData;
@@ -74,14 +77,20 @@ let MatchSessionService = class MatchSessionService {
         return matchSessionId;
     }
     async updateStatus(data) {
+        if (data.status === match_session_entity_1.MatchSessionStatus.Declined) {
+            const deletedMatch = await this.matchSessionRepository.findOne({
+                id: data.matchSessionId,
+            });
+            await this.matchSessionRepository.delete({
+                id: data.matchSessionId,
+            });
+            return { ...deletedMatch, status: match_session_entity_1.MatchSessionStatus.Declined };
+        }
         return await this.matchSessionRepository.save({
             id: data.matchSessionId,
             status: data.status,
         });
     }
-    decline() { }
-    continue() { }
-    leave() { }
     async getMatchSessionByUserId(id) {
         return await this.matchSessionRepository
             .createQueryBuilder('match_session')

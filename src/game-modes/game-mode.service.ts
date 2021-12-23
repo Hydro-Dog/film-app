@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { GameModeEntity } from 'src/entity/game-mode.entity'
 import { Repository } from 'typeorm'
 import { GameModeDTO } from './game-mode.dto'
 import { GameMode } from './game-mode.entity'
@@ -7,8 +8,8 @@ import { GameMode } from './game-mode.entity'
 @Injectable()
 export class GameModeService {
   constructor(
-    @InjectRepository(GameMode)
-    private gameModesRepository: Repository<GameMode>
+    @InjectRepository(GameModeEntity)
+    private gameModesRepository: Repository<GameModeEntity>
   ) {}
 
   async getGameModes(): Promise<GameModeDTO[]> {

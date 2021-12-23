@@ -14,6 +14,7 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const auth_module_1 = require("./auth/auth.module");
 const film_module_1 = require("./film/film.module");
+const game_mode_module_1 = require("./game-modes/game-mode.module");
 const match_session_module_1 = require("./match-session/match-session.module");
 const http_error_filter_1 = require("./shared/http-error.filter");
 const logger_interceptor_1 = require("./shared/logger.interceptor");
@@ -29,6 +30,7 @@ AppModule = __decorate([
             match_session_module_1.MatchSessionModule,
             film_module_1.FilmModule,
             auth_module_1.AuthModule,
+            game_mode_module_1.GameModeModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

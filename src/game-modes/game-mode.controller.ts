@@ -9,6 +9,7 @@ export class GameModeController {
 
   @Get('api/gamemode')
   getGameModes() {
+    console.log('========================')
     return this.gameModeService.getGameModes()
   }
 }

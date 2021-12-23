@@ -12,17 +12,6 @@ export class CreateMatchSessionDTO {
   @IsNotEmpty() guestId: string
   @IsNotEmpty() matchLimit: number
   @IsOptional() category: FilmCategories
-  // @IsOptional() category?: FilmCategories
-  // @IsOptional() lang: string
-  // @IsEmpty() hostSequenceCounter?: number
-  // @IsEmpty() guestSequenceCounter?: number
-  // @IsEmpty() hostLikedFilms?: string[]
-  // @IsEmpty() guestLikedFilms?: string[]
-  // @IsEmpty() matchedFilms?: string[]
-  // @IsOptional() page?: number
-  // @IsEmpty() filmsIdsSequence?: string[]
-  // @IsOptional() filterParams?: Record<string, unknown>
-  // @IsOptional() userId?: string
 }
 
 export class UpdateMatchSessionStatusDTO {

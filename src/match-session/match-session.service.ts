@@ -54,8 +54,11 @@ export class MatchSessionService {
       matchSessionData
     )
 
-    guest.invitedToMatchesUUIDs.push(matchSessionSaved.id)
-    host.hostedMatchesUUIDs.push(matchSessionSaved.id)
+    guest.invitedToMatchesUUIDs = [
+      ...guest.invitedToMatchesUUIDs,
+      matchSessionSaved.id,
+    ]
+    host.hostedMatchesUUIDs = [...host.hostedMatchesUUIDs, matchSessionSaved.id]
 
     await this.userRepository.update({ id: host.id }, { ...host })
     await this.userRepository.update({ id: guest.id }, { ...guest })
@@ -115,17 +118,22 @@ export class MatchSessionService {
   }
 
   async updateStatus(data: UpdateMatchSessionStatusDTO) {
+    if (data.status === MatchSessionStatus.Declined) {
+      const deletedMatch = await this.matchSessionRepository.findOne({
+        id: data.matchSessionId,
+      })
+
+      await this.matchSessionRepository.delete({
+        id: data.matchSessionId,
+      })
+
+      return { ...deletedMatch, status: MatchSessionStatus.Declined }
+    }
     return await this.matchSessionRepository.save({
       id: data.matchSessionId,
       status: data.status,
     })
   }
-
-  decline() {}
-
-  continue() {}
-
-  leave() {}
 
   async getMatchSessionByUserId(id: any) {
     return await this.matchSessionRepository

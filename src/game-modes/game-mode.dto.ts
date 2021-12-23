@@ -7,3 +7,7 @@ export class GameModeDTO {
   @IsNotEmpty()
   value: string
 }
+
+// popular
+// top_rated
+// upcoming

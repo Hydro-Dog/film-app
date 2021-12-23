@@ -169,7 +169,11 @@ export class AuthService {
     try {
       const hashedUser = await this.hashUserPassword(userData)
       const user = await this.userRepository.create(hashedUser)
-      await this.userRepository.save(user)
+      await this.userRepository.save({
+        ...user,
+        hostedMatchesUUIDs: [],
+        invitedToMatchesUUIDs: [],
+      })
 
       const mailerResponse = await this.sendUserConfirmation(user)
       return new UserEntity({ user, ...mailerResponse })

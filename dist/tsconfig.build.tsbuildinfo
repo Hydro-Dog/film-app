@@ -3952,7 +3952,7 @@
         "affectsGlobalScope": false
       },
       "../src/auth/auth.service.ts": {
-        "version": "8b2cfdcfa8dfae65e06f70b34da2e6156f7502e2581f39f3bffe0a85ff309213",
+        "version": "21bc14a4694ba012c0e88655289af8c77579440cc8d179bef32c4b103fb68b4f",
         "signature": "2661177e0351802e6cb385bfd979f70ae5c15ffe8aa001e1e02724daf5505bd5",
         "affectsGlobalScope": false
       },
@@ -4287,7 +4287,7 @@
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.dto.ts": {
-        "version": "62fc8085c27a01a14841320c658778ad12a764c1571770d3131fe5ba432531c8",
+        "version": "bccb3d83a7dc0d9ba10e6d21d9eabe6316d2804ae61f5a59d2b86cbf1d8c728d",
         "signature": "4c0bd1b4a95c69c39c345172e5826a74f2c71b1fdeefbb846b98969ebac90e86",
         "affectsGlobalScope": false
       },
@@ -4827,8 +4827,8 @@
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.service.ts": {
-        "version": "5e2be73c24fc56a41913f28832aac46cd97ff4ae75a48ff60f6d596a5a235880",
-        "signature": "5b3fa9732263ee44549bef5ddbe8e036fd3976d2c5cfbf6c0eeed1036601008a",
+        "version": "6ddd945033aeaba702ea353dd80ec55eab8a62635dd3d2483b73d95bdc95fa8a",
+        "signature": "ec0a98cf334e8e1cd6cea51a539274f30f250ff3fe69a9128a8c889b5931c998",
         "affectsGlobalScope": false
       },
       "../src/user/user.service.ts": {
@@ -5093,7 +5093,7 @@
       },
       "../src/match-session/match-session.controller.ts": {
         "version": "004bd89d54175c9045c1a8b6d98494bf26c072d6748408d1db83acebb73cfe43",
-        "signature": "a030cc43037f62f2296aa7a4434a232c1b66d3b8c97c57757670b9e910b9dcd4",
+        "signature": "910dfce63e2a34d3f979352646249d6618311a9b0a14e2133132bfb442cce4a2",
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.module.ts": {
@@ -5146,8 +5146,13 @@
         "signature": "a28b5c0c372fb375910b3fe3c3ce4331509bc18ccef7cc39c9ee9d8daf8225d1",
         "affectsGlobalScope": false
       },
+      "../src/entity/game-mode.entity.ts": {
+        "version": "eeedc620a43ebeb09cfcad0141aff3071575bb0bb7c5a82d22773624d1058b76",
+        "signature": "1dc9de759e5d686d3b2cd3bbb1890aa77950fe6f93c9600892c094a1e1200640",
+        "affectsGlobalScope": false
+      },
       "../src/game-modes/game-mode.dto.ts": {
-        "version": "51b31747ff640e2a2d715fd68d6dda57d6a5fb663d830b0ed88be981d4fb4b14",
+        "version": "c049e0547c2b0006d3c4b64c885ea44fa424b982536e9eb45907c47d808efbe7",
         "signature": "4ce082479ec890ca9a516c33013bac7e560ecf6eda0d3d86980cb4f82d52482f",
         "affectsGlobalScope": false
       },
@@ -5157,17 +5162,17 @@
         "affectsGlobalScope": false
       },
       "../src/game-modes/game-mode.service.ts": {
-        "version": "ece383212c8c5e77f39480430c0286a138d928fe77d9c46aab3af69649ece5a0",
-        "signature": "2fdc6399c0326b2b4c6d6f4045f44d9e94924bec530f5a9e8f6124c556de27aa",
+        "version": "db1a8a67fc586448fc9034641d0df09422a1e106001ff9669db2539980327a3d",
+        "signature": "709dc55259a2ea6dd772cc1da6968fc7d2c96950f452e8fe79f5711804f426ee",
         "affectsGlobalScope": false
       },
       "../src/game-modes/game-mode.controller.ts": {
-        "version": "a0371b0002cd4a97a70eef175d625205b6f39c1a6f2e8a083c01b953eb3c6b84",
+        "version": "4edd9f86cfda7b2b117d3367d0c95f0a11879167d7a8bca589b9266acdf64dde",
         "signature": "a61aeb6099851d8772e72cd853d9e57f95f2facd25737f225c34663034e9fa1f",
         "affectsGlobalScope": false
       },
       "../src/game-modes/game-mode.module.ts": {
-        "version": "e66a5fcfd2f369ab01f94cf0ee697c00bafb2a11a32f68e5a14c3bf3e2b3f6e3",
+        "version": "5aa3fb2f722838d2f249273b4ea3acb9872a06a0e119530d4d5b0892849f57c7",
         "signature": "9d104e66a5765eb9e203d1640fa0e6d93fb1f6a0691135fd74084274d9e96705",
         "affectsGlobalScope": false
       },
@@ -5187,7 +5192,7 @@
         "affectsGlobalScope": false
       },
       "../src/app.module.ts": {
-        "version": "8d9e70659d3d57b49b3b3c60217ec0ec804ea48c3550c628ccc1465d26ddbbdb",
+        "version": "1cb7d1a075924840e5f19f671054219fa5bfb1b1117bddb0b7ee115fdc31ce25",
         "signature": "b82491e2990291580288c5602d4c017238977749d52b17391f0e45d9a29be644",
         "affectsGlobalScope": false
       },
@@ -5299,11 +5304,6 @@
       "../src/auth/strategies/vkontakte.strategy.ts": {
         "version": "2426e7282ca17ffbee2fc0eada9a9d468f9cb4720df3c0943e4180423dfb23ee",
         "signature": "e239d4f46bd9fac212feb9b3a4bb94b700dad48a72bb8357449c0ca03dbb0c28",
-        "affectsGlobalScope": false
-      },
-      "../src/entity/game-mode.entity.ts": {
-        "version": "354389049074ded1415373ac1287b6ff39743fc9c86199d430b6d6961fd90d15",
-        "signature": "eae7c2829eaa42be79caccbf68608e0f6db74b062baa2c6a2f95bd992d61840b",
         "affectsGlobalScope": false
       },
       "../src/film/film.dto.ts": {
@@ -9584,6 +9584,7 @@
         "../node_modules/@nestjs/common/index.d.ts",
         "../node_modules/@nestjs/jwt/index.d.ts",
         "../node_modules/@nestjs/typeorm/index.d.ts",
+        "../src/entity/game-mode.entity.ts",
         "../src/game-modes/game-mode.controller.ts",
         "../src/game-modes/game-mode.entity.ts",
         "../src/game-modes/game-mode.service.ts"
@@ -9592,6 +9593,7 @@
         "../node_modules/@nestjs/common/index.d.ts",
         "../node_modules/@nestjs/typeorm/index.d.ts",
         "../node_modules/typeorm/index.d.ts",
+        "../src/entity/game-mode.entity.ts",
         "../src/game-modes/game-mode.dto.ts",
         "../src/game-modes/game-mode.entity.ts"
       ],
@@ -13663,14 +13665,15 @@
       ],
       "../src/game-modes/game-mode.service.ts": [
         "../node_modules/typeorm/index.d.ts",
-        "../src/game-modes/game-mode.dto.ts",
-        "../src/game-modes/game-mode.entity.ts"
+        "../src/entity/game-mode.entity.ts",
+        "../src/game-modes/game-mode.dto.ts"
       ],
       "../src/helpers/url-for-tmdb-generator.helper.ts": [
         "../src/film/film.models.ts"
       ],
       "../src/match-session/match-session.controller.ts": [
         "../src/entity/match-session.entity.ts",
+        "../src/entity/user.entity.ts",
         "../src/match-session/match-session.dto.ts",
         "../src/match-session/match-session.service.ts"
       ],

@@ -11,12 +11,24 @@ export declare class MatchSessionService {
     create(data: CreateMatchSessionDTO): Promise<MatchSessionEntity>;
     deleteMatchSession(matchSessionId: number, userId: number): Promise<number>;
     updateStatus(data: UpdateMatchSessionStatusDTO): Promise<{
-        id: string;
         status: MatchSessionStatus;
-    } & MatchSessionEntity>;
-    decline(): void;
-    continue(): void;
-    leave(): void;
+        id: string;
+        created: Date;
+        updated: Date;
+        category?: string;
+        filmsSequence: string[];
+        host: UserEntity;
+        guest: UserEntity;
+        filterParams: string;
+        matchedMovies?: string[];
+        matchLimit: number;
+        hostCurrentFilmIndex?: number;
+        guestCurrentFilmIndex?: number;
+        hostLikedFilms?: string[];
+        guestLikedFilms?: string[];
+        hostLikedFilmIndex: number;
+        guestLikedFilmIndex: number;
+    }>;
     getMatchSessionByUserId(id: any): Promise<MatchSessionEntity[]>;
     getMatchSessionById(matchSessionId: any): Promise<MatchSessionEntity>;
 }

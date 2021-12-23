@@ -17,6 +17,7 @@ let GameModeController = class GameModeController {
         this.gameModeService = gameModeService;
     }
     getGameModes() {
+        console.log('========================');
         return this.gameModeService.getGameModes();
     }
 };

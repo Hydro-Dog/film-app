@@ -22,6 +22,7 @@ import { UserModule } from './user/user.module'
     MatchSessionModule,
     FilmModule,
     AuthModule,
+    GameModeModule,
   ],
   controllers: [AppController],
   providers: [

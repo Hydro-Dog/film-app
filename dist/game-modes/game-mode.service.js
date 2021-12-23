@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameModeService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const game_mode_entity_1 = require("../entity/game-mode.entity");
 const typeorm_2 = require("typeorm");
-const game_mode_entity_1 = require("./game-mode.entity");
 let GameModeService = class GameModeService {
     constructor(gameModesRepository) {
         this.gameModesRepository = gameModesRepository;
@@ -28,7 +28,7 @@ let GameModeService = class GameModeService {
 };
 GameModeService = __decorate([
     common_1.Injectable(),
-    __param(0, typeorm_1.InjectRepository(game_mode_entity_1.GameMode)),
+    __param(0, typeorm_1.InjectRepository(game_mode_entity_1.GameModeEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository])
 ], GameModeService);
 exports.GameModeService = GameModeService;
