@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import { FilmService } from 'src/film/film.service';
-import { CreateMatchSessionDTO, UpdateMatchSessionStatusDTO } from './match-session.dto';
+import { CreateMatchSessionDTO, SwipeMatchSessionStatusDTO, UpdateMatchSessionStatusDTO } from './match-session.dto';
 import { MatchSessionEntity, MatchSessionStatus } from 'src/entity/match-session.entity';
 import { UserEntity } from 'src/entity/user.entity';
 export declare class MatchSessionService {
@@ -31,4 +31,26 @@ export declare class MatchSessionService {
     }>;
     getMatchSessionByUserId(id: any): Promise<MatchSessionEntity[]>;
     getMatchSessionById(matchSessionId: any): Promise<MatchSessionEntity>;
+    swipe(data: SwipeMatchSessionStatusDTO & {
+        user_id: string;
+    }): Promise<{
+        matched: boolean;
+        id: string;
+        created: Date;
+        updated: Date;
+        category?: string;
+        filmsSequence: string[];
+        host: UserEntity;
+        guest: UserEntity;
+        filterParams: string;
+        matchedMovies?: string[];
+        matchLimit: number;
+        status: MatchSessionStatus;
+        hostCurrentFilmIndex?: number;
+        guestCurrentFilmIndex?: number;
+        hostLikedFilms?: string[];
+        guestLikedFilms?: string[];
+        hostLikedFilmIndex: number;
+        guestLikedFilmIndex: number;
+    }>;
 }

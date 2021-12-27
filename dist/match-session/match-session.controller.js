@@ -36,6 +36,9 @@ let MatchSessionController = class MatchSessionController {
     updateStatus(data) {
         return this.matchSessionService.updateStatus(data);
     }
+    swipe(data) {
+        return this.matchSessionService.swipe(data);
+    }
 };
 __decorate([
     common_1.Get('api/matchsession'),
@@ -58,6 +61,13 @@ __decorate([
     __metadata("design:paramtypes", [match_session_dto_1.UpdateMatchSessionStatusDTO]),
     __metadata("design:returntype", void 0)
 ], MatchSessionController.prototype, "updateStatus", null);
+__decorate([
+    common_1.Get('api/matchsession/swipe'),
+    __param(0, user_id_decorator_1.UserID()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], MatchSessionController.prototype, "swipe", null);
 MatchSessionController = __decorate([
     common_1.Controller(),
     __metadata("design:paramtypes", [match_session_service_1.MatchSessionService])

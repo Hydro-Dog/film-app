@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateMatchSessionStatusDTO = exports.CreateMatchSessionDTO = exports.GetMatchSessionDTO = void 0;
+exports.SwipeMatchSessionStatusDTO = exports.UpdateMatchSessionStatusDTO = exports.CreateMatchSessionDTO = exports.GetMatchSessionDTO = void 0;
 const class_validator_1 = require("class-validator");
 const match_session_entity_1 = require("../entity/match-session.entity");
 const film_models_1 = require("../film/film.models");
@@ -46,4 +46,19 @@ __decorate([
     __metadata("design:type", Number)
 ], UpdateMatchSessionStatusDTO.prototype, "status", void 0);
 exports.UpdateMatchSessionStatusDTO = UpdateMatchSessionStatusDTO;
+class SwipeMatchSessionStatusDTO {
+}
+__decorate([
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], SwipeMatchSessionStatusDTO.prototype, "matchSessionId", void 0);
+__decorate([
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], SwipeMatchSessionStatusDTO.prototype, "swipe", void 0);
+__decorate([
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], SwipeMatchSessionStatusDTO.prototype, "film", void 0);
+exports.SwipeMatchSessionStatusDTO = SwipeMatchSessionStatusDTO;
 //# sourceMappingURL=match-session.dto.js.map

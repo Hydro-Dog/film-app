@@ -13,6 +13,7 @@ import { UserID } from 'src/shared/user-id.decorator'
 import {
   CreateMatchSessionDTO,
   GetMatchSessionDTO,
+  SwipeMatchSessionStatusDTO,
   UpdateMatchSessionStatusDTO,
 } from './match-session.dto'
 import { MatchSessionService } from './match-session.service'
@@ -41,6 +42,11 @@ export class MatchSessionController {
   @Post('api/matchsession/status')
   updateStatus(@Body() data: UpdateMatchSessionStatusDTO) {
     return this.matchSessionService.updateStatus(data)
+  }
+
+  @Get('api/matchsession/swipe')
+  swipe(@UserID() data: SwipeMatchSessionStatusDTO & { user_id: string }) {
+    return this.matchSessionService.swipe(data)
   }
 
   // @Post('api/matchsession/accept')

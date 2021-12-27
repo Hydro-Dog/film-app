@@ -14,3 +14,8 @@ export declare class UpdateMatchSessionStatusDTO {
     matchSessionId: string;
     status: MatchSessionStatus;
 }
+export declare class SwipeMatchSessionStatusDTO {
+    matchSessionId: string;
+    swipe: 'left' | 'right';
+    film: string;
+}

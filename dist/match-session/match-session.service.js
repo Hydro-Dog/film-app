@@ -19,6 +19,7 @@ const typeorm_2 = require("typeorm");
 const film_service_1 = require("../film/film.service");
 const match_session_entity_1 = require("../entity/match-session.entity");
 const user_entity_1 = require("../entity/user.entity");
+const film_dto_1 = require("../film/film.dto");
 const INITIAL_PAGES = '1';
 const FILMS_PAGE_SIZE = 20;
 let MatchSessionService = class MatchSessionService {
@@ -121,6 +122,25 @@ let MatchSessionService = class MatchSessionService {
             .leftJoin('match_session.host', 'host')
             .where('match_session.id = :id', { id: matchSessionId })
             .getOne();
+    }
+    async swipe(data) {
+        const film = JSON.parse(data.film);
+        const matchSession = await this.getMatchSessionById(data.matchSessionId);
+        const userRole = data.user_id === matchSession.host.id ? 'host' : 'guest';
+        const opponentRole = data.user_id === matchSession.host.id ? 'guest' : 'host';
+        matchSession[userRole + 'LikedFilms'].push(film.id);
+        matchSession[userRole + 'CurrentFilmIndex']++;
+        let matched = false;
+        if (data.swipe === 'right') {
+            matchSession[opponentRole + 'LikedFilms'].includes(film.id);
+            matchSession.matchedMovies.push(data.film);
+            matched = true;
+        }
+        matchSession.status =
+            matchSession.matchedMovies.length >= matchSession.matchLimit
+                ? match_session_entity_1.MatchSessionStatus.Completed
+                : matchSession.status;
+        return { ...matchSession, matched };
     }
 };
 MatchSessionService = __decorate([

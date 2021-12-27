@@ -19,6 +19,12 @@ export class UpdateMatchSessionStatusDTO {
   @IsNotEmpty() status: MatchSessionStatus
 }
 
+export class SwipeMatchSessionStatusDTO {
+  @IsNotEmpty() matchSessionId: string
+  @IsNotEmpty() swipe: 'left' | 'right'
+  @IsNotEmpty() film: string
+}
+
 // export class UpdateMatchSessionDTO {
 //   @IsNotEmpty() userId: string
 //   @IsNotEmpty() matchSessionId: string

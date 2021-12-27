@@ -4287,8 +4287,8 @@
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.dto.ts": {
-        "version": "bccb3d83a7dc0d9ba10e6d21d9eabe6316d2804ae61f5a59d2b86cbf1d8c728d",
-        "signature": "4c0bd1b4a95c69c39c345172e5826a74f2c71b1fdeefbb846b98969ebac90e86",
+        "version": "44005c30276de52a288d1b406d711742c541a22dd5ed97551710587d44887281",
+        "signature": "c7825f3e5420dd6ec25ebd118aaa20659fb16d0c06900197be91b21125b982ec",
         "affectsGlobalScope": false
       },
       "../node_modules/rxjs/internal/operators/audit.d.ts": {
@@ -4826,9 +4826,14 @@
         "signature": "dcec1c2ae8bcd7d64fcdd55cbc7d25f2ef5a7ae76561b1bd1ddffec1ac89647d",
         "affectsGlobalScope": false
       },
+      "../src/film/film.dto.ts": {
+        "version": "8effe3369f1a96f704837da410558844faffdb6d2a1c0ff55499e7f5560aca7d",
+        "signature": "1d96e8ad8578ef6e637ea4b61129791e0a476bfb959d67581cf6d93dc2b1979c",
+        "affectsGlobalScope": false
+      },
       "../src/match-session/match-session.service.ts": {
-        "version": "6ddd945033aeaba702ea353dd80ec55eab8a62635dd3d2483b73d95bdc95fa8a",
-        "signature": "ec0a98cf334e8e1cd6cea51a539274f30f250ff3fe69a9128a8c889b5931c998",
+        "version": "a7d9ff83aa3be5cc28c288f189b3126e26108811123e4bdfec01b41d6b57112d",
+        "signature": "f5152ed807ce8dbdee85c8d9b32def913480c3e4554b81b4df3434925ac5acf1",
         "affectsGlobalScope": false
       },
       "../src/user/user.service.ts": {
@@ -5092,8 +5097,8 @@
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.controller.ts": {
-        "version": "004bd89d54175c9045c1a8b6d98494bf26c072d6748408d1db83acebb73cfe43",
-        "signature": "910dfce63e2a34d3f979352646249d6618311a9b0a14e2133132bfb442cce4a2",
+        "version": "676ba0c91eb8229f5db3d1ff22f882ecca8e1233c0c4b5d84f75ffcce4e033ec",
+        "signature": "e661b3ff740da1950fcc151450d423c2996cba3ff311a349e5a90ee309ab6d39",
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.module.ts": {
@@ -5304,11 +5309,6 @@
       "../src/auth/strategies/vkontakte.strategy.ts": {
         "version": "2426e7282ca17ffbee2fc0eada9a9d468f9cb4720df3c0943e4180423dfb23ee",
         "signature": "e239d4f46bd9fac212feb9b3a4bb94b700dad48a72bb8357449c0ca03dbb0c28",
-        "affectsGlobalScope": false
-      },
-      "../src/film/film.dto.ts": {
-        "version": "5229f2ed293d2f7af7c9bbc09c60de932d16154ad301639e955220c4ba6701e0",
-        "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
         "affectsGlobalScope": false
       },
       "../src/film/film.entity.ts": {
@@ -9648,6 +9648,7 @@
         "../node_modules/typeorm/index.d.ts",
         "../src/entity/match-session.entity.ts",
         "../src/entity/user.entity.ts",
+        "../src/film/film.dto.ts",
         "../src/film/film.service.ts",
         "../src/match-session/match-session.dto.ts"
       ],

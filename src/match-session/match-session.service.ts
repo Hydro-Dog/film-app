@@ -4,6 +4,7 @@ import { Repository } from 'typeorm'
 import { FilmService } from 'src/film/film.service'
 import {
   CreateMatchSessionDTO,
+  SwipeMatchSessionStatusDTO,
   UpdateMatchSessionStatusDTO,
 } from './match-session.dto'
 import {
@@ -11,6 +12,7 @@ import {
   MatchSessionStatus,
 } from 'src/entity/match-session.entity'
 import { UserEntity } from 'src/entity/user.entity'
+import { Film } from 'src/film/film.dto'
 
 const INITIAL_PAGES = '1'
 const FILMS_PAGE_SIZE = 20
@@ -168,100 +170,51 @@ export class MatchSessionService {
       .getOne()
   }
 
-  // async update(id: number, matchSessionNew: MatchSession) {
-  //   //TODO: убрать это удаление когда добавим список отклоненных матчей
-  //   if (matchSessionNew.declined) {
-  //     await this.matchSessionRepository.delete({ id: matchSessionNew.id })
-  //     const guest = await this.userRepository.findOne({
-  //       where: { id: matchSessionNew.guest.id },
-  //     })
-  //     await this.userRepository.update(
-  //       { id: guest.id },
-  //       {
-  //         ...guest,
-  //         sessionsInvite: guest.sessionsInvite.filter(
-  //           (id) => id.toString() !== matchSessionNew.id.toString()
-  //         ),
-  //       }
-  //     )
+  async swipe(data: SwipeMatchSessionStatusDTO & { user_id: string }) {
+    const film: Film = JSON.parse(data.film)
 
-  //     this.appGetaway.emitToClient(
-  //       matchSessionNew.host.id.toString(),
-  //       MatchSessionSocketEvents.ServerMessage,
-  //       {
-  //         payload: matchSessionNew,
-  //         event: MatchSessionChangesEvents.ChangeStatus,
-  //       }
-  //     )
+    const matchSession = await this.getMatchSessionById(data.matchSessionId)
 
-  //     this.appGetaway.emitToClient(
-  //       matchSessionNew.guest.id.toString(),
-  //       MatchSessionSocketEvents.ServerMessage,
-  //       {
-  //         payload: matchSessionNew,
-  //         event: MatchSessionChangesEvents.ChangeStatus,
-  //       }
-  //     )
+    const userRole = data.user_id === matchSession.host.id ? 'host' : 'guest'
+    const opponentRole =
+      data.user_id === matchSession.host.id ? 'guest' : 'host'
 
-  //     return matchSessionNew
-  //   }
-  //   const matchSessionCurrent = await this.matchSessionRepository.findOne({
-  //     where: { id },
-  //   })
+    matchSession[userRole + 'LikedFilms'].push(film.id)
+    matchSession[userRole + 'CurrentFilmIndex']++
 
-  //   await this.matchSessionRepository.update({ id }, { ...matchSessionNew })
+    let matched = false
 
-  //   if (matchSessionCurrent.accepted === false && matchSessionNew.accepted) {
-  //     const guest = await this.userRepository.findOne({
-  //       where: { id: matchSessionNew.guest.id },
-  //     })
+    if (data.swipe === 'right') {
+      matchSession[opponentRole + 'LikedFilms'].includes(film.id)
+      matchSession.matchedMovies.push(data.film)
+      matched = true
+    }
 
-  //     await this.userRepository.update(
-  //       { id: guest.id },
-  //       {
-  //         ...guest,
-  //         currentMatchSession: matchSessionNew.id,
-  //         sessionsInvite: guest.sessionsInvite.filter(
-  //           (id) => id.toString() !== matchSessionNew.id.toString()
-  //         ),
-  //       }
-  //     )
-  //   }
+    matchSession.status =
+      matchSession.matchedMovies.length >= matchSession.matchLimit
+        ? MatchSessionStatus.Completed
+        : matchSession.status
 
-  //   const updateMatchSession = await this.matchSessionRepository
-  //     .createQueryBuilder('match_session')
-  //     .select([
-  //       'match_session',
-  //       'guest.id',
-  //       'guest.userName',
-  //       'host.id',
-  //       'host.userName',
-  //     ])
-  //     .leftJoin('match_session.guest', 'guest')
-  //     .leftJoin('match_session.host', 'host')
-  //     .where('match_session.id = :id', { id: matchSessionNew.id })
-  //     .getOne()
+    return { ...matchSession, matched }
 
-  //   this.appGetaway.emitToClient(
-  //     matchSessionNew.host.id.toString(),
-  //     MatchSessionSocketEvents.ServerMessage,
-  //     {
-  //       payload: matchSessionNew,
-  //       event: MatchSessionChangesEvents.ChangeStatus,
-  //     }
-  //   )
+    // isMatched = currentMatchSession.guestLikedFilms.includes(
+    //       film.id.toString()
+    //     )
 
-  //   this.appGetaway.emitToClient(
-  //     matchSessionNew.guest.id.toString(),
-  //     MatchSessionSocketEvents.ServerMessage,
-  //     {
-  //       payload: matchSessionNew,
-  //       event: MatchSessionChangesEvents.ChangeStatus,
-  //     }
-  //   )
+    // let userLikedFilmsString
+    // let userLikedFilmIndexString
+    // let userCurrentFilmIndexString
 
-  //   return updateMatchSession
-  // }
+    // if (data.user_id === matchSession.host.id) {
+    //   userLikedFilmsString = 'hostLikedFilms'
+    //   userLikedFilmIndexString = 'hostLikedFilmIndex'
+    //   userCurrentFilmIndexString = 'hostCurrentFilmIndex'
+    // } else if (data.user_id === matchSession.guest.id) {
+    //   userLikedFilmsString = 'guestLikedFilms'
+    //   userLikedFilmIndexString = 'guestLikedFilmIndex'
+    //   userCurrentFilmIndexString = 'guestCurrentFilmIndex'
+    // }
+  }
 
   // async swipe(
   //   matchSessionId: number,
@@ -387,5 +340,100 @@ export class MatchSessionService {
   //     ...currentMatchSession,
   //     completed,
   //   })
+  // }
+
+  // async update(id: number, matchSessionNew: MatchSession) {
+  //   //TODO: убрать это удаление когда добавим список отклоненных матчей
+  //   if (matchSessionNew.declined) {
+  //     await this.matchSessionRepository.delete({ id: matchSessionNew.id })
+  //     const guest = await this.userRepository.findOne({
+  //       where: { id: matchSessionNew.guest.id },
+  //     })
+  //     await this.userRepository.update(
+  //       { id: guest.id },
+  //       {
+  //         ...guest,
+  //         sessionsInvite: guest.sessionsInvite.filter(
+  //           (id) => id.toString() !== matchSessionNew.id.toString()
+  //         ),
+  //       }
+  //     )
+
+  //     this.appGetaway.emitToClient(
+  //       matchSessionNew.host.id.toString(),
+  //       MatchSessionSocketEvents.ServerMessage,
+  //       {
+  //         payload: matchSessionNew,
+  //         event: MatchSessionChangesEvents.ChangeStatus,
+  //       }
+  //     )
+
+  //     this.appGetaway.emitToClient(
+  //       matchSessionNew.guest.id.toString(),
+  //       MatchSessionSocketEvents.ServerMessage,
+  //       {
+  //         payload: matchSessionNew,
+  //         event: MatchSessionChangesEvents.ChangeStatus,
+  //       }
+  //     )
+
+  //     return matchSessionNew
+  //   }
+  //   const matchSessionCurrent = await this.matchSessionRepository.findOne({
+  //     where: { id },
+  //   })
+
+  //   await this.matchSessionRepository.update({ id }, { ...matchSessionNew })
+
+  //   if (matchSessionCurrent.accepted === false && matchSessionNew.accepted) {
+  //     const guest = await this.userRepository.findOne({
+  //       where: { id: matchSessionNew.guest.id },
+  //     })
+
+  //     await this.userRepository.update(
+  //       { id: guest.id },
+  //       {
+  //         ...guest,
+  //         currentMatchSession: matchSessionNew.id,
+  //         sessionsInvite: guest.sessionsInvite.filter(
+  //           (id) => id.toString() !== matchSessionNew.id.toString()
+  //         ),
+  //       }
+  //     )
+  //   }
+
+  //   const updateMatchSession = await this.matchSessionRepository
+  //     .createQueryBuilder('match_session')
+  //     .select([
+  //       'match_session',
+  //       'guest.id',
+  //       'guest.userName',
+  //       'host.id',
+  //       'host.userName',
+  //     ])
+  //     .leftJoin('match_session.guest', 'guest')
+  //     .leftJoin('match_session.host', 'host')
+  //     .where('match_session.id = :id', { id: matchSessionNew.id })
+  //     .getOne()
+
+  //   this.appGetaway.emitToClient(
+  //     matchSessionNew.host.id.toString(),
+  //     MatchSessionSocketEvents.ServerMessage,
+  //     {
+  //       payload: matchSessionNew,
+  //       event: MatchSessionChangesEvents.ChangeStatus,
+  //     }
+  //   )
+
+  //   this.appGetaway.emitToClient(
+  //     matchSessionNew.guest.id.toString(),
+  //     MatchSessionSocketEvents.ServerMessage,
+  //     {
+  //       payload: matchSessionNew,
+  //       event: MatchSessionChangesEvents.ChangeStatus,
+  //     }
+  //   )
+
+  //   return updateMatchSession
   // }
 }
