@@ -60,5 +60,13 @@ __decorate([
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], SwipeMatchSessionStatusDTO.prototype, "film", void 0);
+__decorate([
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], SwipeMatchSessionStatusDTO.prototype, "hostId", void 0);
+__decorate([
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], SwipeMatchSessionStatusDTO.prototype, "guestId", void 0);
 exports.SwipeMatchSessionStatusDTO = SwipeMatchSessionStatusDTO;
 //# sourceMappingURL=match-session.dto.js.map

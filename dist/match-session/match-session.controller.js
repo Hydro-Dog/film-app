@@ -62,7 +62,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], MatchSessionController.prototype, "updateStatus", null);
 __decorate([
-    common_1.Get('api/matchsession/swipe'),
+    common_1.Post('api/matchsession/swipe'),
     __param(0, user_id_decorator_1.UserID()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

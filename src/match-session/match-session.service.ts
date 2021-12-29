@@ -13,6 +13,7 @@ import {
 } from 'src/entity/match-session.entity'
 import { UserEntity } from 'src/entity/user.entity'
 import { Film } from 'src/film/film.dto'
+import { FilmCategories } from 'src/film/film.models'
 
 const INITIAL_PAGES = '1'
 const FILMS_PAGE_SIZE = 20
@@ -49,6 +50,13 @@ export class MatchSessionService {
         category: data.category,
         matchLimit: data.matchLimit,
         status: MatchSessionStatus.Pending,
+        matchedMovies: [],
+        hostLikedFilms: [],
+        guestLikedFilms: [],
+        hostCurrentFilmIndex: 0,
+        guestCurrentFilmIndex: 0,
+        hostLikedFilmIndex: 0,
+        guestLikedFilmIndex: 0,
       })
     )
 
@@ -179,15 +187,19 @@ export class MatchSessionService {
     const opponentRole =
       data.user_id === matchSession.host.id ? 'guest' : 'host'
 
-    matchSession[userRole + 'LikedFilms'].push(film.id)
     matchSession[userRole + 'CurrentFilmIndex']++
 
     let matched = false
 
     if (data.swipe === 'right') {
-      matchSession[opponentRole + 'LikedFilms'].includes(film.id)
-      matchSession.matchedMovies.push(data.film)
-      matched = true
+      matchSession[userRole + 'LikedFilms'].push(film.id)
+      if (
+        matchSession[opponentRole + 'LikedFilms'].includes(film.id.toString())
+      ) {
+        matchSession.matchedMovies.push(data.film)
+
+        matched = true
+      }
     }
 
     matchSession.status =
@@ -195,7 +207,55 @@ export class MatchSessionService {
         ? MatchSessionStatus.Completed
         : matchSession.status
 
-    return { ...matchSession, matched }
+    const lastFilmIndex = matchSession.filmsSequence.length - 1
+
+    //PUSH NEW FILMS TO SEQUENCE ------------------------------------------- START
+    if (matchSession[userRole + 'CurrentFilmIndex'] >= lastFilmIndex) {
+      const currentPage = matchSession.filmsSequence.length / FILMS_PAGE_SIZE
+      const filmsSequence = await this.filmService.getFilmsByCategory(
+        (currentPage + 1).toString(),
+        matchSession.category as FilmCategories
+      )
+
+      matchSession.filmsSequence = [
+        ...matchSession.filmsSequence,
+        ...filmsSequence.map((filmObj) => JSON.stringify(filmObj)),
+      ]
+    }
+
+    //PUSH NEW FILMS TO SEQUENCE ------------------------------------------- END
+
+    //CHECK MATCH STATUS ------------------------------------------- START
+
+    if (matchSession.matchedMovies.length >= matchSession.matchLimit) {
+      matchSession.status = MatchSessionStatus.Completed
+
+      // const user = await this.userRepository.findOne({
+      //   where: { id: data.user_id },
+      // })
+      // user.currentMatchSession = null
+      // await this.userRepository.save(user)
+    }
+
+    //CHECK MATCH STATUS ------------------------------------------- END
+
+    const host = await this.userRepository.findOne({
+      where: { id: data.hostId },
+    })
+    const guest = await this.userRepository.findOne({
+      where: { id: data.guestId },
+    })
+
+    const a = new MatchSessionEntity({
+      ...matchSession,
+      host: new UserEntity(host),
+      guest: new UserEntity(guest),
+    })
+
+    console.log('--------------a: ', a)
+
+    await this.matchSessionRepository.update({ id: a.id }, a)
+    return { ...a, matched }
 
     // isMatched = currentMatchSession.guestLikedFilms.includes(
     //       film.id.toString()

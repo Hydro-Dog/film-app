@@ -44,7 +44,7 @@ export class MatchSessionController {
     return this.matchSessionService.updateStatus(data)
   }
 
-  @Get('api/matchsession/swipe')
+  @Post('api/matchsession/swipe')
   swipe(@UserID() data: SwipeMatchSessionStatusDTO & { user_id: string }) {
     return this.matchSessionService.swipe(data)
   }

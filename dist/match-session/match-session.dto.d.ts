@@ -18,4 +18,6 @@ export declare class SwipeMatchSessionStatusDTO {
     matchSessionId: string;
     swipe: 'left' | 'right';
     film: string;
+    hostId: string;
+    guestId: string;
 }

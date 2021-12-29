@@ -3807,7 +3807,7 @@
         "affectsGlobalScope": false
       },
       "../src/entity/match-session.entity.ts": {
-        "version": "81cbb744679389022b2cf4463430995440ed8042335fd448902494596a3271ed",
+        "version": "133ca3dda10116d69960eeb5037d8f664a3e8966d711a88dafa8cde21f42a486",
         "signature": "53791e1e8e45d171c881166feb089e9ac648b669d30447f50f41801d9ec6c821",
         "affectsGlobalScope": false
       },
@@ -4282,13 +4282,13 @@
         "affectsGlobalScope": false
       },
       "../src/film/film.models.ts": {
-        "version": "04f3815424037c51f35ffa4d00ef49637352737292d7074bfef5e646c9c021f3",
-        "signature": "71961c2dbad62cbb45e2638c8efd964f9fb46b4458cee715e111c3eaf5e7a4ea",
+        "version": "8c78998bb4d7b7f5e7e4973a7f259537fc8486656bee8ab2746bafb31b91be91",
+        "signature": "2f3340593eed7194095f53b380b24f7bbbc81436dc96e268ca87aa262c8121c1",
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.dto.ts": {
-        "version": "44005c30276de52a288d1b406d711742c541a22dd5ed97551710587d44887281",
-        "signature": "c7825f3e5420dd6ec25ebd118aaa20659fb16d0c06900197be91b21125b982ec",
+        "version": "c1dd65ff36fd6acb907bb8f0c11443135a529110a9cc4d5786f14d86ae1631f3",
+        "signature": "b8853d5392ccc55c7d619d57f9f83427c8946469ca92569bc11cc4ba40150297",
         "affectsGlobalScope": false
       },
       "../node_modules/rxjs/internal/operators/audit.d.ts": {
@@ -4832,7 +4832,7 @@
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.service.ts": {
-        "version": "a7d9ff83aa3be5cc28c288f189b3126e26108811123e4bdfec01b41d6b57112d",
+        "version": "5499d5c17d6c524e3007e016f82e717f84eaf56a4ee5ba08b16cc1e45d9d7b77",
         "signature": "f5152ed807ce8dbdee85c8d9b32def913480c3e4554b81b4df3434925ac5acf1",
         "affectsGlobalScope": false
       },
@@ -5097,7 +5097,7 @@
         "affectsGlobalScope": false
       },
       "../src/match-session/match-session.controller.ts": {
-        "version": "676ba0c91eb8229f5db3d1ff22f882ecca8e1233c0c4b5d84f75ffcce4e033ec",
+        "version": "89768038e3c17e606c7d601845d47bb6b985ce26fc4ff06a492731fadcf0b2cf",
         "signature": "e661b3ff740da1950fcc151450d423c2996cba3ff311a349e5a90ee309ab6d39",
         "affectsGlobalScope": false
       },
@@ -9649,6 +9649,7 @@
         "../src/entity/match-session.entity.ts",
         "../src/entity/user.entity.ts",
         "../src/film/film.dto.ts",
+        "../src/film/film.models.ts",
         "../src/film/film.service.ts",
         "../src/match-session/match-session.dto.ts"
       ],

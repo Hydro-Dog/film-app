@@ -20,6 +20,7 @@ const film_service_1 = require("../film/film.service");
 const match_session_entity_1 = require("../entity/match-session.entity");
 const user_entity_1 = require("../entity/user.entity");
 const film_dto_1 = require("../film/film.dto");
+const film_models_1 = require("../film/film.models");
 const INITIAL_PAGES = '1';
 const FILMS_PAGE_SIZE = 20;
 let MatchSessionService = class MatchSessionService {
@@ -43,6 +44,13 @@ let MatchSessionService = class MatchSessionService {
             category: data.category,
             matchLimit: data.matchLimit,
             status: match_session_entity_1.MatchSessionStatus.Pending,
+            matchedMovies: [],
+            hostLikedFilms: [],
+            guestLikedFilms: [],
+            hostCurrentFilmIndex: 0,
+            guestCurrentFilmIndex: 0,
+            hostLikedFilmIndex: 0,
+            guestLikedFilmIndex: 0,
         }));
         const matchSessionSaved = await this.matchSessionRepository.save(matchSessionData);
         guest.invitedToMatchesUUIDs = [
@@ -128,19 +136,45 @@ let MatchSessionService = class MatchSessionService {
         const matchSession = await this.getMatchSessionById(data.matchSessionId);
         const userRole = data.user_id === matchSession.host.id ? 'host' : 'guest';
         const opponentRole = data.user_id === matchSession.host.id ? 'guest' : 'host';
-        matchSession[userRole + 'LikedFilms'].push(film.id);
         matchSession[userRole + 'CurrentFilmIndex']++;
         let matched = false;
         if (data.swipe === 'right') {
-            matchSession[opponentRole + 'LikedFilms'].includes(film.id);
-            matchSession.matchedMovies.push(data.film);
-            matched = true;
+            matchSession[userRole + 'LikedFilms'].push(film.id);
+            if (matchSession[opponentRole + 'LikedFilms'].includes(film.id.toString())) {
+                matchSession.matchedMovies.push(data.film);
+                matched = true;
+            }
         }
         matchSession.status =
             matchSession.matchedMovies.length >= matchSession.matchLimit
                 ? match_session_entity_1.MatchSessionStatus.Completed
                 : matchSession.status;
-        return { ...matchSession, matched };
+        const lastFilmIndex = matchSession.filmsSequence.length - 1;
+        if (matchSession[userRole + 'CurrentFilmIndex'] >= lastFilmIndex) {
+            const currentPage = matchSession.filmsSequence.length / FILMS_PAGE_SIZE;
+            const filmsSequence = await this.filmService.getFilmsByCategory((currentPage + 1).toString(), matchSession.category);
+            matchSession.filmsSequence = [
+                ...matchSession.filmsSequence,
+                ...filmsSequence.map((filmObj) => JSON.stringify(filmObj)),
+            ];
+        }
+        if (matchSession.matchedMovies.length >= matchSession.matchLimit) {
+            matchSession.status = match_session_entity_1.MatchSessionStatus.Completed;
+        }
+        const host = await this.userRepository.findOne({
+            where: { id: data.hostId },
+        });
+        const guest = await this.userRepository.findOne({
+            where: { id: data.guestId },
+        });
+        const a = new match_session_entity_1.MatchSessionEntity({
+            ...matchSession,
+            host: new user_entity_1.UserEntity(host),
+            guest: new user_entity_1.UserEntity(guest),
+        });
+        console.log('--------------a: ', a);
+        await this.matchSessionRepository.update({ id: a.id }, a);
+        return { ...a, matched };
     }
 };
 MatchSessionService = __decorate([

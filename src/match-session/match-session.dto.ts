@@ -23,6 +23,8 @@ export class SwipeMatchSessionStatusDTO {
   @IsNotEmpty() matchSessionId: string
   @IsNotEmpty() swipe: 'left' | 'right'
   @IsNotEmpty() film: string
+  @IsNotEmpty() hostId: string
+  @IsNotEmpty() guestId: string
 }
 
 // export class UpdateMatchSessionDTO {

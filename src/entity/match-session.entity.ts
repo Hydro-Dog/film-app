@@ -66,6 +66,8 @@ export class MatchSessionEntity {
   @Column({ nullable: true }) guestCurrentFilmIndex?: number
   @Column('text', { nullable: true, array: true }) hostLikedFilms?: string[]
   @Column('text', { nullable: true, array: true }) guestLikedFilms?: string[]
+
+  //TODO: можно удалить
   @Column('text', { nullable: true }) hostLikedFilmIndex: number
   @Column('text', { nullable: true }) guestLikedFilmIndex: number
 }
